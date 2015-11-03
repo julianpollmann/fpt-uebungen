@@ -2,7 +2,6 @@
 /bin/
 target/
 
-target/
 *.launch
 .project
 *.pydevproject
@@ -16,3 +15,10 @@ tmp/
 local.properties
 .settings/
 .loadpath
+*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
