@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 public class AllLightsOn extends Application {
 
 	public AllLightsOn() {
-		// TODO Auto-generated constructor stub
+		// Blahblah
 	}
 
 	@Override
