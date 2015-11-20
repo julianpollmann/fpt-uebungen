@@ -1,3 +1,4 @@
+package model;
 import javafx.beans.value.ObservableValue;
 
 public class Product implements fpt.com.Product {

@@ -1,10 +1,11 @@
+package model;
 import java.util.Iterator;
 
 import fpt.com.Product;
 
-public class Order implements fpt.com.Order {
+public class ProductList implements fpt.com.ProductList {
 
-	public Order() {
+	public ProductList() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -21,7 +22,7 @@ public class Order implements fpt.com.Order {
 	}
 
 	@Override
-	public boolean delete(Product p) {
+	public boolean delete(Product product) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -42,18 +43,6 @@ public class Order implements fpt.com.Order {
 	public Product findProductByName(String name) {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public double getSum() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int getQuantity() {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 }
