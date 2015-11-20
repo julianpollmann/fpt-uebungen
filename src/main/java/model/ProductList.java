@@ -2,7 +2,7 @@ package model;
 import java.util.Iterator;
 
 import fpt.com.Product;
- //ascko
+ //asckoass
 
 public class ProductList implements fpt.com.ProductList {
 
