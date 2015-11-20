@@ -1,31 +1,55 @@
 package model;
+
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import fpt.com.Product;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 
-public class Order implements fpt.com.Order {
+public class Order extends ArrayList<Product> implements fpt.com.Order {
 
-	public Order() {
-		// TODO Auto-generated constructor stub
-	}
+	private int quantity;
+	private double sum;
+	private ArrayList<Product> produktliste;
 
 	@Override
 	public Iterator<Product> iterator() {
+
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public boolean add(Product e) {
-		// TODO Auto-generated method stub
-		return false;
+
+		boolean works = this.add(e);
+
+		if (works) {
+
+			this.quantity++;
+			this.sum += e.getPrice();
+
+		}
+
+		return works;
 	}
+
 
 	@Override
 	public boolean delete(Product p) {
 		// TODO Auto-generated method stub
-		return false;
+		boolean works = this.remove(p);
+
+		if (works) {
+
+			this.quantity--;
+			this.sum -= p.getPrice();
+		}
+
+		return works;
 	}
+
 
 	@Override
 	public int size() {
@@ -47,14 +71,14 @@ public class Order implements fpt.com.Order {
 
 	@Override
 	public double getSum() {
+		return sum;
 		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override
 	public int getQuantity() {
+		return	quantity;
 		// TODO Auto-generated method stub
-		return 0;
 	}
 
 }

@@ -1,47 +1,42 @@
 package model;
+
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import fpt.com.Product;
- //asckoass
 
-public class ProductList implements fpt.com.ProductList {
-
-	public ProductList() {
-		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public Iterator<Product> iterator() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean add(Product e) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+public class ProductList extends ArrayList<Product> implements fpt.com.ProductList {
 
 	@Override
 	public boolean delete(Product product) {
 		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.remove(product);
 	}
 
 	@Override
 	public Product findProductById(long id) {
+		for (Product prod : this) {
+
+			if (prod.getId() == id) {
+
+				return prod;
+
+			}
+
+		}
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Product findProductByName(String name) {
+		for (Product prod : this) {
+
+			if (prod.getName().equals(name)) {
+
+				return prod;
+			}
+		}
 		// TODO Auto-generated method stub
 		return null;
 	}
