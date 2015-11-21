@@ -54,5 +54,4 @@ public class ModelShop extends ModifiableObservableListBase<fpt.com.Product> imp
 		// TODO Auto-generated method stub
 	}
 
-
 }

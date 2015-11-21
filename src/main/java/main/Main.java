@@ -1,8 +1,11 @@
 package main;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+
+import model.ModelShop;
+import view.ViewShop;
+import controller.ControllerShop;
 
 public class Main extends Application {
 
@@ -13,8 +16,13 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		try {
-			BorderPane root = new BorderPane();
-			Scene scene = new Scene(root,400,400);
+			ModelShop model = new ModelShop();
+			ViewShop view = new ViewShop();
+			ControllerShop controller = new ControllerShop();
+
+			controller.link(model, view);
+
+			Scene scene = new Scene(view, 800, 800);
 
 			primaryStage.setTitle("Hardwareshop");
 			primaryStage.setScene(scene);
@@ -22,11 +30,10 @@ public class Main extends Application {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	public static void main(String[] args) {
-		launch(args);
+		Application.launch(args);
 	}
 
 }

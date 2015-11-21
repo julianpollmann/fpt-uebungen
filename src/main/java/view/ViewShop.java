@@ -1,48 +1,53 @@
 package view;
 
 import javafx.geometry.Orientation;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Font;
 
 public class ViewShop extends BorderPane {
 
+	ToolBar tbar;
+	Label heading;
+	TableView table;
+	Button addProd;
+	Button delProd;
+
 	public ViewShop() {
-		// TODO Auto-generated constructor stub
+
+		heading = new Label("Hardwareshop");
+        heading.setFont(new Font("Arial", 20));
+		initTable();
+		initTooblar();
+
+		setTop(heading);
+		setCenter(table);
+		setBottom(tbar);
 	}
 
-	@Override
-	public Orientation getContentBias() {
-		// TODO Auto-generated method stub
-		return super.getContentBias();
+	private void initTooblar() {
+		tbar = new ToolBar();
+
+		addProd = new Button("Neues Produkt");
+		delProd = new Button("Produkt löschen");
+
+		tbar.getItems().addAll(addProd, delProd);
 	}
 
-	@Override
-	protected double computeMinWidth(double height) {
-		// TODO Auto-generated method stub
-		return super.computeMinWidth(height);
-	}
+	private void initTable() {
+		table = new TableView();
+		table.setEditable(true);
 
-	@Override
-	protected double computeMinHeight(double width) {
-		// TODO Auto-generated method stub
-		return super.computeMinHeight(width);
-	}
+		// Spalten erzeugen
+		TableColumn pId = new TableColumn("id");
+		TableColumn pName = new TableColumn("Produkt");
+		TableColumn pPrice = new TableColumn("Preis");
+		TableColumn pQuantity = new TableColumn("Stückzahl");
 
-	@Override
-	protected double computePrefWidth(double height) {
-		// TODO Auto-generated method stub
-		return super.computePrefWidth(height);
-	}
+		table.getColumns().addAll(pId, pName, pPrice, pQuantity);
 
-	@Override
-	protected double computePrefHeight(double width) {
-		// TODO Auto-generated method stub
-		return super.computePrefHeight(width);
-	}
-
-	@Override
-	protected void layoutChildren() {
-		// TODO Auto-generated method stub
-		super.layoutChildren();
+		// Produkte hinzufügen, hier müsste irgendwas an Liste, Array oder sonstwas rein
+//		table.setItems();
 	}
 
 }
