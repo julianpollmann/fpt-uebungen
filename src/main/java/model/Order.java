@@ -11,74 +11,66 @@ public class Order extends ArrayList<Product> implements fpt.com.Order {
 
 	private int quantity;
 	private double sum;
-	private ArrayList<Product> produktliste;
+	private ArrayList<Product> produktListe; // brauchen wir die ueberhaupt?
 
 	@Override
 	public Iterator<Product> iterator() {
-
-		// TODO Auto-generated method stub
-		return null;
+		return this.iterator();
 	}
 
 	@Override
-	public boolean add(Product e) {
-
-		boolean works = this.add(e);
-
+	public boolean add(Product p) {
+		boolean works = this.add(p);
 		if (works) {
-
 			this.quantity++;
-			this.sum += e.getPrice();
-
+			this.sum += p.getPrice();
 		}
-
 		return works;
 	}
-
 
 	@Override
 	public boolean delete(Product p) {
-		// TODO Auto-generated method stub
 		boolean works = this.remove(p);
-
 		if (works) {
-
 			this.quantity--;
 			this.sum -= p.getPrice();
 		}
-
 		return works;
 	}
 
-
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.size();
 	}
 
 	@Override
 	public Product findProductById(long id) {
-		// TODO Auto-generated method stub
+		for (Product p : this) {
+			if (p.getId() == id) {
+				return p;
+			}
+		}
 		return null;
 	}
 
 	@Override
 	public Product findProductByName(String name) {
-		// TODO Auto-generated method stub
+		for (Product p : this) {
+			if (p.getName() == name) {
+				return p;
+			}
+		}
 		return null;
 	}
 
 	@Override
 	public double getSum() {
 		return sum;
-		// TODO Auto-generated method stub
 	}
 
 	@Override
 	public int getQuantity() {
 		return	quantity;
-		// TODO Auto-generated method stub
 	}
 
 }
