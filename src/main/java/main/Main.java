@@ -9,6 +9,12 @@ import controller.ControllerShop;
 
 public class Main extends Application {
 
+	public ModelShop model;
+	public ViewShop view;
+	public ControllerShop controller;
+
+	public Scene scene;
+
 	public Main() {
 		// TODO Auto-generated constructor stub
 	}
@@ -16,13 +22,13 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		try {
-			ModelShop model = new ModelShop();
-			ViewShop view = new ViewShop();
-			ControllerShop controller = new ControllerShop();
+			model = new ModelShop();
+			view = new ViewShop();
+			controller = new ControllerShop();
 
 			controller.link(model, view);
 
-			Scene scene = new Scene(view, 800, 800);
+			scene = new Scene(view, 800, 800);
 
 			primaryStage.setTitle("Hardwareshop");
 			primaryStage.setScene(scene);

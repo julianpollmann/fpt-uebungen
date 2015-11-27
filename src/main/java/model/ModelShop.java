@@ -5,7 +5,7 @@ import javafx.collections.ModifiableObservableListBase;
 
 public class ModelShop extends ModifiableObservableListBase<fpt.com.Product> implements fpt.com.ProductList {
 
-	private ProductList produktliste = new ProductList();
+	public ProductList produktliste = new ProductList();
 
 	@Override
 	protected void doAdd(int arg0, Product arg1) {

@@ -3,7 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import fpt.com.Product;
+import fpt.com.Product; // muss das nicht von model.Product erben?
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
