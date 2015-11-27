@@ -1,28 +1,27 @@
 package view;
 
+import fpt.com.Product;
 import javafx.geometry.Orientation;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Font;
+import model.ModelShop;
 
 public class ViewShop extends BorderPane {
 
-	ToolBar tbar;
-	Label heading;
-	TableView table;
-	Button addProd;
-	Button delProd;
+	private ToolBar tbar;
+	private Label heading;
+	private Button addProd;
+	private Button delProd;
+	private ListView<Product> products;
 
 	public ViewShop() {
 
+		products = new ListView<Product>();
 		heading = new Label("Hardwareshop");
         heading.setFont(new Font("Arial", 20));
-		initTable();
 		initTooblar();
 
-		setTop(heading);
-		setCenter(table);
-		setBottom(tbar);
 	}
 
 	private void initTooblar() {
@@ -34,20 +33,32 @@ public class ViewShop extends BorderPane {
 		tbar.getItems().addAll(addProd, delProd);
 	}
 
-	private void initTable() {
-		table = new TableView();
-		table.setEditable(true);
+	public void setListView() {
+//		products.setCellFactory(e -> {
+//			ListCell<Product> cell = new ListCell<Product>() {
+////				@Override
+////				protected void updateItem(Product myObject, boolean b) {
+////					super.updateItem(myObject, myObject == null || b);
+//////					if (myObject != null) {
+//////						setText(myObject.getName() + " | " + myObject.getPrice()+ " €  | " + myObject.getQuantity());
+//////					} else {
+//////					}
+////				}
+//			};
+//		}
+//	public void bindData(ModelShop model) {	products.setItems(model}
+//	BindData wird im controller aufgerufen (view.bindData)
 
-		// Spalten erzeugen
-		TableColumn pId = new TableColumn("id");
-		TableColumn pName = new TableColumn("Produkt");
-		TableColumn pPrice = new TableColumn("Preis");
-		TableColumn pQuantity = new TableColumn("Stückzahl");
-
-		table.getColumns().addAll(pId, pName, pPrice, pQuantity);
-
-		// Produkte hinzufügen, hier müsste irgendwas an Liste, Array oder sonstwas rein
-//		table.setItems();
 	}
+
+
+
+
+
+
+
+
+
+
 
 }

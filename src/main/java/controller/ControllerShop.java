@@ -5,12 +5,19 @@ import view.ViewShop;
 
 public class ControllerShop {
 
+	private ModelShop model;
+	private ViewShop view;
+
 	public ControllerShop() {
-		// TODO Auto-generated constructor stub
+
+
+
+
 	}
 
 	public void link(ModelShop model, ViewShop view) {
 
+//		view.setItems(model);
 
 	}
 
