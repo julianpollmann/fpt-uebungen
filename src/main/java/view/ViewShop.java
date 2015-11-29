@@ -1,6 +1,7 @@
 package view;
 
 import fpt.com.Product;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Orientation;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
@@ -13,6 +14,8 @@ public class ViewShop extends BorderPane {
 	private Label heading;
 	private Button addProd;
 	private Button delProd;
+	private SimpleStringProperty addProdText;
+	private SimpleStringProperty delProdText;
 	private ListView<Product> products;
 
 	public ViewShop() {
@@ -22,13 +25,22 @@ public class ViewShop extends BorderPane {
         heading.setFont(new Font("Arial", 20));
 		initTooblar();
 
+		setBottom(tbar);
+
 	}
 
 	private void initTooblar() {
 		tbar = new ToolBar();
 
-		addProd = new Button("Neues Produkt");
-		delProd = new Button("Produkt löschen");
+		// Textproperty für Buttons
+		addProdText = new SimpleStringProperty("Neues Produkt");
+		delProdText = new SimpleStringProperty("Produkt löschen");
+
+		// Buttons erzeugen + binden
+		addProd = new Button();
+		delProd = new Button();
+		addProd.textProperty().bind(addProdText);
+		delProd.textProperty().bind(delProdText);
 
 		tbar.getItems().addAll(addProd, delProd);
 	}

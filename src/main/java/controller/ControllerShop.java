@@ -5,18 +5,8 @@ import view.ViewShop;
 
 public class ControllerShop {
 
-	private ModelShop model;
-	private ViewShop view;
-
-	public ControllerShop() {
-
-
-
-
-	}
-
 	public void link(ModelShop model, ViewShop view) {
-
+		System.out.print("in Controller");
 //		view.setItems(model);
 
 	}
