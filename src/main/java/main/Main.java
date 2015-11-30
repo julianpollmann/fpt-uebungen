@@ -15,10 +15,6 @@ public class Main extends Application {
 
 	public Scene scene;
 
-	public Main() {
-		// TODO Auto-generated constructor stub
-	}
-
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		try {

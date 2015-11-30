@@ -9,9 +9,9 @@ import javafx.beans.value.ObservableValue;
 public class Product implements fpt.com.Product {
 
 	private long id;
-	private SimpleStringProperty name;
-	private SimpleDoubleProperty price;
-	private SimpleIntegerProperty quantity;
+	private final SimpleStringProperty name;
+	private final SimpleDoubleProperty price;
+	private final SimpleIntegerProperty quantity;
 
 	public Product(String name, Double price, Integer quantity) {
 		this.name = new SimpleStringProperty();
@@ -66,17 +66,17 @@ public class Product implements fpt.com.Product {
 
 	@Override
 	public ObservableValue<String> nameProperty() {
-		return null;
+		return this.name;
 	}
 
 	@Override
 	public ObservableValue<Number> priceProperty() {
-		return null;
+		return this.price;
 	}
 
 	@Override
 	public ObservableValue<Number> quantityProperty() {
-		return null;
+		return this.quantity;
 	}
 
 }

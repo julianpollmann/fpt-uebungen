@@ -1,9 +1,13 @@
 package view;
 
 import fpt.com.Product;
+import fpt.com.ProductList;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Orientation;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Font;
 import model.ModelShop;
@@ -16,17 +20,24 @@ public class ViewShop extends BorderPane {
 	private Button delProd;
 	private SimpleStringProperty addProdText;
 	private SimpleStringProperty delProdText;
-	private ListView<Product> products;
+//	private ListView<String> products;
+
+	private TableView<Product> prodTable;
+	private TableColumn<Product, String> prodName;
+	private TableColumn<Product, Number> prodPrice;
+	private TableColumn<Product, Number> prodQuantity;
 
 	public ViewShop() {
 
-		products = new ListView<Product>();
+//		products = new ListView<String>();
 		heading = new Label("Hardwareshop");
         heading.setFont(new Font("Arial", 20));
 		initTooblar();
+		setTableView();
 
+		setTop(heading);
+		setCenter(prodTable);
 		setBottom(tbar);
-
 	}
 
 	private void initTooblar() {
@@ -45,32 +56,49 @@ public class ViewShop extends BorderPane {
 		tbar.getItems().addAll(addProd, delProd);
 	}
 
-	public void setListView() {
-//		products.setCellFactory(e -> {
-//			ListCell<Product> cell = new ListCell<Product>() {
-////				@Override
-////				protected void updateItem(Product myObject, boolean b) {
-////					super.updateItem(myObject, myObject == null || b);
-//////					if (myObject != null) {
-//////						setText(myObject.getName() + " | " + myObject.getPrice()+ " €  | " + myObject.getQuantity());
-//////					} else {
-//////					}
-////				}
-//			};
-//		}
-//	public void bindData(ModelShop model) {	products.setItems(model}
-//	BindData wird im controller aufgerufen (view.bindData)
+	private void setTableView() {
+		// Tabelle erzeugen
+		prodTable = new TableView<Product>();
 
+		// Erste Spalte + Value als Property setzen
+		prodName = new TableColumn<Product, String>("Produktname");
+		prodName.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
+
+		// Zweite Spalte
+		prodPrice = new TableColumn<Product, Number>("Preis");
+		prodPrice.setCellValueFactory(cellData -> cellData.getValue().priceProperty());
+
+		// Dritte Spalte
+		prodQuantity = new TableColumn<Product, Number>("Anzahl");
+		prodQuantity.setCellValueFactory(cellData -> cellData.getValue().quantityProperty());
+
+		prodTable.getColumns().addAll(prodName, prodPrice, prodQuantity);
 	}
 
+	// Tabelle an Controller zurückgeben
+ 	public TableView<Product> getProductTable() {
+		return prodTable;
+	}
 
-
-
-
-
-
-
-
-
-
+	// Für Verwendung des ListViews
+//	private ListCell<String> setListView() {
+//		products.setCellFactory(c -> {
+//
+//			ListCell<String> cell = new ListCell<String>() {
+//				@Override
+//				protected void updateItem(String myObject, boolean b) {
+//					super.updateItem(myObject, myObject == null || b);
+//					if (myObject != null) {
+//						setText("..." + myObject + "...");
+//					} else {
+//						// wichtig da sonst der text stehen bleibt!
+//						setText("");
+//					}
+//				}
+//
+//			};
+//			return cell;
+//		});
+//		return null;
+//	}
 }

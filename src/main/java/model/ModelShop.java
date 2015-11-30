@@ -1,11 +1,31 @@
 package model;
 
 import fpt.com.Product;
+import javafx.collections.FXCollections;
 import javafx.collections.ModifiableObservableListBase;
+import javafx.collections.ObservableList;
 
 public class ModelShop extends ModifiableObservableListBase<fpt.com.Product> implements fpt.com.ProductList {
 
-	public ProductList produktliste = new ProductList();
+	// TODO: Irgendwie muss produktListe noch mit der productList verknüpft werden
+	public ProductList produktliste;
+	private ObservableList<Product> productList = FXCollections.observableArrayList();
+
+	public ModelShop() {
+		produktliste = new ProductList();
+
+		// Beispielprodukte erzeugen
+		model.Product p1 = new model.Product("TestProdukt", 9.00, 2);
+		model.Product p2 = new model.Product("TestProdukt 2", 10.00, 2);
+		doAdd(0, p1);
+		doAdd(1, p2);
+		productList.addAll(p1, p2);
+	}
+
+	// Produktliste an Controller übergeben
+	public ObservableList<Product> getProductList() {
+		return productList;
+	}
 
 	@Override
 	protected void doAdd(int index, Product p) {
