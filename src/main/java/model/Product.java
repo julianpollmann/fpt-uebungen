@@ -13,6 +13,16 @@ public class Product implements fpt.com.Product {
 	private SimpleDoubleProperty price;
 	private SimpleIntegerProperty quantity;
 
+	public Product(String name, Double price, Integer quantity) {
+		this.name = new SimpleStringProperty();
+		this.price = new SimpleDoubleProperty();
+		this.quantity = new SimpleIntegerProperty();
+
+//		setId(0); TODO: ID Generator oder sowas?!
+		setName(name);
+		setPrice(price);
+		setQuantity(quantity);
+	}
 
 	@Override
 	public long getId() {
