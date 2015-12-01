@@ -27,6 +27,12 @@ public class ModelShop extends ModifiableObservableListBase<fpt.com.Product> imp
 		return productList;
 	}
 
+	// TODO: zu Produktliste hinzufügen
+	public void addProduct(String productName, Double productPrice, Integer productQuantity) {
+		model.Product p = new model.Product(productName, productPrice, productQuantity);
+		productList.add(p);
+	}
+
 	@Override
 	protected void doAdd(int index, Product p) {
 		this.produktliste.add(index, p);

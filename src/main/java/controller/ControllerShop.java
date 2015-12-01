@@ -12,6 +12,11 @@ public class ControllerShop {
 		 * Daten übergeben
 		 */
 		view.getProductTable().setItems(model.getProductList());
+
+		view.addEventHandler(e -> {
+			System.out.println(view.getInputPaneText());
+//			model.addProduct(view.getInputPaneText());
+		});
 	}
 
 }
