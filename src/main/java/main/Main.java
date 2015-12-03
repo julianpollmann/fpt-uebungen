@@ -4,6 +4,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import model.ModelShop;
+import view.ViewCustomer;
+import view.ViewHistory;
 import view.ViewShop;
 import controller.ControllerShop;
 
@@ -11,9 +13,13 @@ public class Main extends Application {
 
 	public ModelShop model;
 	public ViewShop view;
+	public ViewCustomer view2;
+	public ViewHistory view3;
 	public ControllerShop controller;
 
 	public Scene scene;
+	public Scene scene2;
+	public Scene scene3;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -29,6 +35,26 @@ public class Main extends Application {
 			primaryStage.setTitle("Hardwareshop");
 			primaryStage.setScene(scene);
 			primaryStage.show();
+
+			// Customerview in zweitem Fenster
+			view2 = new ViewCustomer();
+
+			Stage stage2 = new Stage();
+			Scene scene2 = new Scene(view2, 800, 500);
+			stage2.setTitle("Ihre Bestellung");
+			stage2.setScene(scene2);
+			stage2.show();
+
+			// Historyview in drittem Fenster - soll sich nachher erst auf Buttondruck öffnen
+			view3 = new ViewHistory();
+
+			Stage stage3 = new Stage();
+			Scene scene3 = new Scene(view3, 800, 800);
+			stage3.setTitle("Vorherige Bestellungen");
+			stage3.setScene(scene3);
+			stage3.show();
+
+
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
