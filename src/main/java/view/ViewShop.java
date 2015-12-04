@@ -2,8 +2,7 @@ package view;
 
 import fpt.com.Product;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -114,13 +113,49 @@ public class ViewShop extends BorderPane {
 		return prodTable;
 	}
 
- 	public void addEventHandler(EventHandler<ActionEvent> eventHandler) {
- 		addProd.addEventHandler(ActionEvent.ACTION, eventHandler);
- 	}
-
 	public String getInputPaneText() {
 		// TODO: Array zurückgeben für alle Parameter
 		return nameInput.getText();
+	}
+
+	public Button getAddProd() {
+		return addProd;
+	}
+
+	public void setAddProd(Button addProd) {
+		this.addProd = addProd;
+	}
+
+	public Button getDelProd() {
+		return delProd;
+	}
+
+	public void setDelProd(Button delProd) {
+		this.delProd = delProd;
+	}
+
+	public TextField getNameInput() {
+		return nameInput;
+	}
+
+	public void setNameInput(TextField nameInput) {
+		this.nameInput = nameInput;
+	}
+
+	public TextField getPriceInput() {
+		return priceInput;
+	}
+
+	public void setPriceInput(TextField priceInput) {
+		this.priceInput = priceInput;
+	}
+
+	public TextField getQuantityInput() {
+		return quantityInput;
+	}
+
+	public void setQuantityInput(TextField quantityInput) {
+		this.quantityInput = quantityInput;
 	}
 
 	// Für Verwendung des ListViews

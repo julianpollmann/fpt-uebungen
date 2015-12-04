@@ -1,5 +1,7 @@
 package model;
 
+import java.util.List;
+
 import fpt.com.Product;
 import javafx.collections.FXCollections;
 import javafx.collections.ModifiableObservableListBase;
@@ -8,34 +10,19 @@ import javafx.collections.ObservableList;
 public class ModelShop extends ModifiableObservableListBase<fpt.com.Product> implements fpt.com.ProductList {
 
 	// TODO: Irgendwie muss produktListe noch mit der productList verknüpft werden
-	public ProductList produktliste;
-	private ObservableList<Product> productList = FXCollections.observableArrayList();
+	private ProductList produktliste;
+	
 
 	public ModelShop() {
 		produktliste = new ProductList();
 
-		// Beispielprodukte erzeugen
-		model.Product p1 = new model.Product("TestProdukt", 9.00, 2);
-		model.Product p2 = new model.Product("TestProdukt 2", 10.00, 2);
-		doAdd(0, p1);
-		doAdd(1, p2);
-		productList.addAll(p1, p2);
+	
 	}
 
-	// Produktliste an Controller übergeben
-	public ObservableList<Product> getProductList() {
-		return productList;
-	}
-
-	// TODO: zu Produktliste hinzufügen
-	public void addProduct(String productName, Double productPrice, Integer productQuantity) {
-		model.Product p = new model.Product(productName, productPrice, productQuantity);
-		productList.add(p);
-	}
 
 	@Override
 	protected void doAdd(int index, Product p) {
-		this.produktliste.add(index, p);
+		produktliste.add(index, p);
 	}
 
 	@Override
@@ -71,6 +58,20 @@ public class ModelShop extends ModifiableObservableListBase<fpt.com.Product> imp
 	@Override
 	public Product findProductByName(String name) {
 		return produktliste.findProductByName(name);
+	}
+
+	public ProductList getProduktliste() {
+		return produktliste;
+	}
+
+	public void setProduktliste(ProductList produktliste) {
+		this.produktliste = produktliste;
+	}
+
+
+	public ProductList getProductList() {
+		
+		return produktliste;
 	}
 
 }

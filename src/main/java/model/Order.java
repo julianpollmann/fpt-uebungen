@@ -11,23 +11,26 @@ public class Order extends ArrayList<Product> implements fpt.com.Order {
 
 	private int quantity;
 	private double sum;
-	private ArrayList<Product> produktListe; // brauchen wir die ueberhaupt?
 
-	@Override
-	public Iterator<Product> iterator() {
-		return this.iterator();
-	}
+//	UNNOETIG, da ueber Superklasse vererbt
 
-	@Override
-	public boolean add(Product p) {
-		boolean works = this.add(p);
-		if (works) {
-			this.quantity++;
-			this.sum += p.getPrice();
-		}
-		return works;
-	}
-
+//	private ArrayList<Product> produktListe;
+//
+//	@Override
+//	public Iterator<Product> iterator() {
+//		return this.iterator();
+//	}
+//
+//	@Override
+//	public boolean add(Product p) {
+//		boolean works = this.add(p);
+//		if (works) {
+//			this.quantity++;
+//			this.sum += p.getPrice();
+//		}
+//		return works;
+//	}
+//
 	@Override
 	public boolean delete(Product p) {
 		boolean works = this.remove(p);
@@ -37,11 +40,11 @@ public class Order extends ArrayList<Product> implements fpt.com.Order {
 		}
 		return works;
 	}
-
-	@Override
-	public int size() {
-		return this.size();
-	}
+//
+//	@Override
+//	public int size() {
+//		return this.size();
+//	}
 
 	@Override
 	public Product findProductById(long id) {
