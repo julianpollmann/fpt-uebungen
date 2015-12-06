@@ -12,15 +12,23 @@ public class Product implements fpt.com.Product {
 	private final SimpleDoubleProperty price;
 	private final SimpleIntegerProperty quantity;
 
-	public Product(String name, Double price, Integer quantity) {
+	public Product(Long id, String name, Double price, Integer quantity) {
 		this.name = new SimpleStringProperty();
 		this.price = new SimpleDoubleProperty();
 		this.quantity = new SimpleIntegerProperty();
 
-//		setId(0); TODO: ID Generator oder sowas?!
+		setId(id);
 		setName(name);
 		setPrice(price);
 		setQuantity(quantity);
+
+		System.out.println("++++++++++++++++++++++++");
+		System.out.println(id);
+		System.out.println(name);
+		System.out.println(price);
+		System.out.println(quantity);
+		System.out.println("++++++++++++++++++++++++");
+
 	}
 
 	@Override
@@ -77,5 +85,9 @@ public class Product implements fpt.com.Product {
 	public ObservableValue<Number> quantityProperty() {
 		return this.quantity;
 	}
+
+//	public long generateId() {
+//		return (long)idGen.generateId();
+//	}
 
 }

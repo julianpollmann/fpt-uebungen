@@ -20,10 +20,11 @@ public class AddButtonController implements EventHandler {
 	@Override
 	public void handle(Event arg0) {
 
+		long id = m.setId();
 		String name = v.getNameInput().getText();
 		double price = Double.parseDouble(v.getPriceInput().getText());
 		int quant = Integer.parseInt(v.getQuantityInput().getText());
-		Product target = new Product(name, price, quant);
+		Product target = new Product(id, name, price, quant);
 		m.add(target);
 
 
