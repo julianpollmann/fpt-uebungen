@@ -11,7 +11,7 @@ public class ControllerShop {
 
 		model.addListener(new ListChangeController(model,view));
 		view.getAddProd().addEventHandler(ActionEvent.ACTION, new AddButtonController(model,view));
-
+		view.getDelProd().addEventHandler(ActionEvent.ACTION, new RemoveButtonController(model,view));
 
 	}
 

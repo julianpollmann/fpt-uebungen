@@ -22,13 +22,6 @@ public class Product implements fpt.com.Product {
 		setPrice(price);
 		setQuantity(quantity);
 
-		System.out.println("++++++++++++++++++++++++");
-		System.out.println(id);
-		System.out.println(name);
-		System.out.println(price);
-		System.out.println(quantity);
-		System.out.println("++++++++++++++++++++++++");
-
 	}
 
 	@Override

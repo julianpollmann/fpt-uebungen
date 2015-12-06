@@ -106,8 +106,6 @@ public class ViewShop extends BorderPane {
 		prodQuantity.setCellValueFactory(cellData -> cellData.getValue().quantityProperty());
 
 		prodTable.getColumns().addAll(prodName, prodPrice, prodQuantity);
-		
-		System.out.println();
 	}
 
 	// Tabelle an Controller zurückgeben
