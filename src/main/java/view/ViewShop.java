@@ -4,24 +4,34 @@ import fpt.com.Product;
 import javafx.beans.property.SimpleStringProperty;
 
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
 public class ViewShop extends BorderPane {
 
 	private Label heading;
+	private Label stratto;
+	private ChoiceBox<String> strategy;
 	private Button addProd;
 	private Button delProd;
+	private Button laden;
+	private Button speichern;
 	private SimpleStringProperty addProdText;
 	private SimpleStringProperty delProdText;
+	private SimpleStringProperty ladenText;
+	private SimpleStringProperty speichernText;
 //	private ListView<String> products;
 	private VBox vbox;
+	private HBox hbox;
 	private Label nameLabel;
 	private TextField nameInput;
 	private Label priceLabel;
@@ -49,14 +59,49 @@ public class ViewShop extends BorderPane {
         priceString = "Preis";
         quantityString = "Anzahl";
 
+    	ChoiceBox<String> strategy = new ChoiceBox<>();
+
+		strategy.getItems().add("Binary-Serialisierung");
+		strategy.getItems().add("Java Beans XML-Serialisierung");
+		strategy.getItems().add("XStream XML-Serialisierung");
+
+		strategy.setValue("Binary-Serialisierung");
+
         setProductDetails();
 		setTableView();
+//		setSerialisierung();
 
 		setTop(heading);
+		setBottom(strategy);		//
 		setCenter(prodTable);
 		setRight(vbox);
 //		setBottom(stackp);
 	}
+
+//	private void setSerialisierung() {
+//
+//		ladenText = new SimpleStringProperty("Laden");
+//		speichernText = new SimpleStringProperty("Speichern");
+//
+//		stratto = new Label("Strategie:");
+//		laden = new Button("Laden");
+//	    speichern = new Button("Speichern");
+//
+//	    laden.textProperty().bind(ladenText);
+//	    laden.textProperty().bind(speichernText);
+//
+//		hbox = new HBox(4);
+//		hbox.getChildren().addAll(stratto, strategy, laden, speichern);
+//
+//	}
+
+
+//Zum Auslesen der gewählten Strategie - noch nicht aktiv
+//	private void stragieWahl(ChoiceBox<String> strategy) {
+//		String strategie = strategy.getValue();
+//		System.out.println(strategie);
+//	}
+
 
 	private void setProductDetails() {
 		// Textproperty für Buttons
