@@ -6,12 +6,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -29,6 +25,15 @@ public class ViewShop extends BorderPane {
 	private ComboBox<String> comboBox;
 	private Button loadStrat, safeStrat;
 	private ObservableList<String> strategies;
+	private Label stratto;
+	private ChoiceBox<String> strategy;
+	private Button laden;
+	private Button speichern;
+	private SimpleStringProperty ladenText;
+	private SimpleStringProperty speichernText;
+//	private ListView<String> products;
+	private Label stratLabel;
+//	private ComboBox combobox;
 
 	private String nameString, priceString, quantityString;
 
@@ -52,14 +57,52 @@ public class ViewShop extends BorderPane {
         setProductManagement();
 		setTableView();
 		setStrategyOptions();
+    	ChoiceBox<String> strategy = new ChoiceBox<>();
+
+		strategy.getItems().add("Binary-Serialisierung");
+		strategy.getItems().add("Java Beans XML-Serialisierung");
+		strategy.getItems().add("XStream XML-Serialisierung");
+
+		strategy.setValue("Binary-Serialisierung");
+
+		setTableView();
+//		setSerialisierung();
 
 		setTop(heading);
+		setBottom(strategy);		//
 		setCenter(prodTable);
 		setRight(vbox);
 		setBottom(hbox);
 	}
 
 	private void setProductManagement() {
+//	private void setSerialisierung() {
+//
+//		ladenText = new SimpleStringProperty("Laden");
+//		speichernText = new SimpleStringProperty("Speichern");
+//
+//		stratto = new Label("Strategie:");
+//		laden = new Button("Laden");
+//	    speichern = new Button("Speichern");
+//
+//	    laden.textProperty().bind(ladenText);
+//	    laden.textProperty().bind(speichernText);
+//
+//		hbox = new HBox(4);
+//		hbox.getChildren().addAll(stratto, strategy, laden, speichern);
+//
+//	}
+
+
+//Zum Auslesen der gewählten Strategie - noch nicht aktiv
+//	private void stragieWahl(ChoiceBox<String> strategy) {
+//		String strategie = strategy.getValue();
+//		System.out.println(strategie);
+//	}
+//
+//
+//	private void setProductDetails() {
+//>>>>>>> origin/master
 		// Textproperty für Buttons
 		addProdText = new SimpleStringProperty("Produkt hinzufügen");
 		delProdText = new SimpleStringProperty("Produkt löschen");
@@ -82,11 +125,12 @@ public class ViewShop extends BorderPane {
 		quantityLabel = new Label(quantityString);
 		quantityInput = new TextField();
 
+
 		// VBox erzeugen, stylen + Elemente zuweisen
 		vbox = new VBox(6);
 		vbox.setPrefWidth(200);
 		vbox.setPadding(new Insets(0, 10, 0, 10));
-		vbox.getChildren().addAll(nameLabel, nameInput, priceLabel, priceInput, quantityLabel, quantityInput, addProd, delProd);
+		vbox.getChildren().addAll(nameLabel, nameInput, priceLabel, priceInput, quantityLabel, quantityInput, addProd, delProd, stratLabel);
 	}
 
 	private void setTableView() {

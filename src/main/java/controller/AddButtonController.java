@@ -22,13 +22,13 @@ public class AddButtonController implements EventHandler {
 
 	@Override
 	public void handle(Event arg0) {
-		String name = v.getNameInput().getText();
-		double price = Double.parseDouble(v.getPriceInput().getText());
-		int quant = Integer.parseInt(v.getQuantityInput().getText());
-		long id;
 		try {
+			String name = v.getNameInput().getText();
+			double price = Double.parseDouble(v.getPriceInput().getText());
+			int quant = Integer.parseInt(v.getQuantityInput().getText());
+			long id;
 			id = model.IDGenerator.generateID(m.getProductList());
-			Product target = new Product(name, price, quant, id);
+			Product target = new Product(id, name, price, quant);
 			m.add(target);
 		} catch (Exception e) { //Falls IDs ueberschritten werden poppt ein Dialog auf
 			Alert alert = new Alert(AlertType.INFORMATION);

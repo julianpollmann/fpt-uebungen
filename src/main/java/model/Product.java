@@ -17,16 +17,22 @@ public class Product implements fpt.com.Product, Externalizable {
 	private final SimpleDoubleProperty price;
 	private final SimpleIntegerProperty quantity;
 
-	public Product(String name, Double price, Integer quantity, long id) {
+//<<<<<<< HEAD
+//	public Product(String name, Double price, Integer quantity, long id) {
+//=======
+	public Product(Long id, String name, Double price, Integer quantity) {
+//>>>>>>> origin/master
 		this.name = new SimpleStringProperty();
 		this.price = new SimpleDoubleProperty();
 		this.quantity = new SimpleIntegerProperty();
 		this.id = id;
 
+
+		setId(id);
 		setName(name);
 		setPrice(price);
 		setQuantity(quantity);
-		setId(id);
+
 	}
 
 	@Override
@@ -91,12 +97,17 @@ public class Product implements fpt.com.Product, Externalizable {
 		int quantity = extInput.readInt();
 		long id = extInput.readLong();
 
-		new Product(name, price, quantity, id);
+		new Product(id, name, price, quantity);
 	}
 
 	@Override
 	public void writeExternal(ObjectOutput out) throws IOException {
 		out.writeObject(this);
 	}
+//=======
+////	public long generateId() {
+////		return (long)idGen.generateId();
+////	}
+//>>>>>>> origin/master
 
 }
