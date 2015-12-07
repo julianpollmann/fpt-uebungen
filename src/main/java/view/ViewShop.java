@@ -15,33 +15,20 @@ import javafx.scene.text.Font;
 
 public class ViewShop extends BorderPane {
 
-	private Label heading;
-	private Button addProd, delProd;
-	private SimpleStringProperty addProdText, delProdText;
-	private VBox vbox;
-	private Label nameLabel, priceLabel, quantityLabel;
-	private TextField nameInput, priceInput, quantityInput;
+	private Label heading, nameLabel, priceLabel, quantityLabel, stratto, stratLabel;
+	private Button addProd, delProd, loadStrat, safeStrat, laden, speichern;
+	private SimpleStringProperty addProdText, delProdText, ladenText, speichernText;
 	private HBox hbox;
-	private ComboBox<String> comboBox;
-	private Button loadStrat, safeStrat;
+	private VBox vbox;
+	private TextField nameInput, priceInput, quantityInput;
 	private ObservableList<String> strategies;
-	private Label stratto;
 	private ChoiceBox<String> strategy;
-	private Button laden;
-	private Button speichern;
-	private SimpleStringProperty ladenText;
-	private SimpleStringProperty speichernText;
-//	private ListView<String> products;
-	private Label stratLabel;
-//	private ComboBox combobox;
-
 	private String nameString, priceString, quantityString;
 
 //	private ListView<String> products;
 	private TableView<Product> prodTable;
 	private TableColumn<Product, String> prodName;
-	private TableColumn<Product, Number> prodPrice;
-	private TableColumn<Product, Number> prodQuantity;
+	private TableColumn<Product, Number> prodPrice, prodQuantity;
 
 	public ViewShop() {
 
