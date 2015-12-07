@@ -15,8 +15,8 @@ import javafx.scene.text.Font;
 
 public class ViewShop extends BorderPane {
 
-	private Label heading, nameLabel, priceLabel, quantityLabel, stratto, stratLabel;
-	private Button addProd, delProd, loadStrat, safeStrat, laden, speichern;
+	private Label heading, nameLabel, priceLabel, quantityLabel, stratLabel;
+	private Button addProd, delProd, loadStrat, safeStrat, loadXML, saveXML;
 	private SimpleStringProperty addProdText, delProdText, ladenText, speichernText;
 	private HBox hbox;
 	private VBox vbox;
@@ -43,53 +43,45 @@ public class ViewShop extends BorderPane {
 
         setProductManagement();
 		setTableView();
-		setStrategyOptions();
-    	ChoiceBox<String> strategy = new ChoiceBox<>();
-
-		strategy.getItems().add("Binary-Serialisierung");
-		strategy.getItems().add("Java Beans XML-Serialisierung");
-		strategy.getItems().add("XStream XML-Serialisierung");
-
-		strategy.setValue("Binary-Serialisierung");
-
-		setTableView();
-//		setSerialisierung();
+		setSerialization();
 
 		setTop(heading);
-		setBottom(strategy);		//
 		setCenter(prodTable);
 		setRight(vbox);
 		setBottom(hbox);
 	}
 
+	private void setSerialization() {
+
+		strategies = FXCollections.observableArrayList();
+		strategies.addAll(
+				"Binäre Serialisierung",
+				"XML Serialisierung mit Beans",
+				"XStream-Serialisierung");
+		strategy = new ChoiceBox<>(strategies);
+		strategy.setValue("Binäre Serialisierung");
+
+		ladenText = new SimpleStringProperty("Laden");
+		speichernText = new SimpleStringProperty("Speichern");
+
+		stratLabel = new Label("Strategie:");
+		loadXML = new Button("Laden");
+	    saveXML = new Button("Speichern");
+
+	    loadXML.textProperty().bind(ladenText);
+	    saveXML.textProperty().bind(speichernText);
+
+		hbox = new HBox(4);
+		hbox.setPadding(new Insets(10, 10, 10, 10));
+		hbox.getChildren().addAll(stratLabel, strategy, loadXML, saveXML);
+	}
+
+	// TODO: Rückgabewert anpassen
+	public String getStrategy() {
+		return strategy.getValue();
+	}
+
 	private void setProductManagement() {
-//	private void setSerialisierung() {
-//
-//		ladenText = new SimpleStringProperty("Laden");
-//		speichernText = new SimpleStringProperty("Speichern");
-//
-//		stratto = new Label("Strategie:");
-//		laden = new Button("Laden");
-//	    speichern = new Button("Speichern");
-//
-//	    laden.textProperty().bind(ladenText);
-//	    laden.textProperty().bind(speichernText);
-//
-//		hbox = new HBox(4);
-//		hbox.getChildren().addAll(stratto, strategy, laden, speichern);
-//
-//	}
-
-
-//Zum Auslesen der gewählten Strategie - noch nicht aktiv
-//	private void stragieWahl(ChoiceBox<String> strategy) {
-//		String strategie = strategy.getValue();
-//		System.out.println(strategie);
-//	}
-//
-//
-//	private void setProductDetails() {
-//>>>>>>> origin/master
 		// Textproperty für Buttons
 		addProdText = new SimpleStringProperty("Produkt hinzufügen");
 		delProdText = new SimpleStringProperty("Produkt löschen");
@@ -138,26 +130,6 @@ public class ViewShop extends BorderPane {
 		prodQuantity.setCellValueFactory(cellData -> cellData.getValue().quantityProperty());
 
 		prodTable.getColumns().addAll(prodName, prodPrice, prodQuantity);
-	}
-
-	//Die Fusszeile mit den Serialisierungs-Strategien
-	private void setStrategyOptions() {
-		hbox = new HBox(10);
-		hbox.setPadding(new Insets(10, 10, 10, 10));
-		hbox.setAlignment(Pos.BASELINE_CENTER);
-
-		strategies = FXCollections.observableArrayList();
-		strategies.addAll(
-				"Binäre Serialisierung",
-				"XML Serialisierung mit Beans",
-				"XStream-Serialisierung");
-		comboBox = new ComboBox<>();
-		comboBox.setItems(strategies);
-
-		loadStrat = new Button("laden");
-		safeStrat = new Button("speichern");
-
-		hbox.getChildren().addAll(comboBox, loadStrat, safeStrat);
 	}
 
 	// Tabelle an Controller zurückgeben
