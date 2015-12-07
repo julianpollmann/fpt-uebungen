@@ -1,6 +1,7 @@
 /build/
 /bin/
-/target/
+*/target/**
+
 
 *.launch
 .project
