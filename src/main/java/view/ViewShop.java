@@ -130,7 +130,7 @@ public class ViewShop extends BorderPane {
 		vbox = new VBox(6);
 		vbox.setPrefWidth(200);
 		vbox.setPadding(new Insets(0, 10, 0, 10));
-		vbox.getChildren().addAll(nameLabel, nameInput, priceLabel, priceInput, quantityLabel, quantityInput, addProd, delProd, stratLabel);
+		vbox.getChildren().addAll(nameLabel, nameInput, priceLabel, priceInput, quantityLabel, quantityInput, addProd, delProd);
 	}
 
 	private void setTableView() {

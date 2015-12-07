@@ -14,7 +14,7 @@ public class ControllerShop {
 		view.getDelProd().addEventHandler(ActionEvent.ACTION, new RemoveButtonController(model,view));
 
 		// TODO: Fall abfangen welche Strategie
-		//view.getStrategy().getValue();
+//		view.getStrategy().getValue();
 	}
 
 }

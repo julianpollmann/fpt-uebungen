@@ -1,6 +1,7 @@
 /build/
 /bin/
-/target/
+*/target/**
+
 
 *.launch
 .project
@@ -24,3 +25,4 @@ local.properties
 hs_err_pid*
 .classpath
 *.class
+/target/
