@@ -4,14 +4,14 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
-public class Product implements fpt.com.Product, Serializable {
+public class Product implements fpt.com.Product, Externalizable {
 
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 101L;
 	private final long id;
 	private final SimpleStringProperty name;
 	private final SimpleDoubleProperty price;
@@ -82,6 +82,21 @@ public class Product implements fpt.com.Product, Serializable {
 	@Override
 	public ObservableValue<Number> quantityProperty() {
 		return this.quantity;
+	}
+
+	@Override	//Hier fehlt noch die direkte Zuweisung
+	public void readExternal(ObjectInput extInput) throws IOException, ClassNotFoundException {
+		String name = (String) extInput.readObject();
+		double price = extInput.readDouble();
+		int quantity = extInput.readInt();
+		long id = extInput.readLong();
+
+		new Product(name, price, quantity, id);
+	}
+
+	@Override
+	public void writeExternal(ObjectOutput out) throws IOException {
+		out.writeObject(this);
 	}
 
 }

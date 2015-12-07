@@ -2,6 +2,9 @@ package controller;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TextField;
 import model.IDGenerator;
 import model.ModelShop;
 import model.Product;
@@ -22,9 +25,21 @@ public class AddButtonController implements EventHandler {
 		String name = v.getNameInput().getText();
 		double price = Double.parseDouble(v.getPriceInput().getText());
 		int quant = Integer.parseInt(v.getQuantityInput().getText());
-		long id = model.IDGenerator.generateID(m.getProductList());
-		Product target = new Product(name, price, quant, id);
-		m.add(target);
+		long id;
+		try {
+			id = model.IDGenerator.generateID(m.getProductList());
+			Product target = new Product(name, price, quant, id);
+			m.add(target);
+		} catch (Exception e) { //Falls IDs ueberschritten werden poppt ein Dialog auf
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("ID Overflow-Warnung");
+			alert.setHeaderText(null);
+			alert.setContentText("Eintrag nicht möglich! Es wurden bereits sämtliche IDs vergeben.");
+			alert.showAndWait();
+		}
+		v.getNameInput().setText("");
+		v.getPriceInput().setText("");
+		v.getQuantityInput().setText("");
 	}
 
 }

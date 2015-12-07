@@ -2,14 +2,14 @@ package model;
 
 public class IDGenerator {
 
-	private static long id;
-
-	public static long generateID(ProductList pList){
-		id = (long) (Math.random()*1000000);
-		while (pList.findProductById(id) != null) {
-			id = (long) (Math.random()*1000000);
+	public static long generateID(ProductList pList) throws Exception {
+		for (int i=1; i<1000000; i++) {
+			if (pList.findProductById(i) == null) {
+				System.out.print(" " +i);
+				return i;
+			}
 		}
-		return id;
+		throw new Exception("ID Overflow");
 	}
 
 }

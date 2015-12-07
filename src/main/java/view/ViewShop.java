@@ -2,35 +2,35 @@ package view;
 
 import fpt.com.Product;
 import javafx.beans.property.SimpleStringProperty;
-
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
 public class ViewShop extends BorderPane {
 
 	private Label heading;
-	private Button addProd;
-	private Button delProd;
-	private SimpleStringProperty addProdText;
-	private SimpleStringProperty delProdText;
+	private Button addProd, delProd;
+	private SimpleStringProperty addProdText, delProdText;
 	private VBox vbox;
-	private Label nameLabel;
-	private TextField nameInput;
-	private Label priceLabel;
-	private TextField priceInput;
-	private Label quantityLabel;
-	private TextField quantityInput;
+	private Label nameLabel, priceLabel, quantityLabel;
+	private TextField nameInput, priceInput, quantityInput;
+	private HBox hbox;
+	private ComboBox<String> comboBox;
+	private Button loadStrat, safeStrat;
+	private ObservableList<String> strategies;
 
-	private String nameString;
-	private String priceString;
-	private String quantityString;
+	private String nameString, priceString, quantityString;
 
 //	private ListView<String> products;
 	private TableView<Product> prodTable;
@@ -49,16 +49,17 @@ public class ViewShop extends BorderPane {
         priceString = "Preis";
         quantityString = "Anzahl";
 
-        setProductDetails();
+        setProductManagement();
 		setTableView();
+		setStrategyOptions();
 
 		setTop(heading);
 		setCenter(prodTable);
 		setRight(vbox);
-//		setBottom(stackp);
+		setBottom(hbox);
 	}
 
-	private void setProductDetails() {
+	private void setProductManagement() {
 		// Textproperty für Buttons
 		addProdText = new SimpleStringProperty("Produkt hinzufügen");
 		delProdText = new SimpleStringProperty("Produkt löschen");
@@ -106,6 +107,26 @@ public class ViewShop extends BorderPane {
 		prodQuantity.setCellValueFactory(cellData -> cellData.getValue().quantityProperty());
 
 		prodTable.getColumns().addAll(prodName, prodPrice, prodQuantity);
+	}
+
+	//Die Fusszeile mit den Serialisierungs-Strategien
+	private void setStrategyOptions() {
+		hbox = new HBox(10);
+		hbox.setPadding(new Insets(10, 10, 10, 10));
+		hbox.setAlignment(Pos.BASELINE_CENTER);
+
+		strategies = FXCollections.observableArrayList();
+		strategies.addAll(
+				"Binäre Serialisierung",
+				"XML Serialisierung mit Beans",
+				"XStream-Serialisierung");
+		comboBox = new ComboBox<>();
+		comboBox.setItems(strategies);
+
+		loadStrat = new Button("laden");
+		safeStrat = new Button("speichern");
+
+		hbox.getChildren().addAll(comboBox, loadStrat, safeStrat);
 	}
 
 	// Tabelle an Controller zurückgeben
