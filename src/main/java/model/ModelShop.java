@@ -9,69 +9,62 @@ import javafx.collections.ObservableList;
 
 public class ModelShop extends ModifiableObservableListBase<fpt.com.Product> implements fpt.com.ProductList {
 
-	// TODO: Irgendwie muss produktListe noch mit der productList verknüpft werden
-	private ProductList produktliste;
-	
+	// TODO: Irgendwie muss productList noch mit der productList verknüpft werden
+	private ProductList productList;
+
 
 	public ModelShop() {
-		produktliste = new ProductList();
+		productList = new ProductList();
 
-	
 	}
 
 
 	@Override
 	protected void doAdd(int index, Product p) {
-		produktliste.add(index, p);
+		productList.add(index, p);
 	}
 
 	@Override
 	protected Product doRemove(int index) {
-		return produktliste.remove(index);
+		return productList.remove(index);
 	}
 
 	@Override
 	protected Product doSet(int index, Product p) {
-		return produktliste.set(index, p);
+		return productList.set(index, p);
 	}
 
 	@Override
 	public Product get(int index) {
-		return produktliste.get(index);
+		return productList.get(index);
 	}
 
 	@Override
 	public int size() {
-		return produktliste.size();
+		return productList.size();
 	}
 
 	@Override
 	public boolean delete(Product p) {
-		return produktliste.delete(p);
+		return productList.delete(p);
 	}
 
 	@Override
 	public Product findProductById(long id) {
-		return produktliste.findProductById(id);
+		return productList.findProductById(id);
 	}
 
 	@Override
 	public Product findProductByName(String name) {
-		return produktliste.findProductByName(name);
+		return productList.findProductByName(name);
 	}
-
-	public ProductList getProduktliste() {
-		return produktliste;
-	}
-
-	public void setProduktliste(ProductList produktliste) {
-		this.produktliste = produktliste;
-	}
-
 
 	public ProductList getProductList() {
-		
-		return produktliste;
+		return productList;
+	}
+
+	public void setProductList(ProductList productList) {
+		this.productList = productList;
 	}
 
 }

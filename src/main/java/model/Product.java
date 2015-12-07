@@ -4,23 +4,29 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
+import java.io.Serializable;
 
-public class Product implements fpt.com.Product {
+public class Product implements fpt.com.Product, Serializable {
 
-	private long id;
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
+	private final long id;
 	private final SimpleStringProperty name;
 	private final SimpleDoubleProperty price;
 	private final SimpleIntegerProperty quantity;
 
-	public Product(String name, Double price, Integer quantity) {
+	public Product(String name, Double price, Integer quantity, long id) {
 		this.name = new SimpleStringProperty();
 		this.price = new SimpleDoubleProperty();
 		this.quantity = new SimpleIntegerProperty();
+		this.id = id;
 
-//		setId(0); TODO: ID Generator oder sowas?!
 		setName(name);
 		setPrice(price);
 		setQuantity(quantity);
+		setId(id);
 	}
 
 	@Override
@@ -30,7 +36,7 @@ public class Product implements fpt.com.Product {
 
 	@Override
 	public void setId(long id) {
-		this.id = id;
+//		this.id = id;
 	}
 
 	@Override

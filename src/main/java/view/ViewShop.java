@@ -20,7 +20,6 @@ public class ViewShop extends BorderPane {
 	private Button delProd;
 	private SimpleStringProperty addProdText;
 	private SimpleStringProperty delProdText;
-//	private ListView<String> products;
 	private VBox vbox;
 	private Label nameLabel;
 	private TextField nameInput;
@@ -33,6 +32,7 @@ public class ViewShop extends BorderPane {
 	private String priceString;
 	private String quantityString;
 
+//	private ListView<String> products;
 	private TableView<Product> prodTable;
 	private TableColumn<Product, String> prodName;
 	private TableColumn<Product, Number> prodPrice;
