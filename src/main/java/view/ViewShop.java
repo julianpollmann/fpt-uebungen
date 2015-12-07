@@ -2,8 +2,10 @@ package view;
 
 import fpt.com.Product;
 import javafx.beans.property.SimpleStringProperty;
-
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+<<<<<<< HEAD
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -11,6 +13,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+=======
+import javafx.scene.control.*;
+>>>>>>> origin/master
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -38,6 +43,10 @@ public class ViewShop extends BorderPane {
 	private TextField priceInput;
 	private Label quantityLabel;
 	private TextField quantityInput;
+	private Label stratLabel;
+	private ComboBox combobox;
+	private ObservableList<String> strategies;
+	private Separator separator;
 
 	private String nameString;
 	private String priceString;
@@ -126,11 +135,20 @@ public class ViewShop extends BorderPane {
 		quantityLabel = new Label(quantityString);
 		quantityInput = new TextField();
 
+		separator = new Separator();
+		stratLabel = new Label("Serialisierungsstrategien");
+		strategies = FXCollections.observableArrayList(
+				"Binäre Serialiserung",
+				"Java Beans",
+				"XStream");
+		combobox = new ComboBox(strategies);
+		combobox.setValue("Binäre Serialiserung");
+
 		// VBox erzeugen, stylen + Elemente zuweisen
 		vbox = new VBox(6);
 		vbox.setPrefWidth(200);
 		vbox.setPadding(new Insets(0, 10, 0, 10));
-		vbox.getChildren().addAll(nameLabel, nameInput, priceLabel, priceInput, quantityLabel, quantityInput, addProd, delProd);
+		vbox.getChildren().addAll(nameLabel, nameInput, priceLabel, priceInput, quantityLabel, quantityInput, addProd, delProd, separator, stratLabel, combobox);
 	}
 
 	private void setTableView() {
@@ -201,6 +219,10 @@ public class ViewShop extends BorderPane {
 
 	public void setQuantityInput(TextField quantityInput) {
 		this.quantityInput = quantityInput;
+	}
+
+	public ComboBox getStrategy() {
+		return combobox;
 	}
 
 	// Für Verwendung des ListViews
