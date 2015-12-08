@@ -64,7 +64,7 @@ public class ViewShop extends BorderPane {
 		ladenText = new SimpleStringProperty("Laden");
 		speichernText = new SimpleStringProperty("Speichern");
 
-		stratLabel = new Label("Strategie:");
+		stratLabel = new Label("Strategie: ");
 		loadXML = new Button("Laden");
 	    saveXML = new Button("Speichern");
 
@@ -73,6 +73,7 @@ public class ViewShop extends BorderPane {
 
 		hbox = new HBox(4);
 		hbox.setPadding(new Insets(10, 10, 10, 10));
+		hbox.setAlignment(Pos.CENTER_LEFT);
 		hbox.getChildren().addAll(stratLabel, strategy, loadXML, saveXML);
 	}
 
