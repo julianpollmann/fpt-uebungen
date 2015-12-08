@@ -81,6 +81,14 @@ public class ViewShop extends BorderPane {
 		return strategy.getValue();
 	}
 
+	public Button getSaveXML() {
+		return saveXML;
+	}
+
+	public Button getLoadXML() {
+		return loadXML;
+	}
+
 	private void setProductManagement() {
 		// Textproperty für Buttons
 		addProdText = new SimpleStringProperty("Produkt hinzufügen");

@@ -52,4 +52,10 @@ public class XStreamStrategy implements SerializableStrategy {
 
 	}
 
+	@Override
+	public XStream createXStream(Class<? extends Product> clazz) {
+		// TODO Auto-generated method stub
+		return SerializableStrategy.super.createXStream(clazz);
+	}
+
 }
