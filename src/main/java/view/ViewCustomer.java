@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -13,15 +14,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
 
 public class ViewCustomer extends BorderPane {
 
 	private Label heading;
-	private Button addProd;
-	private Button history;
-	private SimpleStringProperty addProdText;
-	private SimpleStringProperty historyText;
+	private Button addProd, history;
 //	private ListView<String> products;
 	private VBox vbox;
 	private Label nameLabel;
@@ -39,6 +38,8 @@ public class ViewCustomer extends BorderPane {
 	private TableColumn<Product, String> prodName;
 	private TableColumn<Product, Number> prodPrice;
 	private TableColumn<Product, Number> prodQuantity;
+	ViewHistory view3;
+
 
 	public ViewCustomer() {
 
@@ -61,15 +62,19 @@ public class ViewCustomer extends BorderPane {
 	}
 
 	private void setProductDetails() {
-		// Textproperty für Buttons
-		addProdText = new SimpleStringProperty("In Warenkorb legen");
-		historyText = new SimpleStringProperty("Vorherige Bestellungen");
 
 		// Buttons erzeugen + binden
-		addProd = new Button();
-		history = new Button();
-		addProd.textProperty().bind(addProdText);
-		history.textProperty().bind(historyText);
+		addProd = new Button("In Warenkorb legen");
+		history = new Button("Vorherige Bestellungen");
+		history.setOnAction(e -> {
+			view3 = new ViewHistory();
+			Stage stage3 = new Stage();
+			Scene scene3 = new Scene(view3, 800, 800);
+			stage3.setTitle("Vorherige Bestellungen");
+			stage3.setScene(scene3);
+			stage3.show();
+
+		});
 
 		// Name Label + Textfeld
 		nameLabel = new Label(nameString);

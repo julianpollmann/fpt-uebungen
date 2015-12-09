@@ -46,14 +46,6 @@ public class Main extends Application {
 			stage2.show();
 
 			// Historyview in drittem Fenster - soll sich nachher erst auf Buttondruck öffnen
-			view3 = new ViewHistory();
-
-			Stage stage3 = new Stage();
-			Scene scene3 = new Scene(view3, 800, 800);
-			stage3.setTitle("Vorherige Bestellungen");
-			stage3.setScene(scene3);
-			stage3.show();
-
 
 		} catch(Exception e) {
 			e.printStackTrace();
