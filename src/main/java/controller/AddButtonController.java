@@ -27,14 +27,15 @@ public class AddButtonController implements EventHandler {
 			double price = Double.parseDouble(v.getPriceInput().getText());
 			int quant = Integer.parseInt(v.getQuantityInput().getText());
 			long id;
-			id = model.IDGenerator.generateID(m.getProductList());
+			id = IDGenerator.generateID(m.getProductList());
 			Product target = new Product(id, name, price, quant);
 			m.add(target);
 		} catch (Exception e) { //Falls IDs ueberschritten werden poppt ein Dialog auf
+			String msg = e.getMessage();
 			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("ID Overflow-Warnung");
+			alert.setTitle("Fehler");
 			alert.setHeaderText(null);
-			alert.setContentText("Eintrag nicht möglich! Es wurden bereits sämtliche IDs vergeben.");
+			alert.setContentText(msg);
 			alert.showAndWait();
 		}
 		v.getNameInput().setText("");
