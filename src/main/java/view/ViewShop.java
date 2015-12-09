@@ -12,6 +12,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import exceptions.InputException;
 
 public class ViewShop extends BorderPane {
 
@@ -167,24 +168,33 @@ public class ViewShop extends BorderPane {
 		this.delProd = delProd;
 	}
 
-	public TextField getNameInput() {
-		return nameInput;
+	public TextField getNameInput() throws InputException {
+		if(nameInput.getText() != null && ! nameInput.getText().trim().isEmpty()) {
+			return nameInput;
+		}
+		throw new InputException("Bitte gib einen Produktnamen an!");
 	}
 
 	public void setNameInput(TextField nameInput) {
 		this.nameInput = nameInput;
 	}
 
-	public TextField getPriceInput() {
-		return priceInput;
+	public Double getPriceInput() throws InputException {
+		if(priceInput.getText() != null && ! priceInput.getText().trim().isEmpty()) {
+			return Double.parseDouble(priceInput.getText());
+		}
+		throw new InputException("Bitte gib einen Preis an!");
 	}
 
 	public void setPriceInput(TextField priceInput) {
 		this.priceInput = priceInput;
 	}
 
-	public TextField getQuantityInput() {
-		return quantityInput;
+	public Integer getQuantityInput() throws InputException {
+		if(quantityInput.getText() != null && ! quantityInput.getText().trim().isEmpty()) {
+			return Integer.parseInt(quantityInput.getText());
+		}
+		throw new InputException("Bitte gib eine Anzahl an!");
 	}
 
 	public void setQuantityInput(TextField quantityInput) {

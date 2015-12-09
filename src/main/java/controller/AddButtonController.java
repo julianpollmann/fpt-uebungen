@@ -12,23 +12,33 @@ import view.ViewShop;
 
 public class AddButtonController implements EventHandler {
 
-	ModelShop m;
-	ViewShop v;
+	private ModelShop m;
+	private ViewShop v;
+	private String name, msg;
+	private double price;
+	private int quant;
+	private long id;
+	private Product target;
 
 	public AddButtonController(ModelShop model, ViewShop view) {
 		this.m = model;
 		this.v = view;
+
+		this.name = new String();
+		this.price = 0;
+		this.quant = 0;
+		this.id = 0;
+		Product target = null;
 	}
 
 	@Override
 	public void handle(Event arg0) {
 		try {
-			String name = v.getNameInput().getText();
-			double price = Double.parseDouble(v.getPriceInput().getText());
-			int quant = Integer.parseInt(v.getQuantityInput().getText());
-			long id;
+			name = v.getNameInput().getText();
+			price = v.getPriceInput();
+			quant = v.getQuantityInput();
 			id = IDGenerator.generateID(m.getProductList());
-			Product target = new Product(id, name, price, quant);
+			target = new Product(id, name, price, quant);
 			m.add(target);
 		} catch (Exception e) { //Falls IDs ueberschritten werden poppt ein Dialog auf
 			String msg = e.getMessage();
@@ -38,9 +48,6 @@ public class AddButtonController implements EventHandler {
 			alert.setContentText(msg);
 			alert.showAndWait();
 		}
-		v.getNameInput().setText("");
-		v.getPriceInput().setText("");
-		v.getQuantityInput().setText("");
 	}
 
 }
