@@ -4,14 +4,22 @@ import java.io.IOException;
 
 import fpt.com.SerializableStrategy;
 
+
 public class SerializationStrategy {
 
 	private SerializableStrategy strategy;
 
+	/*
+	 * Basisstrategieklasse
+	 * Strategie wird als Parameter übergeben
+	 */
 	public SerializationStrategy(SerializableStrategy strategy) {
 		this.strategy = strategy;
 	}
 
+	/*
+	 * Ändere Strategie, z.B. zur Laufzeit
+	 */
 	public void setStrategy(SerializableStrategy strategy) {
 		this.strategy = strategy;
 	}

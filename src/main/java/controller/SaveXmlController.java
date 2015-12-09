@@ -11,8 +11,8 @@ import view.ViewShop;
 
 public class SaveXmlController implements EventHandler {
 
-	ModelShop model;
-	ViewShop view;
+	private ModelShop model;
+	private ViewShop view;
 
 	private String strategy;
 	private SerializationStrategy serialization;
@@ -22,29 +22,36 @@ public class SaveXmlController implements EventHandler {
 		this.view = view;
 	}
 
+	/*
+	 * Holt Strategie als String aus dem View
+	 * Prüft durch switch/case, welche Strategie gewählt wurde
+	 * TODO: Refaktorisieren mit ObservableArrayList oder Index, nicht String
+	 */
 	@Override
 	public void handle(Event arg0) {
-		// TODO: Refaktorisieren mit ObservableArrayList?!
 		strategy = view.getStrategy();
 		switch(strategy) {
 			case "Binäre Serialisierung":
 				serialization = new SerializationStrategy(new BinaryStrategy());
 				try {
-					serialization.executeReadStrategy();
+					serialization.executeWriteStrategy();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				break;
 			case "XML Serialisierung mit Beans":
-//				serialization = new SerializationStrategy(new XMLStrategy());
+				serialization = new SerializationStrategy(new XMLStrategy());
+				try {
+					serialization.executeWriteStrategy();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 				break;
 			case "XStream-Serialisierung":
 				serialization = new SerializationStrategy(new XStreamStrategy());
 				try {
-					serialization.executeReadStrategy();
+					serialization.executeWriteStrategy();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				break;
