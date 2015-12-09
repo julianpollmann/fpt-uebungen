@@ -1,6 +1,5 @@
 package model;
 
-import java.util.ArrayList;
 import exceptions.IdOverflowException;
 
 public class IDGenerator {
