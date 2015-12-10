@@ -46,11 +46,14 @@ public class SaveController implements EventHandler {
 				break;
 		}
         try {
-       		// Model nutzen + alle Produkte serialisieren
-       		ProductList productList = model.getProductList();
+        	for (int i = 0; i < model.getProductList().size(); i++) {
+        		// Model nutzen + alle Produkte serialisieren
+//         		Product target = (Product) view.getProductTable().getItems().get(i);
+        		ProductList productList = model.getProductList();
 
-        	for (Product product: productList) {
-        		serialization[x].executeWriteStrategy(product);
+        		for (Product product: productList) {
+        			serialization[x].executeWriteStrategy(product);
+        		}
         	}
 		} catch (IOException e) {
 			e.printStackTrace();

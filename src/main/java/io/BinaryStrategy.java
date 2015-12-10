@@ -7,8 +7,8 @@ import fpt.com.SerializableStrategy;
 
 public class BinaryStrategy implements SerializableStrategy {
 
-//	ObjectInputStream ois;
-//	ObjectOutputStream oos;
+	ObjectInputStream ois;
+	ObjectOutputStream oos;
 
 	@Override
 	public Product readObject() throws IOException {
@@ -17,8 +17,6 @@ public class BinaryStrategy implements SerializableStrategy {
 				ObjectInputStream is = new ObjectInputStream(fi))
 		{
 			readProduct = (Product) is.readObject();
-			is.close();
-			fi.close();
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
 		}
@@ -33,8 +31,6 @@ public class BinaryStrategy implements SerializableStrategy {
 			os.writeObject(obj);
 			System.out.println(obj.getName() +" wird serialisiert.");
 			os.flush();
-			os.close();
-			fs.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
