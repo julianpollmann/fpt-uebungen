@@ -19,6 +19,7 @@ public class SaveController implements EventHandler {
     private int x;
 	Product product;
 	ProductList productList;
+	private String path;
 
 	public SaveController(ModelShop model, ViewShop view) {
 		this.model = model;
@@ -37,24 +38,29 @@ public class SaveController implements EventHandler {
 		switch(view.getStrategy()) {
 			case "Binäre Serialisierung":
 				x = 0;
+				path = "ProdukteBinaer.ser";
 				break;
 			case "XML Serialisierung mit Beans":
 				x = 1;
+				path = "products.xml";
 				break;
 			case "XStream-Serialisierung":
 				x = 2;
+				path = "produktliste.xml";
 				break;
 		}
         try {
-        	for (int i = 0; i < model.getProductList().size(); i++) {
-        		// Model nutzen + alle Produkte serialisieren
-//         		Product target = (Product) view.getProductTable().getItems().get(i);
+//        	for (int i = 0; i < model.getProductList().size(); i++) {
+//        		// Model nutzen + alle Produkte serialisieren
+////         		Product target = (Product) view.getProductTable().getItems().get(i);
         		ProductList productList = model.getProductList();
 
-        		for (Product product: productList) {
-        			serialization[x].executeWriteStrategy(product);
-        		}
-        	}
+        		serialization[x].executeWriteStrategy(productList, path);
+//        		for (Product product: productList) {
+//        			System.out.println(product.getName());
+//
+//        		}
+//        	}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

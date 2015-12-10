@@ -13,16 +13,19 @@ public class XStreamStrategy implements SerializableStrategy {
 
 	private XStream xstream;
 	private ProductList productList;
+	private Product product;
 
 	public XStreamStrategy() {
-		xstream = new XStream(new DomDriver());
+//		xstream = new XStream(new DomDriver());
+//		xstream.alias("product", Product.class);
 	}
 
 	@Override
 	public Product readObject() throws IOException {
 
 		try(FileReader fr = new FileReader("produktliste.xml")) {
-			readObject = xstream.fromXML(fr);
+			product = (Product) xstream.fromXML(fr);
+			return product;
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -33,8 +36,16 @@ public class XStreamStrategy implements SerializableStrategy {
 	@Override
 	public void writeObject(Product obj) throws IOException {
 
+		System.out.println("++++++++++++++++++++++++++++");
+		System.out.println(obj.getName());
+
+//		this.product = obj;
+//		System.out.println(product.getName());
+		xstream.aliasField("waren", Product.class, "size");
+
+
 		try (FileWriter fw = new FileWriter("produktliste.xml")){
-			xstream.toXML(p1, fw);
+			xstream.toXML(obj, fw);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -48,14 +59,17 @@ public class XStreamStrategy implements SerializableStrategy {
 
 	@Override
 	public void open(InputStream input, OutputStream output) throws IOException {
-		// TODO Auto-generated method stub
-
+		createXStream(model.Product.class);
+		
 	}
 
 	@Override
 	public XStream createXStream(Class<? extends Product> clazz) {
-		// TODO Auto-generated method stub
 		return SerializableStrategy.super.createXStream(clazz);
 	}
+
+//	private String formatXml() {
+//		return String token;
+//	}
 
 }

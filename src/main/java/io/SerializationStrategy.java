@@ -1,6 +1,9 @@
 package io;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Path;
 
 import fpt.com.Product;
 import fpt.com.ProductList;
@@ -19,6 +22,7 @@ public class SerializationStrategy {
 	 */
 	public SerializationStrategy(SerializableStrategy strategy) {
 		this.strategy = strategy;
+		productList = new model.ProductList();
 	}
 
 	/*
@@ -32,25 +36,74 @@ public class SerializationStrategy {
 		return strategy;
 	}
 
-	public ProductList executeReadStrategy() throws IOException {
+	public ProductList executeReadStrategy(String path) throws IOException {
 		if(this.strategy != null) {
-			this.strategy.open();
-			product = this.strategy.readObject();
+			this.strategy.open(path);
+
+//			for(int x = 0; x < strategy.; x++){
+//
+//				product = this.strategy.readObject();
+//				productList.add(product);
+//			}
+
+
+//			if(this.strategy.readObject() == null) {
+//				 test = false;
+//			}
+			while(true) {
+
+				System.out.println("+++++++++++");
+				try  {
+				productList.add(this.strategy.readObject());
+				} catch (ArrayIndexOutOfBoundsException e){
+					break;
+
+				}
+//				if(this.strategy.readObject() == null) {
+//					 test = false;
+//				}
+
+			}
+
+			productList.size();
+
+//
+//			if(product == null) {
+//				return productList;
+//			}
+
+			System.out.println(productList.size());
+
+
+
+
+//			do{
+//				product = this.strategy.readObject();
+//				System.out.println("++++++++++++++++++++++++++++++++");
+//				System.out.println(product.getName());
+//				productList.add(product);
+//			} while(product != null);
+//			System.out.println(productList.size());
+
+
 			this.strategy.close();
 
-    		for (Product product: productList) {
-    			productList.add(product);
-    		}
+//    		for (Product product : productList) {
+//    			productList.add(product);
+//    		}
 
 			return productList;
 		}
 		return null;
 	}
 
-	public void executeWriteStrategy(Product p) throws IOException {
+	public void executeWriteStrategy(ProductList productList, String path) throws IOException {
 		if(this.strategy != null) {
-			this.strategy.open();
-			this.strategy.writeObject(p);
+			this.strategy.open(path);
+			for(Product product : productList) {
+				System.out.println(product.getName());
+				this.strategy.writeObject(product);
+			}
 			this.strategy.close();
 		}
 	}

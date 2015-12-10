@@ -7,7 +7,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import model.ModelShop;
 import model.Product;
-import model.ProductList;
+import fpt.com.ProductList;
 import view.ViewShop;
 
 
@@ -15,6 +15,8 @@ public class LoadController implements EventHandler {
 
 	private ModelShop model;
 	private ViewShop view;
+	private String path;
+	private ProductList productList;
 
     private SerializationStrategy[] serialization;
     private int x;
@@ -34,18 +36,25 @@ public class LoadController implements EventHandler {
 	public void handle(Event arg0) {
 
 		switch(view.getStrategy()) {
-			case "Binäre Serialisierung":
-				x = 0;
-				break;
-			case "XML Serialisierung mit Beans":
-				x = 1;
-				break;
-			case "XStream-Serialisierung":
-				x = 2;
-				break;
+		case "Binäre Serialisierung":
+			x = 0;
+			path = "ProdukteBinaer.ser";
+			break;
+		case "XML Serialisierung mit Beans":
+			x = 1;
+			path = "products.xml";
+			break;
+		case "XStream-Serialisierung":
+			x = 2;
+			path = "produktliste.xml";
+			break;
 		}
 		try {
-			serialization[x].executeReadStrategy();
+			productList = serialization[x].executeReadStrategy(path);
+			model.getProductList().clear();
+			for(fpt.com.Product p : productList) {
+				model.add(p);
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

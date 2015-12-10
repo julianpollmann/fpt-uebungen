@@ -17,11 +17,15 @@ public class Product implements fpt.com.Product, Externalizable {
 	private final SimpleDoubleProperty price;
 	private final SimpleIntegerProperty quantity;
 
-//<<<<<<< HEAD
-//	public Product(String name, Double price, Integer quantity, long id) {
-//=======
+	public Product() {
+
+		id = 0;
+		name = new SimpleStringProperty();
+		price = new SimpleDoubleProperty();
+		quantity = new SimpleIntegerProperty();
+	}
+
 	public Product(Long id, String name, Double price, Integer quantity) {
-//>>>>>>> origin/master
 		this.name = new SimpleStringProperty();
 		this.price = new SimpleDoubleProperty();
 		this.quantity = new SimpleIntegerProperty();
@@ -92,12 +96,15 @@ public class Product implements fpt.com.Product, Externalizable {
 
 	@Override	//Hier fehlt noch die direkte Zuweisung der Daten
 	public void readExternal(ObjectInput extInput) throws IOException, ClassNotFoundException {
-		String name = (String) extInput.readObject();
-		double price = extInput.readDouble();
-		int quantity = extInput.readInt();
-		long id = extInput.readLong();
+		Product temp = (Product) extInput.readObject();
 
-		new Product(id, name, price, quantity);
+		System.out.println(temp.getName());
+
+//		this.setName(temp.getName());
+//		this.setPrice(temp.getPrice());
+//		this.setQuantity(temp.getQuantity());
+//		this.setId(temp.getId());
+
 	}
 
 	@Override
