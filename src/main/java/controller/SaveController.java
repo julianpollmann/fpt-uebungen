@@ -2,10 +2,10 @@ package controller;
 
 import java.io.IOException;
 
-
+import fpt.com.ProductList;
 import io.*;
 import model.ModelShop;
-import model.Product;
+import fpt.com.Product;
 import view.ViewShop;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -17,6 +17,8 @@ public class SaveController implements EventHandler {
 	private ViewShop view;
     private SerializationStrategy[] serialization;
     private int x;
+	Product product;
+	ProductList productList;
 
 	public SaveController(ModelShop model, ViewShop view) {
 		this.model = model;
@@ -44,9 +46,14 @@ public class SaveController implements EventHandler {
 				break;
 		}
         try {
-        	for (int i = 0; i < view.getProductTable().getItems().size(); i++) {
-         		Product target = (Product) view.getProductTable().getItems().get(i);
-    			serialization[x].executeWriteStrategy(target);
+        	for (int i = 0; i < model.getProductList().size(); i++) {
+        		// Model nutzen + alle Produkte serialisieren
+//         		Product target = (Product) view.getProductTable().getItems().get(i);
+        		ProductList productList = model.getProductList();
+
+        		for (Product product: productList) {
+        			serialization[x].executeWriteStrategy(product);
+        		}
         	}
 		} catch (IOException e) {
 			e.printStackTrace();

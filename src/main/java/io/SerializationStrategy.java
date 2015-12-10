@@ -2,7 +2,7 @@ package io;
 
 import java.io.IOException;
 
-import model.Product;
+import fpt.com.Product;
 import fpt.com.SerializableStrategy;
 
 
