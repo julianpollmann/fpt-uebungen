@@ -1,7 +1,8 @@
 /build/
 /bin/
 */target/**
-
+target/
+/target/
 
 *.launch
 .project
@@ -26,3 +27,6 @@ hs_err_pid*
 .classpath
 *.class
 /target/
+*.ser
+products.xml
+
