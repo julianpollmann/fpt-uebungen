@@ -3,12 +3,15 @@ package io;
 import java.io.IOException;
 
 import fpt.com.Product;
+import fpt.com.ProductList;
 import fpt.com.SerializableStrategy;
 
 
 public class SerializationStrategy {
 
 	private SerializableStrategy strategy;
+	private ProductList productList;
+	private Product product;
 
 	/*
 	 * Basisstrategieklasse
@@ -29,16 +32,21 @@ public class SerializationStrategy {
 		return strategy;
 	}
 
-	// TODO: Rückgabewert + Param
-	public void executeReadStrategy() throws IOException {
+	public ProductList executeReadStrategy() throws IOException {
 		if(this.strategy != null) {
 			this.strategy.open();
-			this.strategy.readObject();
+			product = this.strategy.readObject();
 			this.strategy.close();
+
+    		for (Product product: productList) {
+    			productList.add(product);
+    		}
+
+			return productList;
 		}
+		return null;
 	}
 
-	// TODO: Rückgabewert + Param
 	public void executeWriteStrategy(Product p) throws IOException {
 		if(this.strategy != null) {
 			this.strategy.open();
