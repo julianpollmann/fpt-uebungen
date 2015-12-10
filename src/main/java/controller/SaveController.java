@@ -21,49 +21,35 @@ public class SaveController implements EventHandler {
 	public SaveController(ModelShop model, ViewShop view) {
 		this.model = model;
 		this.view = view;
-		
+
 		serialization = new SerializationStrategy[3];
 		serialization[0] = new SerializationStrategy(new BinaryStrategy());
 		serialization[1] = new SerializationStrategy(new XMLStrategy());
 		serialization[2] = new SerializationStrategy(new XStreamStrategy());
-	
+
 	}
 
 	@Override
 	public void handle(Event arg0) {
-		
 
-		
 		switch(view.getStrategy()) {
 			case "Binäre Serialisierung":
-
 				x = 0;
-				
 				break;
 			case "XML Serialisierung mit Beans":
-				
 				x = 1;
-				
 				break;
 			case "XStream-Serialisierung":
-
 				x = 2;
-				
 				break;
-			
-				
 		}
-		
-
-		
-           try {
-			serialization[x].executeWriteStrategy();
-			
+        try {
+        	for (int i = 0; i < view.getProductTable().getItems().size(); i++) {
+         		Product target = (Product) view.getProductTable().getItems().get(i);
+    			serialization[x].executeWriteStrategy(target);
+        	}
 		} catch (IOException e) {
-			
 			e.printStackTrace();
 		}
-		
-		
 	}
 }

@@ -2,6 +2,7 @@ package io;
 
 import java.io.IOException;
 
+import model.Product;
 import fpt.com.SerializableStrategy;
 
 
@@ -38,10 +39,10 @@ public class SerializationStrategy {
 	}
 
 	// TODO: Rückgabewert + Param
-	public void executeWriteStrategy() throws IOException {
+	public void executeWriteStrategy(Product p) throws IOException {
 		if(this.strategy != null) {
 			this.strategy.open();
-			this.strategy.writeObject(null);
+			this.strategy.writeObject(p);
 			this.strategy.close();
 		}
 	}

@@ -90,7 +90,7 @@ public class Product implements fpt.com.Product, Externalizable {
 		return this.quantity;
 	}
 
-	@Override	//Hier fehlt noch die direkte Zuweisung
+	@Override	//Hier fehlt noch die direkte Zuweisung der Daten
 	public void readExternal(ObjectInput extInput) throws IOException, ClassNotFoundException {
 		String name = (String) extInput.readObject();
 		double price = extInput.readDouble();
@@ -104,10 +104,5 @@ public class Product implements fpt.com.Product, Externalizable {
 	public void writeExternal(ObjectOutput out) throws IOException {
 		out.writeObject(this);
 	}
-//=======
-////	public long generateId() {
-////		return (long)idGen.generateId();
-////	}
-//>>>>>>> origin/master
 
 }

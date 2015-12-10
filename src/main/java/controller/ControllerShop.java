@@ -15,5 +15,4 @@ public class ControllerShop {
 		view.getLoadXML().addEventHandler(ActionEvent.ACTION, new LoadController(model,view));
 
 	}
-
 }

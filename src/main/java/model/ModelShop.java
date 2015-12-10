@@ -12,23 +12,18 @@ public class ModelShop extends ModifiableObservableListBase<fpt.com.Product> imp
 	// TODO: Irgendwie muss productList noch mit der productList verknüpft werden
 	private ProductList productList;
 
-
 	public ModelShop() {
 		productList = new ProductList();
-
-//=======
-//	// TODO: Irgendwie muss produktListe noch mit der productList verknüpft werden
-//	private ProductList produktliste;
-//	private IDGenerator idGen;
-//
-//	public ModelShop() {
-//		produktliste = new ProductList();
-//		idGen = new IDGenerator();
-//>>>>>>> origin/master
 	}
 
+// TODO: Irgendwie muss produktListe noch mit der productList verknüpft werden
+
+//	public boolean add(Product p) {
+//		return productList.add(p);
+//	}
+
 	@Override
-	protected void doAdd(int index, Product p) {
+	public void doAdd(int index, Product p) {
 		productList.add(index, p);
 	}
 
@@ -71,16 +66,8 @@ public class ModelShop extends ModifiableObservableListBase<fpt.com.Product> imp
 		return productList;
 	}
 
-//<<<<<<< HEAD
 	public void setProductList(ProductList productList) {
 		this.productList = productList;
-//=======
-//	public ProductList getProductList() {
-//		return produktliste;
-//>>>>>>> origin/master
 	}
 
-//	public long setId() {
-//		return (long)idGen.generateId();
-//	}
 }
