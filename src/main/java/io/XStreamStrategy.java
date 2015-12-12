@@ -2,8 +2,7 @@ package io;
 
 import java.io.*;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
+import com.thoughtworks.xstream.*;
 
 import fpt.com.Product;
 import fpt.com.ProductList;
@@ -14,10 +13,13 @@ public class XStreamStrategy implements SerializableStrategy {
 	private XStream xstream;
 	private ProductList productList;
 	private Product product;
+	private ObjectInputStream ois;
+	private ObjectOutputStream oos;
+	private OutputStreamWriter osw;
+	private OutputStream os;
 
 	public XStreamStrategy() {
-//		xstream = new XStream(new DomDriver());
-//		xstream.alias("product", Product.class);
+		Product product = new model.Product();
 	}
 
 	@Override
@@ -39,37 +41,59 @@ public class XStreamStrategy implements SerializableStrategy {
 		System.out.println("++++++++++++++++++++++++++++");
 		System.out.println(obj.getName());
 
-//		this.product = obj;
-//		System.out.println(product.getName());
-		xstream.aliasField("waren", Product.class, "size");
+		this.product = (model.Product) obj;
+
+		System.out.println(this.product.getId());
+		System.out.println(this.product.getName());
+		System.out.println(this.product.getPrice());
+		System.out.println(this.product.getQuantity());
+		System.out.println("-----------------------------");
 
 
-		try (FileWriter fw = new FileWriter("produktliste.xml")){
-			xstream.toXML(obj, fw);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		xstream.addImplicitCollection(Product.class, "waren");
+
+//		xstream.aliasAttribute("Product Name", "name");
+		xstream.registerConverter(new NameConverter());
+
+		xstream.aliasAttribute("Product Price", "price");
+		xstream.registerConverter(new PriceConverter());
+
+		xstream.aliasAttribute("Product Quantity", "quantity");
+		xstream.registerConverter(new QuantityConverter());
+
+//		xstream.aliasField("name", Product.class, "name");
+
+//		xstream.aliasField("waren", Product.class, "size");
+		//xstream.toXML(obj.getId(), this.os);
+		xstream.toXML(this.product, this.os);
+
+		System.out.println("-----------------------------");
+
 	}
 
 	@Override
 	public void close() throws IOException {
-		// TODO Auto-generated method stub
-
+		this.oos.close();
+		this.os.close();
 	}
 
 	@Override
 	public void open(InputStream input, OutputStream output) throws IOException {
-		createXStream(model.Product.class);
-		
+		xstream = createXStream(model.Product.class);
+
+
+		if(input != null) {
+			this.ois = xstream.createObjectInputStream(input);
+		}
+		if(output != null) {
+			this.oos = xstream.createObjectOutputStream(output);
+			this.os = output;
+		}
+
 	}
 
 	@Override
 	public XStream createXStream(Class<? extends Product> clazz) {
 		return SerializableStrategy.super.createXStream(clazz);
 	}
-
-//	private String formatXml() {
-//		return String token;
-//	}
-
 }

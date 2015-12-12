@@ -99,12 +99,29 @@ public class SerializationStrategy {
 
 	public void executeWriteStrategy(ProductList productList, String path) throws IOException {
 		if(this.strategy != null) {
-			this.strategy.open(path);
-			for(Product product : productList) {
-				System.out.println(product.getName());
-				this.strategy.writeObject(product);
+			// Try-catch für open stream
+			try {
+				this.strategy.open(path);
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-			this.strategy.close();
+
+			// Try-catch für writeObject
+			try {
+				for(Product product : productList) {
+					System.out.println(product.getName());
+					this.strategy.writeObject(product);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			// Try-catch für close
+			try {
+				this.strategy.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

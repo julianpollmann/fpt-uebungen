@@ -9,12 +9,20 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
+import com.thoughtworks.xstream.annotations.XStreamConverter;
+
 public class Product implements fpt.com.Product, Externalizable {
 
 	private static final long serialVersionUID = 101L;
 	private final long id;
+
+	@XStreamConverter(io.NameConverter.class)
 	private final SimpleStringProperty name;
+
+	@XStreamConverter(io.PriceConverter.class)
 	private final SimpleDoubleProperty price;
+
+	@XStreamConverter(io.QuantityConverter.class)
 	private final SimpleIntegerProperty quantity;
 
 	public Product() {
