@@ -14,7 +14,7 @@ public interface SerializableStrategy {
 
 	/**
 	 * read product form io-stream. ensure stream is open.
-	 * 
+	 *
 	 * @return the serialized object from the io-stream
 	 * @throws IOException
 	 *             if stream is closed
@@ -25,7 +25,7 @@ public interface SerializableStrategy {
 
 	/**
 	 * write product to the io-stream
-	 * 
+	 *
 	 * @param obj
 	 *            the object for serialization
 	 * @throws IOException
@@ -35,7 +35,7 @@ public interface SerializableStrategy {
 
 	/**
 	 * close the io-stream
-	 * 
+	 *
 	 * @throws IOException
 	 *             if stream can't be closed.
 	 */
@@ -43,7 +43,7 @@ public interface SerializableStrategy {
 
 	/**
 	 * open the io-stream
-	 * 
+	 *
 	 * @param path
 	 *            the path for the file storage
 	 * @throws IOException
@@ -53,6 +53,7 @@ public interface SerializableStrategy {
 		if (path != null) {
 			ByteArrayInputStream in = null;
 			if (Files.exists(path)) {
+				System.out.println(path + " existiert");
 				byte[] data = Files.readAllBytes(path);
 				in = new ByteArrayInputStream(data);
 			}
@@ -63,7 +64,7 @@ public interface SerializableStrategy {
 
 	/**
 	 * open the io-stream
-	 * 
+	 *
 	 * @param path
 	 *            the path for the file storage
 	 * @throws IOException
@@ -77,7 +78,7 @@ public interface SerializableStrategy {
 
 	/**
 	 * open the io-stream
-	 * 
+	 *
 	 * @param input
 	 *            the file data if previews file exists, otherwise null
 	 * @param output
@@ -93,7 +94,7 @@ public interface SerializableStrategy {
 		xstream.autodetectAnnotations(true);
 		// alias DB stuff  sollte auch als Annotation gehen
 		xstream.aliasSystemAttribute(null, "class");
-		
+
 		// prioritaet aendern da BinSer Externalizable nutzt!
 		xstream.registerConverter(
 				new ExternalizableReflectionConverter(xstream),

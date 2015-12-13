@@ -49,22 +49,13 @@ public class XStreamStrategy implements SerializableStrategy {
 		System.out.println(this.product.getQuantity());
 		System.out.println("-----------------------------");
 
-
-//		xstream.addImplicitCollection(Product.class, "waren");
-
-//		xstream.aliasAttribute("Product Name", "name");
+		xstream.registerConverter(new IdConverter());
 		xstream.registerConverter(new NameConverter());
-
-		xstream.aliasAttribute("Product Price", "price");
 		xstream.registerConverter(new PriceConverter());
-
-		xstream.aliasAttribute("Product Quantity", "quantity");
 		xstream.registerConverter(new QuantityConverter());
 
-//		xstream.aliasField("name", Product.class, "name");
+		xstream.alias("ware", model.Product.class);
 
-//		xstream.aliasField("waren", Product.class, "size");
-		//xstream.toXML(obj.getId(), this.os);
 		xstream.toXML(this.product, this.os);
 
 		System.out.println("-----------------------------");
