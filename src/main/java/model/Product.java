@@ -14,10 +14,12 @@ import com.thoughtworks.xstream.annotations.XStreamConverter;
 public class Product implements fpt.com.Product, Externalizable {
 
 	private static final long serialVersionUID = 101L;
+
+	@XStreamConverter(io.IdConverter.class)
 	private final long id;
 
 	@XStreamConverter(io.NameConverter.class)
-	private final SimpleStringProperty name;
+	private SimpleStringProperty name;
 
 	@XStreamConverter(io.PriceConverter.class)
 	private final SimpleDoubleProperty price;
