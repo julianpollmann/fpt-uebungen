@@ -5,6 +5,12 @@ import com.thoughtworks.xstream.converters.SingleValueConverter;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 
+
+/*
+ * Prüft, ob (de)serialisiertes Objekt konvertierbar ist
+ * Konvertiert SimpleStringProperty name <-> String name
+ *
+ */
 public class NameConverter implements SingleValueConverter {
 
 	private SimpleStringProperty stringProp;

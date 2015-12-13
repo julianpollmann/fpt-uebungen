@@ -4,6 +4,11 @@ import com.thoughtworks.xstream.converters.SingleValueConverter;
 
 import javafx.beans.property.SimpleIntegerProperty;
 
+/*
+ * Prüft, ob (de)serialisiertes Objekt konvertierbar ist
+ * Konvertiert SimpleIntegerProperty price <-> Int price
+ *
+ */
 public class QuantityConverter implements SingleValueConverter {
 
 	private SimpleIntegerProperty intProp;

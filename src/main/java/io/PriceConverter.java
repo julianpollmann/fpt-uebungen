@@ -4,6 +4,11 @@ import com.thoughtworks.xstream.converters.SingleValueConverter;
 
 import javafx.beans.property.SimpleDoubleProperty;
 
+/*
+ * Prüft, ob (de)serialisiertes Objekt konvertierbar ist
+ * Konvertiert SimpleDoubleProperty price <-> Double price
+ *
+ */
 public class PriceConverter implements SingleValueConverter {
 
 	private SimpleDoubleProperty doubleProp;
