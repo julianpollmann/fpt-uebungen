@@ -58,7 +58,9 @@ public class ViewShop extends BorderPane {
 		strategies.addAll(
 				"Binäre Serialisierung",
 				"XML Serialisierung mit Beans",
-				"XStream-Serialisierung");
+				"XStream-Serialisierung",
+				"JDBC-DB-Verbindung",
+				"OpenJPA-DB-Verbindung");
 		strategy = new ChoiceBox<>(strategies);
 		strategy.setValue("Binäre Serialisierung");
 
