@@ -8,7 +8,7 @@ public class ControllerShop {
 
 	public void link(ModelShop model, ViewShop view) {
 
-		model.addListener(new ListChangeController(model,view));
+		view.getProductTable().setItems(model);
 		view.getAddProd().addEventHandler(ActionEvent.ACTION, new AddButtonController(model,view));
 		view.getDelProd().addEventHandler(ActionEvent.ACTION, new RemoveButtonController(model,view));
 		view.getSaveXML().addEventHandler(ActionEvent.ACTION, new SaveController(model,view));
