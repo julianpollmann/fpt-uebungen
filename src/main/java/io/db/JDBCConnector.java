@@ -70,35 +70,28 @@ public class JDBCConnector {
 		System.out.println("++++++++++++++++++++++++++++++++++++");
 	}
 
-	private Long insert(String name, double price, int quantity) {
+	private long insert(String name, double price, int quantity) {
 
-		try {
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.getResultSet();
+		try (PreparedStatement prstmt = con.prepareStatement(
+				"INSERT INTO products (product_name, product_price, product_quantity) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS
+		)) {
+			prstmt.setString(0, name);
+			prstmt.setDouble(1, price);
+			prstmt.setInt(2, quantity);
+			prstmt.executeUpdate();
+			try(ResultSet rs = prstmt.getGeneratedKeys()) {
+				if(rs.next()) {
+					return id = rs.getLong("product_id");
+				}
+			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-
-
-		return null;
+		return -1;
 	}
 
 	private void insert(Product product) {
-		this.product = product;
-
-		try (PreparedStatement prstmt = con.prepareStatement(
-				"INSERT INTO \"g6_products\" (\"product_id\", \"product_name\", \"product_price\", \"product_quantity\") VALUES ?+
-				this.product.getName() +
-				this.product.getPrice() +
-				this.product.getQuantity()
-		);
-				) {
-			prstmt.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		product.setId(insert(product.getName(), product.getPrice(), product.getQuantity()));
 	}
 
 	private Product read(long productId) {
@@ -112,7 +105,7 @@ public class JDBCConnector {
 			prstmt.setMaxRows(maxResults);
 			System.out.println(prstmt);
 			try (ResultSet rs = prstmt.executeQuery()) {
-				while (rs.next()) {
+				if(rs.next()) {
 					System.out.println(rs.getString(2));
 
 					product.setId(rs.getLong(0));
