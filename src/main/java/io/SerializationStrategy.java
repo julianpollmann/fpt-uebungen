@@ -41,31 +41,28 @@ public class SerializationStrategy {
 			this.strategy.open(path);
 
 //			for(int x = 0; x < strategy.; x++){
-//
 //				product = this.strategy.readObject();
 //				productList.add(product);
 //			}
 
-
 //			if(this.strategy.readObject() == null) {
 //				 test = false;
 //			}
+
 			while(true) {
 
 				System.out.println("+++++++++++");
 				try  {
-				productList.add(this.strategy.readObject());
+					productList.add(this.strategy.readObject());
 				} catch (ArrayIndexOutOfBoundsException e){
 					break;
-
 				}
-//				if(this.strategy.readObject() == null) {
+//				if (this.strategy.readObject() == null) {
 //					 test = false;
 //				}
-
 			}
 
-			productList.size();
+			productList.size(); // <- hat das hier eine Funktion?
 
 //
 //			if(product == null) {

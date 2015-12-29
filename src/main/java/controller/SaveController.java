@@ -48,19 +48,21 @@ public class SaveController implements EventHandler {
 				x = 2;
 				path = "produktliste.xml";
 				break;
+			case "JDBC-DB-Verbindung":
+				x = 3;
+				break;
+			case "OpenJPA-DB-Verbindung":
+				x = 4;
+				break;
 		}
         try {
-//        	for (int i = 0; i < model.getProductList().size(); i++) {
-//        		// Model nutzen + alle Produkte serialisieren
-////         		Product target = (Product) view.getProductTable().getItems().get(i);
-        		ProductList productList = model.getProductList();
 
-        		serialization[x].executeWriteStrategy(productList, path);
-//        		for (Product product: productList) {
-//        			System.out.println(product.getName());
-//
-//        		}
-//        	}
+        	ProductList productList = model.getProductList();
+
+        	if (path != null) {
+            	serialization[x].executeWriteStrategy(productList, path);
+        	}
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
