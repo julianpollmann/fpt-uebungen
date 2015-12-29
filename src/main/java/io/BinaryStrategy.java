@@ -15,13 +15,17 @@ public class BinaryStrategy implements SerializableStrategy {
 		Product readProduct = null;
 		System.out.println("Test1231");
 
+		System.out.println(ois != null);
+
 			try {
-				readProduct = (Product) ois.readObject();
+				readProduct = (model.Product) ois.readObject();
 				System.out.println("Test");
 				System.out.println(readProduct.getName());
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} catch (EOFException e1) {
+				System.out.println("Datei zu Ende");
 			}
 
 		return readProduct;

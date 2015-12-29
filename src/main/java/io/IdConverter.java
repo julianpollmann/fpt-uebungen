@@ -1,5 +1,7 @@
 package io;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import com.thoughtworks.xstream.converters.SingleValueConverter;
 
 /*
@@ -9,8 +11,6 @@ import com.thoughtworks.xstream.converters.SingleValueConverter;
  */
 public class IdConverter implements SingleValueConverter {
 
-	private String id;
-
 	@Override
 	public boolean canConvert(Class type) {
 		return type.equals(Long.class);
@@ -18,14 +18,19 @@ public class IdConverter implements SingleValueConverter {
 
 	@Override
 	public String toString(Object obj) {
-		id = ("000000" + obj.toString()).substring(obj.toString().length()) + ".00";
-		return id;
+		NumberFormat formatter = new DecimalFormat("000000");
+		return formatter.format(obj);
+		//id = ("000000" + obj.toString()).substring(obj.toString().length()) + ".00";
+		//return id;
 	}
 
 	@Override
 	public Object fromString(String str) {
-		id = str.replaceFirst ("^0*", "");
-		return Long.parseLong(id);
+		while(str.startsWith("0")) {
+			str.substring(1);
+		}
+		//Vorgaengerversion: id = str.replaceFirst ("^0*", "");
+		return Long.parseLong(str);
 	}
 
 }
