@@ -13,7 +13,7 @@ public class JDBCConnector {
 	private PreparedStatement prstmt;
 	private int maxResults;
 	private Product product;
-	private ProductList productlist;
+	private ProductList productList;
 	private long id;
 	private String name;
 	private double price;
@@ -46,7 +46,7 @@ public class JDBCConnector {
 			// Queries ausführen
 			getStatusInformation(con);
 			read(20);
-
+			this.con = con; //<- wir müssen die Con doch irgendwie speichern, z.B. so oder?
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -60,7 +60,7 @@ public class JDBCConnector {
 		DatabaseMetaData dmd = con.getMetaData();
 		ResultSet rs = dmd.getTables(null, null, "%", null);
 
-		System.out.println("DB Metadata ++++++++++++++++++++++++");
+		System.out.println("+++++++++++++ DB Metadata +++++++++++");
 		System.out.println("URL: " + dmd.getURL());
 		System.out.println("Username: " + dmd.getUserName());
 		System.out.print("Tabellen: ");

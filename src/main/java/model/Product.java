@@ -8,9 +8,11 @@ import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import javax.persistence.*;
 
 import com.thoughtworks.xstream.annotations.XStreamConverter;
 
+@Entity()
 public class Product implements fpt.com.Product, Externalizable {
 
 	private static final long serialVersionUID = 101L;
@@ -49,6 +51,7 @@ public class Product implements fpt.com.Product, Externalizable {
 
 	}
 
+	@Id
 	@Override
 	public long getId() {
 		return this.id;
