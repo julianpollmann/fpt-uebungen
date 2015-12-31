@@ -10,9 +10,16 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import javax.persistence.*;
 
+import org.apache.openjpa.persistence.Persistent;
+import org.apache.openjpa.persistence.jdbc.Strategy;
+
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAliasType;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
 
 @Entity()
+@XStreamAliasType ("Ware")  // OpenJPA Ableitungen werden als Ware bezeichnet.
+@XStreamAlias("Ware")
 public class Product implements fpt.com.Product, Externalizable {
 
 	private static final long serialVersionUID = 101L;
@@ -20,12 +27,18 @@ public class Product implements fpt.com.Product, Externalizable {
 	@XStreamConverter(io.IdConverter.class)
 	private final long id;
 
+	@Persistent
+    @Strategy("fpt.com.db.StringPropertyValueHandler")
 	@XStreamConverter(io.NameConverter.class)
 	private SimpleStringProperty name;
 
+	@Persistent
+    @Strategy("fpt.com.db.DoublePropertyValueHandler")
 	@XStreamConverter(io.PriceConverter.class)
 	private final SimpleDoubleProperty price;
 
+	@Persistent
+    @Strategy("fpt.com.db.IntegerPropertyValueHandler")
 	@XStreamConverter(io.QuantityConverter.class)
 	private final SimpleIntegerProperty quantity;
 
