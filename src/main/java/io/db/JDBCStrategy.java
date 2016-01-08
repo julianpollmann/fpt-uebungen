@@ -1,6 +1,7 @@
 package io.db;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import fpt.com.Product;
 import model.ProductList;
@@ -11,12 +12,17 @@ public class JDBCStrategy extends AbstractDatabaseStrategy {
 	@Override
 	public Product readObject() throws IOException {
 		JDBCConnector jdbc = new JDBCConnector();
+		
 		return null;
 	}
 
-	public ProductList readList() throws IOException {
+	public ProductList readList() throws IOException, SQLException {
 		JDBCConnector jdbc = new JDBCConnector();
-		return null;
+		ProductList pList = new ProductList();
+		for (fpt.com.Product p : jdbc.read()){
+			pList.add(p);
+		}
+		return pList;
 	}
 
 	@Override

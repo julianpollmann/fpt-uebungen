@@ -21,7 +21,12 @@ public class LoadController implements EventHandler {
 	private String path;
 	private ProductList productList;
 
-    private SerializationStrategy[] serialization;
+    private SerializationStrategy[] strategy;
+
+    private fpt.com.SerializableStrategy strat;
+
+
+
     private JDBCStrategy jdbc;
     private int x;
     private int y;
@@ -30,11 +35,10 @@ public class LoadController implements EventHandler {
 		this.model = model;
 		this.view = view;
 
-		serialization = new SerializationStrategy[3];
-		serialization[0] = new SerializationStrategy(new BinaryStrategy());
-		serialization[1] = new SerializationStrategy(new XMLStrategy());
-		serialization[2] = new SerializationStrategy(new XStreamStrategy());
-
+		strategy = new SerializationStrategy[3];
+		strategy[0] = new SerializationStrategy(new BinaryStrategy());
+		strategy[1] = new SerializationStrategy(new XMLStrategy());
+		strategy[2] = new SerializationStrategy(new XStreamStrategy());
 	}
 
 	@Override
@@ -54,6 +58,7 @@ public class LoadController implements EventHandler {
 			path = "produktliste.xml";
 			break;
 		case "JDBC-DB-Verbindung":
+			strat = new JDBCStrategy();
 			y = 0;
 			break;
 		case "OpenJPA-DB-Verbindung":
@@ -62,7 +67,7 @@ public class LoadController implements EventHandler {
 		}
 		try {
 			if (path != null){
-				productList = serialization[x].executeReadStrategy(path);
+				productList = strategy[x].executeReadStrategy(path);
 				model.getProductList().clear();
 				for(fpt.com.Product p : productList) {
 					model.add(p);
@@ -70,11 +75,9 @@ public class LoadController implements EventHandler {
 			}
 			if (y == 0) {
 				JDBCConnector jdbc = new JDBCConnector();
-				model.getProductList().clear();
 				for (fpt.com.Product p : jdbc.read()){
 					model.add(p);
 				}
-				//model.add(jdbc.readObject());
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

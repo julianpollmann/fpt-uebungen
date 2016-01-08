@@ -19,7 +19,7 @@ public class SaveController implements EventHandler {
 	private ViewShop view;
     private SerializationStrategy[] serialization;
     private AbstractDatabaseStrategy[] databaseStrategy;
-    JDBCConnector jDBC;
+    JDBCConnector jdbc;
 	Product product;
 	ProductList productList;
 	private String path;
@@ -69,9 +69,9 @@ public class SaveController implements EventHandler {
             	serialization[x].executeWriteStrategy(productList, path);
         	}
         	else if (y == 0) {
-        		jDBC = new JDBCConnector();
+        		jdbc = new JDBCConnector();
         		for (Product p : productList) {
-        			jDBC.insert((model.Product) p);
+        			jdbc.insert((model.Product) p);
         		}
         	}
 
