@@ -13,11 +13,16 @@ public class JDBCConnector {
 	private PreparedStatement prstmt;
 	private int maxResults;
 	private Product product;
-	private ProductList productList;
+	private model.ProductList productList;
 	private long id;
 	private String name;
 	private double price;
 	private int quantity;
+
+	public static void main(String[] args) throws SQLException {
+		JDBCConnector jd = new JDBCConnector();
+		jd.read();
+	}
 
 	public JDBCConnector() {
 
@@ -30,7 +35,7 @@ public class JDBCConnector {
 			e.printStackTrace();
 		}
 
-		connect();
+		//connect();
 	}
 
 	/*
@@ -45,8 +50,10 @@ public class JDBCConnector {
 		)) {
 			// Queries ausführen
 			getStatusInformation(con);
-			read(20);
-			this.con = con; //<- wir müssen die Con doch irgendwie speichern, z.B. so oder?
+			//read(100, con);
+			//read(con);
+
+			//this.con = con; //<- wir müssen die Con doch irgendwie speichern, z.B. so oder?
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -58,14 +65,14 @@ public class JDBCConnector {
 	private static void getStatusInformation(Connection con) throws SQLException {
 
 		DatabaseMetaData dmd = con.getMetaData();
-		ResultSet rs = dmd.getTables(null, null, "%", null);
+		ResultSet rs = dmd.getTables(null, null, null, new String[]{"TABLE"});
 
 		System.out.println("+++++++++++++ DB Metadata +++++++++++");
 		System.out.println("URL: " + dmd.getURL());
 		System.out.println("Username: " + dmd.getUserName());
 		System.out.print("Tabellen: ");
 		while(rs.next()) {
-			System.out.print(rs.getString(3) + ", ");
+			System.out.println(rs.getString(3));
 		};
 		System.out.println("++++++++++++++++++++++++++++++++++++");
 	}
@@ -90,28 +97,27 @@ public class JDBCConnector {
 		return -1;
 	}
 
-	private void insert(Product product) {
+	public void insert(Product product) {
 		product.setId(insert(product.getName(), product.getPrice(), product.getQuantity()));
 	}
 
-	private Product read(long productId) {
+	public Product read(long productId, Connection con) {
 
 		product = new Product();
-
 		try (PreparedStatement prstmt = con.prepareStatement(
 				"SELECT id,name,price,quantity FROM products WHERE id=?"
 		)) {
-			prstmt.setLong(0, productId);
+			prstmt.setLong(1, productId);
 			prstmt.setMaxRows(maxResults);
 			System.out.println(prstmt);
 			try (ResultSet rs = prstmt.executeQuery()) {
 				if(rs.next()) {
 					System.out.println(rs.getString(2));
 
-					product.setId(rs.getLong(0));
-					product.setName(rs.getString(1));
-					product.setPrice(rs.getDouble(2));
-					product.setQuantity(rs.getInt(3));
+					product.setId(rs.getLong(1));
+					product.setName(rs.getString(2));
+					product.setPrice(rs.getDouble(3));
+					product.setQuantity(rs.getInt(4));
 
 					return product;
 				}
@@ -122,4 +128,38 @@ public class JDBCConnector {
 		return null;
 	}
 
+	public model.ProductList read() throws SQLException {
+
+		try(Connection con = DriverManager.getConnection(
+				"jdbc:postgresql://java.is.uni-due.de/ws1011",
+				"ws1011",
+				"ftpw10"
+		)) {
+			productList = new model.ProductList();
+			try (PreparedStatement prstmt = con.prepareStatement(
+					"SELECT id,name,price,quantity FROM products order by id desc limit 100"
+					)) {
+				//prstmt.setLong(1, productId);
+				prstmt.setMaxRows(maxResults);
+				System.out.println(prstmt);
+				try (ResultSet rs = prstmt.executeQuery()) {
+
+					while(rs.next()) {
+						Product product = new Product();
+						product.setId(rs.getLong(1));
+						product.setName(rs.getString(2));
+						product.setPrice(rs.getDouble(3));
+						product.setQuantity(rs.getInt(4));
+
+						productList.add(product);
+						System.out.println(product.getName());
+					}
+					return productList;
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		return null;
+		}
+	}
 }

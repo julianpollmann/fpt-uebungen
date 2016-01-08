@@ -16,8 +16,7 @@ public class SerializationStrategy {
 	private ProductList productList;
 	private Product product;
 
-	/*
-	 * Basisstrategieklasse
+	/* Basisstrategieklasse
 	 * Strategie wird als Parameter übergeben
 	 */
 	public SerializationStrategy(SerializableStrategy strategy) {
@@ -64,15 +63,11 @@ public class SerializationStrategy {
 
 			productList.size(); // <- hat das hier eine Funktion?
 
-//
 //			if(product == null) {
 //				return productList;
 //			}
 
 			System.out.println(productList.size());
-
-
-
 
 //			do{
 //				product = this.strategy.readObject();

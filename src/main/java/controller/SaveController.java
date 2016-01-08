@@ -3,7 +3,9 @@ package controller;
 import java.io.IOException;
 
 import fpt.com.ProductList;
+import fpt.com.db.AbstractDatabaseStrategy;
 import io.*;
+import io.db.JDBCConnector;
 import model.ModelShop;
 import fpt.com.Product;
 import view.ViewShop;
@@ -16,10 +18,13 @@ public class SaveController implements EventHandler {
 	private ModelShop model;
 	private ViewShop view;
     private SerializationStrategy[] serialization;
-    private int x;
+    private AbstractDatabaseStrategy[] databaseStrategy;
+    JDBCConnector jDBC;
 	Product product;
 	ProductList productList;
 	private String path;
+	private int x;
+	private int y;
 
 	public SaveController(ModelShop model, ViewShop view) {
 		this.model = model;
@@ -29,6 +34,7 @@ public class SaveController implements EventHandler {
 		serialization[0] = new SerializationStrategy(new BinaryStrategy());
 		serialization[1] = new SerializationStrategy(new XMLStrategy());
 		serialization[2] = new SerializationStrategy(new XStreamStrategy());
+		//JDBCConnector jDBC = new JDBCConnector();
 
 	}
 
@@ -49,10 +55,10 @@ public class SaveController implements EventHandler {
 				path = "produktliste.xml";
 				break;
 			case "JDBC-DB-Verbindung":
-				x = 3;
+				y = 0;
 				break;
 			case "OpenJPA-DB-Verbindung":
-				x = 4;
+				y = 1;
 				break;
 		}
         try {
@@ -61,6 +67,12 @@ public class SaveController implements EventHandler {
 
         	if (path != null) {
             	serialization[x].executeWriteStrategy(productList, path);
+        	}
+        	else if (y == 0) {
+        		jDBC = new JDBCConnector();
+        		for (Product p : productList) {
+        			jDBC.insert((model.Product) p);
+        		}
         	}
 
 		} catch (IOException e) {

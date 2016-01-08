@@ -1,8 +1,11 @@
 package controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import io.*;
+import io.db.JDBCConnector;
+import io.db.JDBCStrategy;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import model.ModelShop;
@@ -19,7 +22,9 @@ public class LoadController implements EventHandler {
 	private ProductList productList;
 
     private SerializationStrategy[] serialization;
+    private JDBCStrategy jdbc;
     private int x;
+    private int y;
 
 	public LoadController(ModelShop model, ViewShop view) {
 		this.model = model;
@@ -48,14 +53,33 @@ public class LoadController implements EventHandler {
 			x = 2;
 			path = "produktliste.xml";
 			break;
+		case "JDBC-DB-Verbindung":
+			y = 0;
+			break;
+		case "OpenJPA-DB-Verbindung":
+			y = 1;
+			break;
 		}
 		try {
-			productList = serialization[x].executeReadStrategy(path);
-			model.getProductList().clear();
-			for(fpt.com.Product p : productList) {
-				model.add(p);
+			if (path != null){
+				productList = serialization[x].executeReadStrategy(path);
+				model.getProductList().clear();
+				for(fpt.com.Product p : productList) {
+					model.add(p);
+				}
+			}
+			if (y == 0) {
+				JDBCConnector jdbc = new JDBCConnector();
+				model.getProductList().clear();
+				for (fpt.com.Product p : jdbc.read()){
+					model.add(p);
+				}
+				//model.add(jdbc.readObject());
 			}
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}}
