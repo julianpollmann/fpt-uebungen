@@ -18,8 +18,8 @@ public class SaveController implements EventHandler {
 	private ModelShop model;
 	private ViewShop view;
     private SerializationStrategy[] serialization;
-    private AbstractDatabaseStrategy[] databaseStrategy;
-    JDBCConnector jdbc;
+    private AbstractDatabaseStrategy[] databaseStrategy; //wird noch nicht verwendet
+    private JDBCConnector jdbc;
 	Product product;
 	ProductList productList;
 	private String path;

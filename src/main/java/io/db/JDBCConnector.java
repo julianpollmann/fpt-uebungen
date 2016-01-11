@@ -19,10 +19,12 @@ public class JDBCConnector {
 	private double price;
 	private int quantity;
 
+/*
 	public static void main(String[] args) throws SQLException {
 		JDBCConnector jd = new JDBCConnector();
 		jd.read();
 	}
+*/
 
 	public JDBCConnector() {
 
@@ -72,17 +74,20 @@ public class JDBCConnector {
 	}
 
 	private long insert(String name, double price, int quantity) {
-
-		try (PreparedStatement prstmt = con.prepareStatement(
-				"INSERT INTO products (product_name, product_price, product_quantity) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS
+		try(Connection con = DriverManager.getConnection(
+				"jdbc:postgresql://java.is.uni-due.de/ws1011",
+				"ws1011",
+				"ftpw10"
+		); PreparedStatement prstmt = con.prepareStatement(
+				"INSERT INTO products (name, price, quantity) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS
 		)) {
-			prstmt.setString(0, name);
-			prstmt.setDouble(1, price);
-			prstmt.setInt(2, quantity);
+			prstmt.setString(1, name);
+			prstmt.setDouble(2, price);
+			prstmt.setInt(3, quantity);
 			prstmt.executeUpdate();
 			try(ResultSet rs = prstmt.getGeneratedKeys()) {
 				if(rs.next()) {
-					return id = rs.getLong("product_id");
+					return id = rs.getLong("id");
 				}
 			}
 		} catch (SQLException e) {
