@@ -65,6 +65,8 @@ public class Product implements fpt.com.Product, Externalizable {
 	}
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "producer_SEQ")
+	@SequenceGenerator(name = "producer_SEQ", sequenceName ="producer_id_seq", allocationSize = 1)
 	@Override
 	public long getId() {
 		return this.id;
