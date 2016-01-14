@@ -8,6 +8,7 @@ import view.ViewCustomer;
 import view.ViewHistory;
 import view.ViewShop;
 import controller.ControllerShop;
+import problem4.*;
 
 public class Main extends Application {
 
@@ -44,6 +45,15 @@ public class Main extends Application {
 			stage2.setTitle("Ihre Bestellung");
 			stage2.setScene(scene2);
 			stage2.show();
+
+			WaitingQueue queue = new WaitingQueue();
+			Acquisition ac = new Acquisition(queue);
+			Cashpoint cp = new Cashpoint(queue);
+			Thread t1 = new Thread(ac);
+			Thread t2 = new Thread(cp);
+			t1.start();
+			t2.start();
+
 
 			// Historyview in drittem Fenster - soll sich nachher erst auf Buttondruck öffnen
 
