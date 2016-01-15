@@ -18,14 +18,17 @@ import com.thoughtworks.xstream.annotations.XStreamAliasType;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
 
 @Entity()
+@Table(name="products")
 @XStreamAliasType ("Ware")  // OpenJPA Ableitungen werden als Ware bezeichnet.
 @XStreamAlias("Ware")
 public class Product implements fpt.com.Product, Externalizable {
 
 	private static final long serialVersionUID = 101L;
 
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY, generator = "products_SEQ")
 	@XStreamConverter(io.IdConverter.class)
-	private final long id;
+	private long id;
 
 	@Persistent
     @Strategy("fpt.com.db.StringPropertyValueHandler")
@@ -35,12 +38,12 @@ public class Product implements fpt.com.Product, Externalizable {
 	@Persistent
     @Strategy("fpt.com.db.DoublePropertyValueHandler")
 	@XStreamConverter(io.PriceConverter.class)
-	private final SimpleDoubleProperty price;
+	private SimpleDoubleProperty price;
 
 	@Persistent
     @Strategy("fpt.com.db.IntegerPropertyValueHandler")
 	@XStreamConverter(io.QuantityConverter.class)
-	private final SimpleIntegerProperty quantity;
+	private SimpleIntegerProperty quantity;
 
 	public Product() {
 
@@ -63,10 +66,16 @@ public class Product implements fpt.com.Product, Externalizable {
 		setQuantity(quantity);
 
 	}
+	public Product( String name, Double price, Integer quantity) {
+		this.name = new SimpleStringProperty();
+		this.price = new SimpleDoubleProperty();
+		this.quantity = new SimpleIntegerProperty();
+		setName(name);
+		setPrice(price);
+		setQuantity(quantity);
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "producer_SEQ")
-	@SequenceGenerator(name = "producer_SEQ", sequenceName ="producer_id_seq", allocationSize = 1)
+	}
+
 	@Override
 	public long getId() {
 		return this.id;
@@ -74,7 +83,7 @@ public class Product implements fpt.com.Product, Externalizable {
 
 	@Override
 	public void setId(long id) {
-//		this.id = id;
+		this.id = id;
 	}
 
 	@Override

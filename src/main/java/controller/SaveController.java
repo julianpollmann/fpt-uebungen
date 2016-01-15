@@ -6,6 +6,7 @@ import fpt.com.ProductList;
 import fpt.com.db.AbstractDatabaseStrategy;
 import io.*;
 import io.db.JDBCConnector;
+import io.db.OpenJPA;
 import model.ModelShop;
 import fpt.com.Product;
 import view.ViewShop;
@@ -20,6 +21,7 @@ public class SaveController implements EventHandler {
     private SerializationStrategy[] serialization;
     private AbstractDatabaseStrategy[] databaseStrategy; //wird noch nicht verwendet
     private JDBCConnector jdbc;
+    private OpenJPA ojpa;
 	Product product;
 	ProductList productList;
 	private String path;
@@ -55,24 +57,29 @@ public class SaveController implements EventHandler {
 				path = "produktliste.xml";
 				break;
 			case "JDBC-DB-Verbindung":
-				y = 0;
+				x = 3;
 				break;
 			case "OpenJPA-DB-Verbindung":
-				y = 1;
+				x = 4;
 				break;
 		}
         try {
 
-        	ProductList productList = model.getProductList();
+        	//ProductList productList = model.getProductList();
 
         	if (path != null) {
-            	serialization[x].executeWriteStrategy(productList, path);
+            	serialization[x].executeWriteStrategy(model.getProductList(), path);
         	}
-        	else if (y == 0) {
+        	else if (x == 3) {
         		jdbc = new JDBCConnector();
-        		for (Product p : productList) {
+        		for (Product p : model.getProductList()) {
         			jdbc.insert((model.Product) p);
         		}
+        	} else if (x == 4) {
+        		ojpa = new OpenJPA();
+           		for (Product p : model.getProductList()) {
+        			jdbc.insert((model.Product) p);
+           		}
         	}
 
 		} catch (IOException e) {
