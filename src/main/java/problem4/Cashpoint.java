@@ -14,24 +14,39 @@ public class Cashpoint implements Runnable {
 	@Override
 	public void run() {
 
-//		while(true) {
-//			data = queue.dequeue();
-//		}
+		boolean first = true;
 
-		try {
-			Client client;
+		while((queue.size() != 0) || first) {
 
-			while(queue.take()) {
-				long randSec = (new Random().nextInt(2) * 1000);
-				Thread.sleep(1000);
-				queue.take();
-				System.out.println("Kunde abgefertigt");
+			try {
+				int randSec = (int)(Math.random()*4000+6000);
+				Thread.sleep(randSec);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
 			}
+			synchronized(queue) {
+				while(queue.size() < 1) {
+					try {
+						queue.wait();
+					} catch (InterruptedException e) {
+						System.out.println(e);
+					}
+				}
 
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-		System.out.println("Test Cash");
+				try {
+					queue.take();
+					System.out.println("Kunde konsumiert");
+					System.out.println(" (verbleiben: " + queue.size() + ")");
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+
+			}
+			first = false;
+
+		}
+
+
 	}
 
 }

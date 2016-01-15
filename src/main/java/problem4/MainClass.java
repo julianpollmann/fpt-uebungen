@@ -10,10 +10,12 @@ public class MainClass {
 	public static void main(String[] args) {
 //		WaitingQueue1 queue = new WaitingQueue1();
 
-		BlockingQueue<Client> queue = new ArrayBlockingQueue<>(8);
+		BlockingQueue<Client> queue = new ArrayBlockingQueue<>(9);
 
-		Thread t1 = new Thread(new Acquisition(queue));
-		Thread t2 = new Thread(new Cashpoint(queue));
+		Acquisition ac = new Acquisition(queue);
+		Cashpoint c = new Cashpoint(queue);
+		Thread t1 = new Thread(ac);
+		Thread t2 = new Thread(c);
 		t1.start();
 		t2.start();
 	}
