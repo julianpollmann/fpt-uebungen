@@ -17,6 +17,7 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
 
 import org.apache.openjpa.persistence.OpenJPAPersistence;
 
@@ -66,8 +67,10 @@ public class OpenJPA implements SerializableStrategy{
 	}
 
 	public ProductList read() {
-		String statement = "SELECT id,name,price,quantity FROM products order by id desc limit " + maxResults;
-		ProductList results = (ProductList) manager.createQuery(statement).getResultList();
+		String statement = "SELECT p FROM Product p order by p.id desc";
+		Query q = manager.createQuery(statement);
+		q.setMaxResults(maxResults);
+		ProductList results = (ProductList) q.getResultList();
 		if (!results.isEmpty())
 			return results;
 		else
@@ -77,22 +80,15 @@ public class OpenJPA implements SerializableStrategy{
 	private long insert(String name, double price, int quantity) {
 		Product product = new Product((long)0, name, price, quantity);
 
-        open().manager.getTransaction().begin();
-        open().manager.persist(product);
-        open().manager.getTransaction().commit();
+        this.manager.getTransaction().begin();
+        this.manager.persist(product);
+        this.manager.getTransaction().commit();
 
-       // this.close();
-
-        return  product.getId();
+        return 0;
 	}
 
 	public void insert(Product product) {
 		product.setId(insert(product.getName(), product.getPrice(), product.getQuantity()));
-
-		EntityTransaction trans = open().manager.getTransaction();
-		trans.begin();
-		open().manager.persist(product);
-		trans.commit();
 	}
 
 	@Override //Von SerializableStrategy geerbt, aber ist hier äquivalent zu insert.
