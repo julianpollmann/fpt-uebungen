@@ -4,7 +4,7 @@ import java.util.Comparator;
 import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 
-public class Cashpoint implements Runnable, Comparable<Cashpoint>{
+public class Cashpoint implements Runnable {
 
 	private int id;
 	private WaitingQueue<Client> queue;
@@ -94,26 +94,10 @@ public class Cashpoint implements Runnable, Comparable<Cashpoint>{
 		return this.queue.size();
 	}
 
-	public boolean cpIsOpen() {
+	public synchronized boolean cpIsOpen() {
 		return this.isOpen;
 	}
 
-
-
-	@Override
-	public int compareTo(Cashpoint o) {
-		System.out.println("SORTSORTSORT");
-		System.out.println(this.getQueueSize());
-		System.out.println(o.getQueueSize());
-
-		if(this.getQueueSize() > o.getQueueSize()){
-
-			return 0;
-		}else{
-			return 1;
-		}
-
-	}
 
 
 

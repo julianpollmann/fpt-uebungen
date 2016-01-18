@@ -17,12 +17,14 @@ public class Acquisition implements Runnable {
 	private List<Integer> queueSizes;
 	private Cashpoint[] cashpoints;
 	private Thread[] threads;
+	private int cashpointPointer;
 	private static final int MAX_QUEUESIZE = 8;
 	private static final int MAX_CASHPOINTS = 6;
 
 	public Acquisition(Cashpoint[] cashpoints) {
 		this.cashpoints = cashpoints;
 		this.threads = new Thread[MAX_CASHPOINTS];
+		this.cashpointPointer = 0;
 	}
 
 	@Override
@@ -48,37 +50,47 @@ public class Acquisition implements Runnable {
 			cashpoints[1].addClient(cl2, p1);
 			cashpoints[1].addClient(cl2, p1);
 
-			for(int x = 0; x < MAX_CASHPOINTS; x++) {
-				cashpoints[0].addClient(client, p1);
-			}
+			cashpoints[2].addClient(cl2, p1);
+
+			System.out.println("IDDD " + cashpoints[1].getId());
 
 
 
 //			queueSizes.clear();
-//			for(Cashpoint cashpoint : cashpoints) {
+
+
+//			for(int i = 0; i < MAX_CASHPOINTS; i++) {
+//				System.out.println("in for");
+//				if(cashpoints[i].getQueueSize() == MAX_CASHPOINTS) {
+//					System.out.println("Kasse voll.");
 //
+//					for(int j = 0; j < MAX_CASHPOINTS; j++) //nächst kleinere Kasse finden
+//						if(cashpoints[j].getQueueSize() < MAX_CASHPOINTS) {
+//							threads[i+1] = new Thread(cashpoints[j]);
+//							threads[i+1].start();
+//						}
+//				}
 //			}
 
-			for(int i = 0; i < MAX_CASHPOINTS; i++) {
-				System.out.println("in for");
-				if(cashpoints[i].getQueueSize() == MAX_CASHPOINTS) {
-					System.out.println("Kasse voll.");
 
-					for(int j = 0; j < MAX_CASHPOINTS; j++) //nächst kleinere Kasse finden
-						if(cashpoints[j].getQueueSize() < MAX_CASHPOINTS) {
-							threads[i+1] = new Thread(cashpoints[j]);
-							threads[i+1].start();
-						}
-				}
-			}
+			getCashpointWithLowestQueue();
+
 
 
 			Thread cpt1 = new Thread(cashpoints[0]);
-			cpt1.start();
 			Thread cpt2 = new Thread(cashpoints[1]);
-			cpt2.start();
+			Thread cpt3 = new Thread(cashpoints[2]);
+
+			System.out.println(cpt1.getState());
 
 
+//			cpt1.start();
+//			cpt2.start();
+//			cpt3.start();
+
+			System.out.println(cpt1.getState());
+
+			getCashpointWithLowestQueue();
 
 			try {
 				cpt1.join();
@@ -96,6 +108,21 @@ public class Acquisition implements Runnable {
 			}
 		}
 		return false;
+	}
+
+	/*
+	 * Get the Cashpoint with the lowest Queue
+	 */
+	private Cashpoint getCashpointWithLowestQueue() {
+		int lowestQueueCount = MAX_QUEUESIZE;
+
+		for (Cashpoint cashpoint : cashpoints) {
+			if(cashpoint.getQueueSize() < lowestQueueCount) {
+				lowestQueueCount = cashpoint.getQueueSize();
+				this.cashpointPointer = cashpoint.getId();
+			}
+		}
+		return cashpoints[this.cashpointPointer];
 	}
 
 
