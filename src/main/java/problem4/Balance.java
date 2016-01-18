@@ -30,8 +30,7 @@ public class Balance {
 		}
 
 	}
-
+	 //benutze PriorityBlockingQueue hier
 }
 
- //benutze PriorityBlockingQueue hier
-}
+
