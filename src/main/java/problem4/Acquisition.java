@@ -17,14 +17,16 @@ public class Acquisition implements Runnable {
 	private List<Integer> queueSizes;
 	private Cashpoint[] cashpoints;
 	private Thread[] threads;
-	private int cashpointPointer;
+	private int cashpointIndex;
 	private static final int MAX_QUEUESIZE = 8;
 	private static final int MAX_CASHPOINTS = 6;
+	private boolean first;
 
 	public Acquisition(Cashpoint[] cashpoints) {
 		this.cashpoints = cashpoints;
 		this.threads = new Thread[MAX_CASHPOINTS];
-		this.cashpointPointer = 0;
+		this.cashpointIndex = 0;
+		this.first = true;
 	}
 
 	@Override
@@ -40,9 +42,24 @@ public class Acquisition implements Runnable {
 
 			Client client = new Client();
 			double p1 = client.shutUpAndTakeMyMoney();
-			cashpoints[0].addClient(client, p1);
 
 
+			if(first) {
+				this.threads[this.cashpointIndex] = new Thread(this.cashpoints[this.cashpointIndex]);
+				this.threads[this.cashpointIndex].start();
+				this.first = false;
+			}
+
+
+
+			if(this.cashpoints[this.cashpointIndex].getQueueSize() < 6) {
+				this.cashpoints[this.cashpointIndex].addClient(client, p1);
+			} else {
+				this.cashpointIndex = getCashpointWithLowestQueue();
+				System.out.println(this.cashpointIndex);
+				this.threads[this.cashpointIndex] = new Thread(this.cashpoints[this.cashpointIndex]);
+				this.threads[this.cashpointIndex].start();
+			}
 
 
 
@@ -52,18 +69,18 @@ public class Acquisition implements Runnable {
 //				if(cashpoints[i].getQueueSize() == MAX_CASHPOINTS) {
 //					System.out.println("Kasse voll.");
 //
-//					for(int j = 0; j < MAX_CASHPOINTS; j++) //nächst kleinere Kasse finden
-//						if(cashpoints[j].getQueueSize() < MAX_CASHPOINTS) {
-//							threads[i+1] = new Thread(cashpoints[j]);
-//							threads[i+1].start();
-//						}
+////					for(int j = 0; j < MAX_CASHPOINTS; j++) //nächst kleinere Kasse finden
+////						if(cashpoints[j].getQueueSize() < MAX_CASHPOINTS) {
+////							threads[i+1] = new Thread(cashpoints[j]);
+////							threads[i+1].start();
+////						}
 //				}
 //			}
 
-			for(int y = 0; y < MAX_CASHPOINTS; y++) {
-				this.threads[y] = new Thread(cashpoints[y]);
-				this.threads[y].start();
-			}
+//			for(int y = 0; y < MAX_CASHPOINTS; y++) {
+//				this.threads[y] = new Thread(cashpoints[y]);
+//				this.threads[y].start();
+//			}
 
 
 //			Cashpoint lowestCP = getCashpointWithLowestQueue();
@@ -99,18 +116,20 @@ public class Acquisition implements Runnable {
 	}
 
 	/*
-	 * Get the Cashpoint with the lowest Queue
+	 * Get open Cashpoint with lowest Queue
+	 * TODO: Kunden sollen nur in Warteschlange einer offenen Kasse eingereicht werden -> lowestQueueCount muss != 0 sein
+	 * Wenn alle offenen Kassen == 6 Person haben, mache neue auf
 	 */
-	private Cashpoint getCashpointWithLowestQueue() {
+	private int getCashpointWithLowestQueue() {
 		int lowestQueueCount = MAX_QUEUESIZE;
 
 		for (Cashpoint cashpoint : cashpoints) {
-			if(cashpoint.getQueueSize() < lowestQueueCount) {
+			if(cashpoint.getQueueSize() < lowestQueueCount && cashpoint.getQueueSize() != 0) {
 				lowestQueueCount = cashpoint.getQueueSize();
-				this.cashpointPointer = cashpoint.getId();
+				this.cashpointIndex = cashpoint.getId();
 			}
 		}
-		return cashpoints[this.cashpointPointer];
+		return this.cashpointIndex;
 	}
 
 

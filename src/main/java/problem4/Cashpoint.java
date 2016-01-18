@@ -20,6 +20,7 @@ public class Cashpoint implements Runnable {
 	@Override
 	public void run() {
 		System.out.println("in CP run()");
+		this.isOpen = true;
 
 		/*
 		 * 3d) Wait 6 Secs before processing Clients
@@ -67,6 +68,7 @@ public class Cashpoint implements Runnable {
 
 			}
 		}
+		this.isOpen = false;
 		System.out.println("Kasse " + this.id + " ist jetzt geschlossen.");
 	}
 
@@ -78,11 +80,13 @@ public class Cashpoint implements Runnable {
 	 * Adds Client to Queue
 	 * TODO: Adds Price to Balance
 	 */
-	public synchronized void addClient (Client client, double price) {
+	public synchronized boolean addClient (Client client, double price) {
 		try {
 			this.queue.add(client);
+			System.out.println("Kasse " + this.id + " hat einen neuen Kunden (Insgesamt " + this.queue.size() + ").");
+			return true;
 		} catch (IllegalStateException e) {
-			e.printStackTrace();
+			return false;
 		}
 	}
 
