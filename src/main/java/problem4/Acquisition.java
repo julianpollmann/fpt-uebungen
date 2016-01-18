@@ -31,32 +31,20 @@ public class Acquisition implements Runnable {
 	public void run() {
 		while(!allCashpointsFull()) {
 
-
-
-
+			try {
+				int randSec = (int)(Math.random() * 2000);
+				Thread.sleep(randSec);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
 
 			Client client = new Client();
 			double p1 = client.shutUpAndTakeMyMoney();
-			Client cl2 = new Client();
-
 			cashpoints[0].addClient(client, p1);
-			cashpoints[0].addClient(cl2, p1);
-			cashpoints[0].addClient(cl2, p1);
-
-			cashpoints[1].addClient(cl2, p1);
-			cashpoints[1].addClient(cl2, p1);
-			cashpoints[1].addClient(cl2, p1);
-			cashpoints[1].addClient(cl2, p1);
-			cashpoints[1].addClient(cl2, p1);
-			cashpoints[1].addClient(cl2, p1);
-
-			cashpoints[2].addClient(cl2, p1);
-
-			System.out.println("IDDD " + cashpoints[1].getId());
 
 
 
-//			queueSizes.clear();
+
 
 
 //			for(int i = 0; i < MAX_CASHPOINTS; i++) {
@@ -72,38 +60,38 @@ public class Acquisition implements Runnable {
 //				}
 //			}
 
-
-			getCashpointWithLowestQueue();
-
-
-
-			Thread cpt1 = new Thread(cashpoints[0]);
-			Thread cpt2 = new Thread(cashpoints[1]);
-			Thread cpt3 = new Thread(cashpoints[2]);
-
-			System.out.println(cpt1.getState());
+			for(int y = 0; y < MAX_CASHPOINTS; y++) {
+				this.threads[y] = new Thread(cashpoints[y]);
+				this.threads[y].start();
+			}
 
 
-//			cpt1.start();
-//			cpt2.start();
-//			cpt3.start();
+//			Cashpoint lowestCP = getCashpointWithLowestQueue();
+//			System.out.println(lowestCP.getId());
 
-			System.out.println(cpt1.getState());
+		}
 
-			getCashpointWithLowestQueue();
-
+		/*
+		 * If every Cashpoint Queue is processed,
+		 * close Aquisition
+		 */
+		for(Thread thread : threads) {
 			try {
-				cpt1.join();
+				thread.join();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
-
 	}
 
+	/*
+	 * Check all Cashpoints for full
+	 * WaitingQueue
+	 */
 	private synchronized boolean allCashpointsFull() {
 		for (Cashpoint cashpoint : cashpoints) {
 			if(cashpoint.getQueueSize() == 8) {
+				System.out.println("CP ist voll!!!");
 				return true;
 			}
 		}
