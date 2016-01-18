@@ -20,17 +20,19 @@ public class Acquisition implements Runnable {
 	private int cashpointIndex;
 	private static final int MAX_QUEUESIZE = 8;
 	private static final int MAX_CASHPOINTS = 6;
-	private boolean first;
 
 	public Acquisition(Cashpoint[] cashpoints) {
 		this.cashpoints = cashpoints;
 		this.threads = new Thread[MAX_CASHPOINTS];
 		this.cashpointIndex = 0;
-		this.first = true;
 	}
 
 	@Override
 	public void run() {
+
+		this.threads[this.cashpointIndex] = new Thread(this.cashpoints[this.cashpointIndex]);
+		this.threads[this.cashpointIndex].start();
+
 		while(!allCashpointsFull()) {
 
 			try {
@@ -42,14 +44,6 @@ public class Acquisition implements Runnable {
 
 			Client client = new Client();
 			double p1 = client.shutUpAndTakeMyMoney();
-
-
-			if(first) {
-				this.threads[this.cashpointIndex] = new Thread(this.cashpoints[this.cashpointIndex]);
-				this.threads[this.cashpointIndex].start();
-				this.first = false;
-			}
-
 
 
 			if(this.cashpoints[this.cashpointIndex].getQueueSize() < 6) {
@@ -126,6 +120,9 @@ public class Acquisition implements Runnable {
 		for (Cashpoint cashpoint : cashpoints) {
 			if(cashpoint.getQueueSize() < lowestQueueCount && cashpoint.getQueueSize() != 0) {
 				lowestQueueCount = cashpoint.getQueueSize();
+				if(lowestQueueCount == 6) {
+					//TODO: Wenn lowestCount 6 ist, nimm kleinsten Index und prüfe ob array dort frei ist... usw
+				}
 				this.cashpointIndex = cashpoint.getId();
 			}
 		}
