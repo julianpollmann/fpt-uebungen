@@ -9,10 +9,11 @@ public class Cashpoint implements Runnable {
 	private int id;
 	private WaitingQueue<Client> queue;
 	private boolean isOpen;
+	private static final int MAX_QUEUESIZE = 8;
 
 	public Cashpoint(int id) {
 		this.id = id;
-		this.queue = new WaitingQueue<Client>(6);
+		this.queue = new WaitingQueue<Client>(MAX_QUEUESIZE);
 		this.isOpen = false;
 	}
 
@@ -77,12 +78,10 @@ public class Cashpoint implements Runnable {
 	 * Adds Client to Queue
 	 * TODO: Adds Price to Balance
 	 */
-	public synchronized void addClient(Client client, double price) {
+	public synchronized void addClient (Client client, double price) {
 		try {
-//			this.queue.add(client);
-			this.queue.put(client);
-//			this.queue.notify();
-		} catch (InterruptedException e) {
+			this.queue.add(client);
+		} catch (IllegalStateException e) {
 			e.printStackTrace();
 		}
 	}
