@@ -1,8 +1,5 @@
 package problem4;
 
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-
 import problem4.*;
 
 public class MainClass {
@@ -10,14 +7,24 @@ public class MainClass {
 	public static void main(String[] args) {
 //		WaitingQueue1 queue = new WaitingQueue1();
 
-		BlockingQueue<Client> queue = new ArrayBlockingQueue<>(9);
+		Cashpoint[] cashpoints = {
+				new Cashpoint(1),
+				new Cashpoint(2),
+				new Cashpoint(3),
+				new Cashpoint(4),
+				new Cashpoint(5),
+				new Cashpoint(6)
+		};
 
-		Acquisition ac = new Acquisition(queue);
-		Cashpoint c = new Cashpoint(queue);
+		Acquisition ac = new Acquisition(cashpoints);
 		Thread t1 = new Thread(ac);
-		Thread t2 = new Thread(c);
 		t1.start();
-		t2.start();
-	}
 
+		try {
+			t1.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.println("Alle Kunden abgearbeitet + Kundenakquise gestoppt.");
+	}
 }
