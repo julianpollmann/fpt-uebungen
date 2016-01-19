@@ -49,6 +49,7 @@ public class JDBCConnector {
 		)) {
 			// Queries ausführen
 			getStatusInformation(con);
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

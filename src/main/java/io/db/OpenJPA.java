@@ -30,13 +30,27 @@ public class OpenJPA implements SerializableStrategy{
 	private int maxResults = 10;
 	private EntityManagerFactory factory;
 	private EntityManager manager;
+	private List<Product> productList;
 
 	public OpenJPA() {
 		this.factory = getWithoutConfig();
 		this.manager = factory.createEntityManager();
 	}
 
-	//Aus dem Beispiel der VL...
+	public static void main(String[] args) {
+		Product p = new Product("Muesli", 14.95, 52);
+
+		OpenJPA ojpa = new OpenJPA();
+		//Produkt hinzufügen
+		ojpa.insert(p);
+		//Produkte auslesen
+		ojpa.productList = ojpa.read();
+		for (fpt.com.Product prod : ojpa.productList){
+			System.out.println(prod.getName() + ", " + prod.getPrice() + ", " + prod.getQuantity() + ", " + prod.getId() + ".");
+		}
+	}
+
+	//Verbindung ohne Konfigurationsdatei
 	public EntityManagerFactory getWithoutConfig() {
 
 		Map<String, String> map = new HashMap<String, String>();
@@ -66,11 +80,11 @@ public class OpenJPA implements SerializableStrategy{
 		return OpenJPAPersistence.getEntityManagerFactory(map);
 	}
 
-	public ProductList read() {
+	public List<Product> read() {
 		String statement = "SELECT p FROM Product p order by p.id desc";
 		Query q = manager.createQuery(statement);
 		q.setMaxResults(maxResults);
-		ProductList results = (ProductList) q.getResultList();
+		List<Product> results = (List<Product>) q.getResultList();
 		if (!results.isEmpty())
 			return results;
 		else
@@ -109,6 +123,7 @@ public class OpenJPA implements SerializableStrategy{
 			{factory.close();}
 	}
 
+// Aus SerializableStrategy
 	@Override
 	public fpt.com.Product readObject() throws IOException {
 		// TODO Auto-generated method stub
@@ -120,8 +135,4 @@ public class OpenJPA implements SerializableStrategy{
 
 	}
 
-	public OpenJPA open() {
-		OpenJPA ojpa = new OpenJPA();
-		return ojpa;
-	}
 }

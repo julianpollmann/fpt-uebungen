@@ -46,7 +46,6 @@ public class Product implements fpt.com.Product, Externalizable {
 	private SimpleIntegerProperty quantity;
 
 	public Product() {
-
 		id = 0;
 		name = new SimpleStringProperty();
 		price = new SimpleDoubleProperty();
@@ -58,22 +57,19 @@ public class Product implements fpt.com.Product, Externalizable {
 		this.price = new SimpleDoubleProperty();
 		this.quantity = new SimpleIntegerProperty();
 		this.id = id;
-
-
 		setId(id);
 		setName(name);
 		setPrice(price);
 		setQuantity(quantity);
-
 	}
-	public Product( String name, Double price, Integer quantity) {
+
+	public Product(String name, Double price, Integer quantity) {
 		this.name = new SimpleStringProperty();
 		this.price = new SimpleDoubleProperty();
 		this.quantity = new SimpleIntegerProperty();
 		setName(name);
 		setPrice(price);
 		setQuantity(quantity);
-
 	}
 
 	@Override
