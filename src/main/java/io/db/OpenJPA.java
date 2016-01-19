@@ -92,7 +92,7 @@ public class OpenJPA implements SerializableStrategy{
 	}
 
 	private long insert(String name, double price, int quantity) {
-		Product product = new Product((long)0, name, price, quantity);
+		Product product = new Product(name, price, quantity);
 
         this.manager.getTransaction().begin();
         this.manager.persist(product);

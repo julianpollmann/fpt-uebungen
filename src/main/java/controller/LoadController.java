@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import io.*;
 import io.db.JDBCConnector;
 import io.db.JDBCStrategy;
+import io.db.OpenJPA;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import model.ModelShop;
@@ -59,10 +60,11 @@ public class LoadController implements EventHandler {
 			break;
 		case "JDBC-DB-Verbindung":
 			strat = new JDBCStrategy();
-			y = 0;
+			x = 3;
 			break;
 		case "OpenJPA-DB-Verbindung":
-			y = 1;
+			strat = new OpenJPA();
+			x = 4;
 			break;
 		}
 		try {
@@ -73,9 +75,15 @@ public class LoadController implements EventHandler {
 					model.add(p);
 				}
 			}
-			if (y == 0) {
+			else if (x == 3) {
 				JDBCConnector jdbc = new JDBCConnector();
 				for (fpt.com.Product p : jdbc.read()){
+					model.add(p);
+				}
+			}
+			else if (x == 4) {
+				OpenJPA ojpa = new OpenJPA();
+				for (fpt.com.Product p : ojpa.read()){
 					model.add(p);
 				}
 			}
