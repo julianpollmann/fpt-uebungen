@@ -1,11 +1,15 @@
 package io.db;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.sql.*;
 
 import fpt.com.ProductList;
+import fpt.com.SerializableStrategy;
 import model.Product;
 
-public class JDBCConnector {
+public class JDBCConnector implements SerializableStrategy {
 
 	private Connection con;
 	private DatabaseMetaData dmd;
@@ -96,6 +100,7 @@ public class JDBCConnector {
 		return -1;
 	}
 
+
 	public void insert(Product product) {
 		product.setId(insert(product.getName(), product.getPrice(), product.getQuantity()));
 	}
@@ -162,5 +167,29 @@ public class JDBCConnector {
 			}
 			return null;
 		}
+	}
+
+	@Override
+	public fpt.com.Product readObject() throws IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void writeObject(fpt.com.Product obj) throws IOException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void close() throws IOException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void open(InputStream input, OutputStream output) throws IOException {
+		// TODO Auto-generated method stub
+
 	}
 }

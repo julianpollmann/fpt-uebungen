@@ -36,10 +36,13 @@ public class LoadController implements EventHandler {
 		this.model = model;
 		this.view = view;
 
-		strategy = new SerializationStrategy[3];
+		strategy = new SerializationStrategy[5];
 		strategy[0] = new SerializationStrategy(new BinaryStrategy());
 		strategy[1] = new SerializationStrategy(new XMLStrategy());
 		strategy[2] = new SerializationStrategy(new XStreamStrategy());
+		strategy[3] = new SerializationStrategy(new JDBCStrategy());
+		strategy[4] = new SerializationStrategy(new OpenJPA());
+
 	}
 
 	@Override
@@ -59,7 +62,6 @@ public class LoadController implements EventHandler {
 			path = "produktliste.xml";
 			break;
 		case "JDBC-DB-Verbindung":
-			strat = new JDBCStrategy();
 			x = 3;
 			break;
 		case "OpenJPA-DB-Verbindung":

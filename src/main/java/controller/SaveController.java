@@ -6,6 +6,7 @@ import fpt.com.ProductList;
 import fpt.com.db.AbstractDatabaseStrategy;
 import io.*;
 import io.db.JDBCConnector;
+import io.db.JDBCStrategy;
 import io.db.OpenJPA;
 import model.ModelShop;
 import fpt.com.Product;
@@ -32,12 +33,12 @@ public class SaveController implements EventHandler {
 		this.model = model;
 		this.view = view;
 
-		serialization = new SerializationStrategy[3];
+		serialization = new SerializationStrategy[5];
 		serialization[0] = new SerializationStrategy(new BinaryStrategy());
 		serialization[1] = new SerializationStrategy(new XMLStrategy());
 		serialization[2] = new SerializationStrategy(new XStreamStrategy());
-		//JDBCConnector jDBC = new JDBCConnector();
-
+		serialization[3] = new SerializationStrategy(new JDBCStrategy());
+		serialization[4] = new SerializationStrategy(new OpenJPA());
 	}
 
 	@Override
@@ -78,7 +79,7 @@ public class SaveController implements EventHandler {
         	} else if (x == 4) {
         		ojpa = new OpenJPA();
            		for (Product p : model.getProductList()) {
-        			ojpa.insert((model.Product) p);
+           			jdbc.insert((model.Product) p);
            		}
         	}
 
