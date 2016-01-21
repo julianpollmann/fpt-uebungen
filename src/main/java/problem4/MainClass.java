@@ -7,13 +7,15 @@ public class MainClass {
 	public static void main(String[] args) {
 //		WaitingQueue1 queue = new WaitingQueue1();
 
+		Balance balance = new Balance();
+
 		Cashpoint[] cashpoints = {
-				new Cashpoint(1),
-				new Cashpoint(2),
-				new Cashpoint(3),
-				new Cashpoint(4),
-				new Cashpoint(5),
-				new Cashpoint(6)
+				new Cashpoint(1, balance),
+				new Cashpoint(2, balance),
+				new Cashpoint(3, balance),
+				new Cashpoint(4, balance),
+				new Cashpoint(5, balance),
+				new Cashpoint(6, balance)
 		};
 
 		Acquisition ac = new Acquisition(cashpoints);

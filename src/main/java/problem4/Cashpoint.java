@@ -10,9 +10,11 @@ public class Cashpoint implements Runnable {
 	private WaitingQueue<Client> queue;
 	private boolean isOpen;
 	private static final int MAX_QUEUESIZE = 8;
+	private Balance balance;
 
-	public Cashpoint(int id) {
+	public Cashpoint(int id, Balance balance) {
 		this.id = id;
+		this.balance = balance;
 		this.queue = new WaitingQueue<Client>(MAX_QUEUESIZE);
 		this.isOpen = false;
 	}
@@ -78,6 +80,7 @@ public class Cashpoint implements Runnable {
 	public synchronized boolean addClient (Client client, double price) {
 		try {
 			this.queue.add(client);
+			this.balance.addSales(this, price);
 			System.out.println("Kasse " + this.id + " hat einen neuen Kunden (Insgesamt " + this.queue.size() + ").");
 			return true;
 		} catch (IllegalStateException e) {
