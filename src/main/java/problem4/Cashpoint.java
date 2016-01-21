@@ -49,14 +49,6 @@ public class Cashpoint implements Runnable {
 			}
 
 			synchronized(queue) {
-//				while(queue.size() < 1) {
-//					try {
-//						this.queue.wait();
-//					} catch (InterruptedException e) {
-//						System.out.println(e);
-//					}
-//				}
-
 				try {
 					this.queue.take();
 					this.queue.notify();
@@ -68,6 +60,9 @@ public class Cashpoint implements Runnable {
 
 			}
 		}
+		/*
+		 * 2b) Waiting Queue is < 0, run() is getting finished now
+		 */
 		this.isOpen = false;
 		System.out.println("Kasse " + this.id + " ist jetzt geschlossen.");
 	}
@@ -96,12 +91,4 @@ public class Cashpoint implements Runnable {
 	public synchronized int getQueueSize() {
 		return this.queue.size();
 	}
-
-	public synchronized boolean cpIsOpen() {
-		return this.isOpen;
-	}
-
-
-
-
 }

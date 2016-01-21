@@ -3,6 +3,7 @@ package problem4;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.TreeSet;
 import java.util.concurrent.BlockingQueue;
@@ -12,73 +13,69 @@ import org.apache.commons.collections.list.TreeList;
 public class Acquisition implements Runnable {
 
 	private Client client;
-	private WaitingQueue<Client> queue;
-	private WaitingQueue<Client>[] queues;
-	private List<Integer> queueSizes;
 	private Cashpoint[] cashpoints;
 	private Thread[] threads;
 	private int cashpointIndex;
 	private static final int MAX_QUEUESIZE = 8;
 	private static final int MAX_CASHPOINTS = 6;
+	private boolean allOpen;
 
 	public Acquisition(Cashpoint[] cashpoints) {
 		this.cashpoints = cashpoints;
-		this.threads = new Thread[MAX_CASHPOINTS];
-		this.cashpointIndex = 0;
+		threads = new Thread[MAX_CASHPOINTS];
+		cashpointIndex = 0;
 	}
 
 	@Override
 	public void run() {
+		for (int ci = 0; ci < MAX_CASHPOINTS; ci++) {
+			threads[ci] = new Thread(this.cashpoints[ci]);
+		}
+		threads[cashpointIndex].start();
 
-		this.threads[this.cashpointIndex] = new Thread(this.cashpoints[this.cashpointIndex]);
-		this.threads[this.cashpointIndex].start();
 
+		/*
+		 * 2d) Check if all Cashpoints are full (one Cashpoint has a
+		 * Waiting Queue == 8
+		 * If true, wait for Subthreads to be finished
+		 * If false, generate Clients and put them in a Queue
+		 */
 		while(!allCashpointsFull()) {
 
-			try {
-				int randSec = (int)(Math.random() * 2000);
-				Thread.sleep(randSec);
-			} catch (InterruptedException e1) {
-				e1.printStackTrace();
+
+			if(!allCashpointsOpen()) {
+
+
+				/*
+				 * 2c) It takes 0-1 Secs to generate a new Client
+				 */
+				try {
+					int randSec = (int)(Math.random() * 2000);
+					Thread.sleep(randSec);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+
+
+				/*
+				 * Generate Client
+				 */
+				Client client = new Client();
+				double p1 = client.shutUpAndTakeMyMoney();
+
+
+				if(this.cashpoints[cashpointIndex].getQueueSize() < 6) {
+					this.cashpoints[cashpointIndex].addClient(client, p1);
+				} else {
+					// TODO: Logic Fail irgendwo hier
+					cashpointIndex = getCashpointWithLowestQueue();
+					this.cashpoints[cashpointIndex].addClient(client, p1);
+					threads[cashpointIndex].start();
+				}
+
 			}
 
-			Client client = new Client();
-			double p1 = client.shutUpAndTakeMyMoney();
 
-
-			if(this.cashpoints[this.cashpointIndex].getQueueSize() < 6) {
-				this.cashpoints[this.cashpointIndex].addClient(client, p1);
-			} else {
-				this.cashpointIndex = getCashpointWithLowestQueue();
-				System.out.println(this.cashpointIndex);
-				this.threads[this.cashpointIndex] = new Thread(this.cashpoints[this.cashpointIndex]);
-				this.threads[this.cashpointIndex].start();
-			}
-
-
-
-
-//			for(int i = 0; i < MAX_CASHPOINTS; i++) {
-//				System.out.println("in for");
-//				if(cashpoints[i].getQueueSize() == MAX_CASHPOINTS) {
-//					System.out.println("Kasse voll.");
-//
-////					for(int j = 0; j < MAX_CASHPOINTS; j++) //nächst kleinere Kasse finden
-////						if(cashpoints[j].getQueueSize() < MAX_CASHPOINTS) {
-////							threads[i+1] = new Thread(cashpoints[j]);
-////							threads[i+1].start();
-////						}
-//				}
-//			}
-
-//			for(int y = 0; y < MAX_CASHPOINTS; y++) {
-//				this.threads[y] = new Thread(cashpoints[y]);
-//				this.threads[y].start();
-//			}
-
-
-//			Cashpoint lowestCP = getCashpointWithLowestQueue();
-//			System.out.println(lowestCP.getId());
 
 		}
 
@@ -96,13 +93,27 @@ public class Acquisition implements Runnable {
 	}
 
 	/*
+	 * Check if all Cashpoints are open
+	 */
+	private boolean allCashpointsOpen() {
+		boolean isOpen = false;
+		for (Thread thread : threads) {
+			if (!thread.isAlive()) {
+				return false;
+			}
+		}
+		System.out.println("Alle Kassen sind offen.");
+		return true;
+	}
+
+	/*
 	 * Check all Cashpoints for full
 	 * WaitingQueue
 	 */
 	private synchronized boolean allCashpointsFull() {
-		for (Cashpoint cashpoint : cashpoints) {
-			if(cashpoint.getQueueSize() == 8) {
-				System.out.println("CP ist voll!!!");
+		for (Cashpoint cashpoint : this.cashpoints) {
+			if(cashpoint.getQueueSize() == MAX_QUEUESIZE) {
+				System.out.println("Alle Warteschlangen voll. Akquiriere keine Neukunden.");
 				return true;
 			}
 		}
@@ -117,17 +128,48 @@ public class Acquisition implements Runnable {
 	private int getCashpointWithLowestQueue() {
 		int lowestQueueCount = MAX_QUEUESIZE;
 
-		for (Cashpoint cashpoint : cashpoints) {
-			if(cashpoint.getQueueSize() < lowestQueueCount && cashpoint.getQueueSize() != 0) {
-				lowestQueueCount = cashpoint.getQueueSize();
-				if(lowestQueueCount == 6) {
-					//TODO: Wenn lowestCount 6 ist, nimm kleinsten Index und prüfe ob array dort frei ist... usw
+		for (int c = 0; c < cashpoints.length; c++) {
+			if(threads[c].isAlive()) {
+				if(cashpoints[c].getQueueSize() < lowestQueueCount) {
+					lowestQueueCount = cashpoints[c].getQueueSize();
+					cashpointIndex = cashpoints[c].getId()-1;
 				}
-				this.cashpointIndex = cashpoint.getId();
+				if(lowestQueueCount == 6) {
+					cashpointIndex++;
+				}
 			}
 		}
-		return this.cashpointIndex;
+		return cashpointIndex;
 	}
+
+
+
+//				if(thread.isAlive()) {
+//					System.out.println("Test" + thread.getId());
+//					if(cashpoint.getQueueSize() < lowestQueueCount) {
+//						lowestQueueCount = cashpoint.getQueueSize();
+//						cashpointIndex = cashpoint.getId()-1;
+//						System.out.println("CPIndex: " + cashpointIndex);
+//					}
+//				}
+
+
+//			for (int x = 0; x < threads.length; x++) {
+//
+//				if(threads[x].isAlive()) {
+//					System.out.println("Thread läuft: ");
+//					if(cashpoint.getQueueSize() < lowestQueueCount) {
+//						lowestQueueCount = cashpoint.getQueueSize();
+//						cashpointIndex = cashpoint.getId()-1;
+//						System.out.println("CPIndex: " + cashpointIndex);
+//					}
+//				}
+//			}
+
+//			if (lowestQueueCount == 6) {
+//				cashpointIndex = 0;
+//			}
+
 
 
 //	@Override
