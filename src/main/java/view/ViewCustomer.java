@@ -1,7 +1,8 @@
 package view;
 
+import java.util.Optional;
+
 import fpt.com.Product;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -15,12 +16,13 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
 
 public class ViewCustomer extends BorderPane {
 
 	private Label heading;
-	private Button addProd, history;
+	private Button addProd, history, buy;
 //	private ListView<String> products;
 	private VBox vbox;
 	private Label nameLabel;
@@ -39,6 +41,8 @@ public class ViewCustomer extends BorderPane {
 	private TableColumn<Product, Number> prodPrice;
 	private TableColumn<Product, Number> prodQuantity;
 	ViewHistory view3;
+	private ViewLogin login;
+	private Optional<Pair<String, String>> loginResult;
 
 
 	public ViewCustomer() {
@@ -73,7 +77,10 @@ public class ViewCustomer extends BorderPane {
 			stage3.setTitle("Vorherige Bestellungen");
 			stage3.setScene(scene3);
 			stage3.show();
-
+		});
+		buy = new Button("Kaufen");
+		buy.setOnAction(e -> {
+			openLoginDialog();
 		});
 
 		// Name Label + Textfeld
@@ -92,7 +99,7 @@ public class ViewCustomer extends BorderPane {
 		vbox = new VBox(6);
 		vbox.setPrefWidth(200);
 		vbox.setPadding(new Insets(0, 10, 0, 10));
-		vbox.getChildren().addAll(nameLabel, nameInput, priceLabel, priceInput, quantityLabel, quantityInput, addProd, history);
+		vbox.getChildren().addAll(nameLabel, nameInput, priceLabel, priceInput, quantityLabel, quantityInput, addProd, history, buy);
 	}
 
 	private void setTableView() {
@@ -127,6 +134,15 @@ public class ViewCustomer extends BorderPane {
 	public String getInputPaneText() {
 		// TODO: Array zurückgeben für alle Parameter
 		return nameInput.getText();
+	}
+
+	private void openLoginDialog() {
+		login = new ViewLogin();
+		loginResult = login.showAndWait();
+
+		loginResult.ifPresent(usernamePassword -> {
+	    	System.out.println("Username=" + usernamePassword.getKey() + ", Password=" + usernamePassword.getValue());
+		});
 	}
 
 	// Für Verwendung des ListViews
