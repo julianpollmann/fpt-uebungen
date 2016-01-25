@@ -7,7 +7,7 @@ import fpt.com.db.AbstractDatabaseStrategy;
 import io.*;
 import io.db.JDBCConnector;
 import io.db.JDBCStrategy;
-import io.db.OpenJPA;
+//import io.db.OpenJPA;
 import model.ModelShop;
 import fpt.com.Product;
 import view.ViewShop;
@@ -22,7 +22,7 @@ public class SaveController implements EventHandler {
     private SerializationStrategy[] serialization;
     private AbstractDatabaseStrategy[] databaseStrategy; //wird noch nicht verwendet
     private JDBCConnector jdbc;
-    private OpenJPA ojpa;
+//    private OpenJPA ojpa;
 	Product product;
 	ProductList productList;
 	private String path;
@@ -38,7 +38,7 @@ public class SaveController implements EventHandler {
 		serialization[1] = new SerializationStrategy(new XMLStrategy());
 		serialization[2] = new SerializationStrategy(new XStreamStrategy());
 		serialization[3] = new SerializationStrategy(new JDBCStrategy());
-		serialization[4] = new SerializationStrategy(new OpenJPA());
+//		serialization[4] = new SerializationStrategy(new OpenJPA());
 	}
 
 	@Override
@@ -60,9 +60,9 @@ public class SaveController implements EventHandler {
 			case "JDBC-DB-Verbindung":
 				x = 3;
 				break;
-			case "OpenJPA-DB-Verbindung":
-				x = 4;
-				break;
+//			case "OpenJPA-DB-Verbindung":
+//				x = 4;
+//				break;
 		}
         try {
 
@@ -76,12 +76,13 @@ public class SaveController implements EventHandler {
         		for (Product p : model.getProductList()) {
         			jdbc.insert((model.Product) p);
         		}
-        	} else if (x == 4) {
-        		ojpa = new OpenJPA();
-           		for (Product p : model.getProductList()) {
-           			jdbc.insert((model.Product) p);
-           		}
         	}
+//        	else if (x == 4) {
+//        		ojpa = new OpenJPA();
+//           		for (Product p : model.getProductList()) {
+//           			jdbc.insert((model.Product) p);
+//           		}
+//        	}
 
 		} catch (IOException e) {
 			e.printStackTrace();

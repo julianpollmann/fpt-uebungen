@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import io.*;
 import io.db.JDBCConnector;
 import io.db.JDBCStrategy;
-import io.db.OpenJPA;
+//import io.db.OpenJPA;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import model.ModelShop;
@@ -41,7 +41,7 @@ public class LoadController implements EventHandler {
 		strategy[1] = new SerializationStrategy(new XMLStrategy());
 		strategy[2] = new SerializationStrategy(new XStreamStrategy());
 		strategy[3] = new SerializationStrategy(new JDBCStrategy());
-		strategy[4] = new SerializationStrategy(new OpenJPA());
+//		strategy[4] = new SerializationStrategy(new OpenJPA());
 
 	}
 
@@ -64,10 +64,10 @@ public class LoadController implements EventHandler {
 		case "JDBC-DB-Verbindung":
 			x = 3;
 			break;
-		case "OpenJPA-DB-Verbindung":
-			strat = new OpenJPA();
-			x = 4;
-			break;
+//		case "OpenJPA-DB-Verbindung":
+//			strat = new OpenJPA();
+//			x = 4;
+//			break;
 		}
 		try {
 			if (path != null){
@@ -83,12 +83,12 @@ public class LoadController implements EventHandler {
 					model.add(p);
 				}
 			}
-			else if (x == 4) {
-				OpenJPA ojpa = new OpenJPA();
-				for (fpt.com.Product p : ojpa.read()){
-					model.add(p);
-				}
-			}
+//			else if (x == 4) {
+//				OpenJPA ojpa = new OpenJPA();
+//				for (fpt.com.Product p : ojpa.read()){
+//					model.add(p);
+//				}
+//			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
