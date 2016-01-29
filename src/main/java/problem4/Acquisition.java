@@ -44,8 +44,6 @@ public class Acquisition implements Runnable {
 
 
 			if(!allCashpointsOpen()) {
-
-
 				/*
 				 * 2c) It takes 0-1 Secs to generate a new Client
 				 */
@@ -55,8 +53,6 @@ public class Acquisition implements Runnable {
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}
-
-
 				/*
 				 * Generate Client
 				 */
@@ -132,7 +128,7 @@ public class Acquisition implements Runnable {
 			if(threads[c].isAlive()) {
 				if(cashpoints[c].getQueueSize() < lowestQueueCount) {
 					lowestQueueCount = cashpoints[c].getQueueSize();
-					cashpointIndex = cashpoints[c].getId()-1;
+					cashpointIndex = (cashpoints[c].getId()-1);
 				}
 				if(lowestQueueCount == 6) {
 					cashpointIndex++;
