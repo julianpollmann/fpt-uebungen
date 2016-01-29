@@ -1,8 +1,7 @@
 package controller;
 
-import java.util.Optional;
-
 import fpt.com.Product;
+import io.OutgoingThread;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.util.Pair;
@@ -26,7 +25,9 @@ public class BuyController implements EventHandler {
 		loginResult = this.view.openLoginDialog();
 		prod = view.getProductTable().getSelectionModel().getSelectedItem();
 
-		// TODO von hier Verbindung aufbauen, loginResult und Produkt übergeben
+		OutgoingThread ot = new OutgoingThread(loginResult, prod);
+		ot.run();
+
 	}
 
 }
