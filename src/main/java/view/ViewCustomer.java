@@ -45,7 +45,8 @@ public class ViewCustomer extends BorderPane {
 	private Optional<Pair<String, String>> loginResult;
 	private Product prod;
 
-
+	// TODO: Rebuild UI using Threading:
+	// http://blog.axxg.de/javafx-ui-thread-update/
 	public ViewCustomer() {
 
 //		products = new ListView<String>();
