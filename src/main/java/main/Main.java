@@ -37,13 +37,13 @@ public class Main extends Application {
 			primaryStage.show();
 
 			// Customerview in zweitem Fenster
-			view2 = new ViewCustomer();
-
-			Stage stage2 = new Stage();
-			Scene scene2 = new Scene(view2, 800, 500);
-			stage2.setTitle("Ihre Bestellung");
-			stage2.setScene(scene2);
-			stage2.show();
+//			view2 = new ViewCustomer();
+//
+//			Stage stage2 = new Stage();
+//			Scene scene2 = new Scene(view2, 800, 500);
+//			stage2.setTitle("Ihre Bestellung");
+//			stage2.setScene(scene2);
+//			stage2.show();
 
 			// Historyview in drittem Fenster - soll sich nachher erst auf Buttondruck öffnen
 

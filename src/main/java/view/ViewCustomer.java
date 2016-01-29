@@ -43,6 +43,7 @@ public class ViewCustomer extends BorderPane {
 	ViewHistory view3;
 	private ViewLogin login;
 	private Optional<Pair<String, String>> loginResult;
+	private Product prod;
 
 
 	public ViewCustomer() {
@@ -79,9 +80,10 @@ public class ViewCustomer extends BorderPane {
 			stage3.show();
 		});
 		buy = new Button("Kaufen");
-		buy.setOnAction(e -> {
-			openLoginDialog();
-		});
+//		buy.setOnAction(e -> {
+//			prod = prodTable.getSelectionModel().getSelectedItem();
+//			openLoginDialog();
+//		});
 
 		// Name Label + Textfeld
 		nameLabel = new Label(nameString);
@@ -136,13 +138,18 @@ public class ViewCustomer extends BorderPane {
 		return nameInput.getText();
 	}
 
-	private void openLoginDialog() {
+	public Pair<String, String> openLoginDialog() {
 		login = new ViewLogin();
 		loginResult = login.showAndWait();
 
-		loginResult.ifPresent(usernamePassword -> {
-	    	System.out.println("Username=" + usernamePassword.getKey() + ", Password=" + usernamePassword.getValue());
-		});
+//		loginResult.ifPresent(usernamePassword -> {
+//	    	System.out.println("Username=" + usernamePassword.getKey() + ", Password=" + usernamePassword.getValue());
+//		});
+		return loginResult.get();
+	}
+
+	public Button getBuy() {
+		return buy;
 	}
 
 	// Für Verwendung des ListViews
