@@ -6,11 +6,11 @@ import java.net.Socket;
 
 public class Warehouse {
 
-	public Warehouse() {
-
-	}
+	private UDPServer udpserv;
+	private TCPServer tcpserv;
 
 	public static void main(String[] args) {
-
+//		UDPServer udpserv = new UDPServer();
+		TCPServer tcpserv = new TCPServer();
 	}
 }

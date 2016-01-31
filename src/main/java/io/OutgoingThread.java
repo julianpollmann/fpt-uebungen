@@ -1,8 +1,8 @@
 package io;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 
@@ -13,9 +13,11 @@ public class OutgoingThread extends Thread {
 
 	private Pair<String, String> loginResult;
 	private Product order;
-	private InputStream input;
-	private OutputStream output;
-	private byte[] byteArray;
+	private String user;
+	private String pass;
+	private String prodName;
+	private int prodQuantity;
+	private double prodPrice;
 
 	public OutgoingThread(Pair<String, String> loginResult, Product order) {
 		this.loginResult = loginResult;
@@ -28,35 +30,21 @@ public class OutgoingThread extends Thread {
 
 	private void openConnection() {
 		try (Socket serverCon = new Socket("localhost", 6666);
-				OutputStream output = serverCon.getOutputStream()) {
+				OutputStream outStream = serverCon.getOutputStream();
+				PrintWriter outPrintWriter = new PrintWriter(outStream, true)
+			) {
 
-			byte[] byteArrayUser = convertStringToByte(this.loginResult.getKey());
-			byte[] byteArrayPass = convertStringToByte(this.loginResult.getValue());
-			byte[] byteArrayOrder = convertStringToByte(this.loginResult.getKey());
+			user = this.loginResult.getKey().toString();
+			pass = this.loginResult.getValue().toString();
 
+			outPrintWriter.print("login=" + user + ":" + pass + "\r\n");
+			outPrintWriter.println(order.getName());
+			outPrintWriter.println(order.getQuantity());
+			outPrintWriter.println(order.getPrice());
 
-			// Zahlenschreiben schreiben
-			output.write(byteArrayUser);
-			output.write(byteArrayPass);
-			output.write(byteArrayOrder);
-			output.flush();
-
-			// Ergebnis entgegennehmen
-			int result = input.read();
-
-			System.out.println(result);
+			outStream.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-
-	private byte[] convertStringToByte(String string) throws UnsupportedEncodingException {
-		int length = string.length();
-
-		byte[] byteArray = new byte[length];
-		byteArray = string.getBytes("UTF-8");
-
-		return byteArray;
-	}
-
 }
