@@ -4,6 +4,8 @@ import fpt.com.Product;
 import io.OutgoingThread;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.util.Pair;
 import model.ModelShop;
 import view.ViewCustomer;
@@ -22,12 +24,18 @@ public class BuyController implements EventHandler {
 
 	@Override
 	public void handle(Event event) {
-		loginResult = this.view.openLoginDialog();
 		prod = view.getProductTable().getSelectionModel().getSelectedItem();
 
-		OutgoingThread ot = new OutgoingThread(loginResult, prod);
-		ot.run();
-
+		/*
+		 * Check if product is selected
+		 */
+		if(prod == null) {
+			this.view.openAlert();
+		} else {
+			loginResult = this.view.openLoginDialog();
+			OutgoingThread ot = new OutgoingThread(loginResult, prod);
+			ot.run();
+		}
 	}
 
 }

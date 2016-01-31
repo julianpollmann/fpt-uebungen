@@ -7,11 +7,13 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -147,6 +149,15 @@ public class ViewCustomer extends BorderPane {
 //	    	System.out.println("Username=" + usernamePassword.getKey() + ", Password=" + usernamePassword.getValue());
 //		});
 		return loginResult.get();
+	}
+
+	public void openAlert() {
+		Alert alert = new Alert(AlertType.WARNING);
+		alert.setTitle("Warnung");
+		alert.setHeaderText("Kein Produkt gewählt.");
+		alert.setContentText("Bitte wählen Sie ein Produkt.");
+
+		alert.showAndWait();
 	}
 
 	public Button getBuy() {

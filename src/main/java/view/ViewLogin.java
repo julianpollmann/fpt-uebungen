@@ -22,7 +22,7 @@ public class ViewLogin extends Dialog {
 
 	public ViewLogin() {
 		setTitle("Login");
-		setHeaderText("Login to warehouse");
+		setHeaderText("Bitte einloggen");
 
 		setLoginForm();
 	}
@@ -38,13 +38,13 @@ public class ViewLogin extends Dialog {
 
 		// User/PW fields
 		username = new TextField();
-		username.setPromptText("Username");
+		username.setPromptText("Nutzername");
 		password = new PasswordField();
-		password.setPromptText("Password");
+		password.setPromptText("Passwort");
 
-		grid.add(new Label("Username:"), 0, 0);
+		grid.add(new Label("Nutzername:"), 0, 0);
 		grid.add(username, 1, 0);
-		grid.add(new Label("Password:"), 0, 1);
+		grid.add(new Label("Passwort:"), 0, 1);
 		grid.add(password, 1, 1);
 
 		// Add Login/Cancel Button
