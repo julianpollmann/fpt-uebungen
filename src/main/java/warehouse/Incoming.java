@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
-public class Incoming implements Runnable {
+public class Incoming extends Thread {
 
 	private int id;
 	private final Socket socket;
@@ -26,11 +26,13 @@ public class Incoming implements Runnable {
 		BufferedReader inReader = null;
 		State st = State.LOGIN;
 
-		try (InputStream inStream = socket.getInputStream()) {
+		try {
+			InputStream inStream = this.socket.getInputStream();
 			inReader = new BufferedReader(new InputStreamReader(inStream));
 
 			String inputLine;
 			while((inputLine = inReader.readLine()) != null) {
+				System.out.println(inputLine);
 				switch (st) {
 					case LOGIN:
 						st = checkAuth(st, inputLine);
@@ -42,13 +44,15 @@ public class Incoming implements Runnable {
 
 
 			}
-
-
-
-			System.out.println("[TCPServer] Verbindung " + id + " wird beendet");
-			socket.close();
 		} catch (IOException e1) {
 			e1.printStackTrace();
+		} finally {
+			System.out.println("[TCPServer] Verbindung " + id + " wird beendet");
+			try {
+				socket.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -64,9 +68,4 @@ public class Incoming implements Runnable {
 		}
 		return st;
 	}
-
-	public int getId() {
-		return this.id;
-	}
-
 }

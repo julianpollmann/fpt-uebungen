@@ -33,9 +33,14 @@ public class BuyController implements EventHandler {
 			this.view.openAlert();
 		} else {
 			loginResult = this.view.openLoginDialog();
-			OutgoingThread ot = new OutgoingThread(loginResult, prod);
-			ot.run();
+			TCPClient tcpclient = new TCPClient(loginResult, prod);
+			tcpclient.openConnection();
 		}
 	}
+
+//	private void startClient() {
+//		OutgoingThread ot = new OutgoingThread(loginResult, prod);
+//		ot.run();
+//	}
 
 }
