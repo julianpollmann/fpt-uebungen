@@ -33,7 +33,7 @@ public class TCPServer {
 
 		while(true) {
 			try {
-				Socket socket = serverSocket.accept();
+				clientSocket = serverSocket.accept();
 				System.out.println("[TCPServer] Neue Verbindung");
 				inStream = clientSocket.getInputStream();
 				outStream = clientSocket.getOutputStream();

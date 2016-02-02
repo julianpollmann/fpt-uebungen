@@ -1,11 +1,9 @@
 package controller;
 
 import fpt.com.Product;
-import io.OutgoingThread;
+import io.net.tcp.TCPClient;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.util.Pair;
 import model.ModelShop;
 import view.ViewCustomer;

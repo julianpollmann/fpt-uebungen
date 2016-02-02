@@ -131,7 +131,7 @@ public class Product implements fpt.com.Product, Externalizable {
 	public void readExternal(ObjectInput extInput) throws IOException, ClassNotFoundException {
 		Product temp = (Product) extInput.readObject();
 
-		System.out.println(temp.getName());
+//		System.out.println(temp.getName());
 
 //		this.setName(temp.getName());
 //		this.setPrice(temp.getPrice());
