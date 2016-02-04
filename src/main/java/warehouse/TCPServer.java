@@ -5,6 +5,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -16,6 +19,7 @@ public class TCPServer {
 	private static Socket clientSocket;
 	private InputStream inStream;
 	private OutputStream outStream;
+	private List orders;
 
 	public TCPServer () {
 		threadPool = Executors.newCachedThreadPool();
@@ -38,8 +42,11 @@ public class TCPServer {
 				inStream = clientSocket.getInputStream();
 				outStream = clientSocket.getOutputStream();
 
-				threadPool.execute(new TCPInServerThread(inStream));
+				orders = Collections.synchronizedList(new Orders());
+
+				threadPool.execute(new TCPInServerThread(inStream, orders));
 				threadPool.execute(new TCPOutServerThread(outStream));
+
 
 			} catch (IOException e) {
 				e.printStackTrace();
