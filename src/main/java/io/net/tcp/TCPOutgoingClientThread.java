@@ -1,6 +1,7 @@
 package io.net.tcp;
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
@@ -26,13 +27,27 @@ public class TCPOutgoingClientThread extends Thread {
 		user = this.loginResult.getKey().toString();
 		pass = this.loginResult.getValue().toString();
 
-		printStream = new PrintStream(this.outStream);
-		printStream.println("login=" + user + ":" + pass + "\r\n");
+//		printStream = new PrintStream(this.outStream);
+//		printStream.println("login=" + user + ":" + pass + "\r\n");
+//
+//		printStream.println("ProdName=" + this.order.getName());
+//		printStream.println("ProdQuantity=" + this.order.getQuantity());
+//		printStream.println("ProdPrice=" + this.order.getPrice());
 
-		printStream.println("ProdName=" + this.order.getName());
-		printStream.println("ProdQuantity=" + this.order.getQuantity());
-		printStream.println("ProdPrice=" + this.order.getPrice());
+		try {
+			ObjectOutputStream oos = new ObjectOutputStream(this.outStream);
+			oos.writeObject(new String(user));
+			oos.writeObject(new String(pass));
 
-		printStream.flush();
+			oos.writeObject(this.order);
+
+			oos.flush();
+			oos.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+//		printStream.flush();
 	}
 }
