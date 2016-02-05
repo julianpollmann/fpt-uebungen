@@ -1,4 +1,4 @@
-package io.net.udp;
+package warehouse;
 
 
 import java.io.IOException;
@@ -11,12 +11,12 @@ import java.util.Date;
 import java.util.Scanner;
 
 
-public class UDPClientThread extends Thread {
+public class UDPServerThread extends Thread {
 
 	private DatagramPacket packet;
 	private DatagramSocket socket;
 
-	public UDPClientThread(DatagramPacket packet, DatagramSocket socket)
+	public UDPServerThread(DatagramPacket packet, DatagramSocket socket)
 			throws SocketException {
 		this.packet = packet;
 		this.socket = socket;

@@ -8,13 +8,15 @@ import java.net.SocketException;
 import java.util.Date;
 import java.util.Scanner;
 
-import io.net.udp.UDPClientThread;
-
 public class UDPServer {
 
+	public UDPServer() {
+		startServer();
+	}
 
 
-	public static void main(String[] args) {
+
+	public void startServer() {
 		// Socket erstellen unter dem der Server erreichbar ist
 		DatagramSocket socket = null;
 		try {
@@ -26,7 +28,7 @@ public class UDPServer {
 				try {
 					socket.receive(packet);
 					// Empfangendes Paket in einem neuen Thread abarbeiten
-					new UDPClientThread(packet, socket).start();
+					new UDPServerThread(packet, socket).start();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
