@@ -1,14 +1,19 @@
 package controller;
 
 import javafx.event.ActionEvent;
+
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.ModelShop;
 import view.ViewCustomer;
 import view.ViewShop;
+import warehouse.UDPServerThread;
+
+
+
 
 public class ControllerShop {
-
+	
 	public ViewCustomer view2;
 
 	public void link(ModelShop model, ViewShop view) {
@@ -31,6 +36,10 @@ public class ControllerShop {
 		view2.getProductTable().setItems(model);
 
 		view2.getBuy().addEventHandler(ActionEvent.ACTION, new BuyController(model,view2));
+		
+		
+		
+		
 
 	}
 }

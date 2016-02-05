@@ -33,7 +33,7 @@ public class UDPServerThread extends Thread {
 				address, port, len, new String(data, 0, len));
 
 		// Nutzdaten in ein Stringobjekt  übergeben und nach "time" suchen
-		String da = new String(packet.getData());
+		String da = new String(data);
 		Scanner sc = new Scanner(da);
 		String keyword = sc.findInLine("time");
 
@@ -42,9 +42,8 @@ public class UDPServerThread extends Thread {
 			// Datum abrufen, ins gewünschte Format bringen und in Byte-Sequenz umwandeln
 			Date dt = new Date();
 			SimpleDateFormat sdt = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-			String dt2 = sdt.format(dt);
 
-			byte[] myDate = dt2.toString().getBytes();
+			byte[] myDate = sdt.format(dt).toString().getBytes();
 
 			// Paket mit neuen Daten (Datum) als Antwort vorbereiten
 			packet = new DatagramPacket(myDate, myDate.length, address, port);
@@ -60,7 +59,7 @@ public class UDPServerThread extends Thread {
 			byte[] myDate = new byte[1024];
 			myDate = new String("Command unknown").getBytes();
 			try {
-				sleep(5000);
+				sleep(1000);
 			} catch (InterruptedException e1) {
 				e1.printStackTrace();
 			}
