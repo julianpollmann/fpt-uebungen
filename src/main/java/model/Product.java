@@ -127,22 +127,20 @@ public class Product implements fpt.com.Product, Externalizable {
 		return this.quantity;
 	}
 
-	@Override	//Hier fehlt noch die direkte Zuweisung der Daten
+	@Override
 	public void readExternal(ObjectInput extInput) throws IOException, ClassNotFoundException {
-		Product temp = (Product) extInput.readObject();
-
-//		System.out.println(temp.getName());
-
-//		this.setName(temp.getName());
-//		this.setPrice(temp.getPrice());
-//		this.setQuantity(temp.getQuantity());
-//		this.setId(temp.getId());
-
+		this.setId(extInput.readLong());
+		this.setName((String) extInput.readObject());
+		this.setPrice(extInput.readDouble());
+		this.setQuantity(extInput.readInt());
 	}
 
 	@Override
 	public void writeExternal(ObjectOutput out) throws IOException {
-		out.writeObject(this);
+		out.writeLong(this.getId());
+		out.writeObject(this.getName());
+		out.writeDouble(this.getPrice());
+		out.writeInt(this.getQuantity());
 	}
 
 }

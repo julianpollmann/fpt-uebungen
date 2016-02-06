@@ -68,12 +68,20 @@ public class Order extends ArrayList<Product> implements fpt.com.Order {
 
 	@Override
 	public double getSum() {
+		sum = 0;
+		for(Product prod : this) {
+			sum = sum + prod.getPrice();
+		}
 		return sum;
 	}
 
 	@Override
 	public int getQuantity() {
-		return	quantity;
+		quantity = 0;
+		for(Product prod : this) {
+			quantity = quantity + prod.getQuantity();
+		}
+		return quantity;
 	}
 
 }
