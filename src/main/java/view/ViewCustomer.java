@@ -166,6 +166,10 @@ public class ViewCustomer extends BorderPane {
 		return buy;
 	}
 
+	public Button getAddToCart() {
+		return addProd;
+	}
+
 
 
 	// UDP-Paket an Server schicken - wundert mich nur, dass das in die ViewCustomer rein soll...

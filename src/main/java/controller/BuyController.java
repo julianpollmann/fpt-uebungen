@@ -1,5 +1,6 @@
 package controller;
 
+import fpt.com.Order;
 import fpt.com.Product;
 import io.net.tcp.TCPClient;
 import javafx.event.Event;
@@ -14,24 +15,25 @@ public class BuyController implements EventHandler {
 	private ViewCustomer view;
 	private Product prod;
 	private Pair<String, String> loginResult;
+	private Order order;
 
-	public BuyController(ModelShop model, ViewCustomer view) {
+	public BuyController(ModelShop model, ViewCustomer view, Order order) {
 		this.model = model;
 		this.view = view;
+		this.order = order;
 	}
 
 	@Override
 	public void handle(Event event) {
-		prod = view.getProductTable().getSelectionModel().getSelectedItem();
 
 		/*
 		 * Check if product is selected
 		 */
-		if(prod == null) {
+		if(this.order == null) {
 			this.view.openAlert();
 		} else {
 			loginResult = this.view.openLoginDialog();
-			TCPClient tcpclient = new TCPClient(loginResult, prod);
+			TCPClient tcpclient = new TCPClient(loginResult, order);
 			tcpclient.openConnection();
 		}
 	}
