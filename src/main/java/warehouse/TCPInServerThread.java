@@ -1,10 +1,13 @@
 package warehouse;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.util.List;
+
+import fpt.com.Order;
+import javafx.util.Pair;
+import fpt.com.Product;
 
 public class TCPInServerThread extends Thread {
 
@@ -20,6 +23,8 @@ public class TCPInServerThread extends Thread {
 	private Product product;
 	private int prodQuantityAll;
 	private double prodPriceAll;
+	private ObjectInputStream ois;
+	private Order order;
 
 	public TCPInServerThread(InputStream inStream, List orders) {
 		this.inStream = inStream;
@@ -28,43 +33,68 @@ public class TCPInServerThread extends Thread {
 
 	public void run() {
 		System.out.println("[TCPServer] Verbindung " + Thread.currentThread().getId() + " hergestellt");
-		BufferedReader inReader = null;
+
 		State st = State.LOGIN;
+		Object obj;
+		try {
+			this.ois = new ObjectInputStream(this.inStream);
+			while((obj = ois.readObject()) != null) {
 
-		// TODO: ist das hier richtig, um InStream zu synchronisieren?
-		synchronized(inStream) {
-			inReader = new BufferedReader(new InputStreamReader(inStream));
+				// Login
+				if(obj instanceof Pair<?, ?>) {
+					st = checkAuth((Pair<String, String>) obj, st);
+				}
 
-			String inputLine;
-			try {
-				// TODO: Bug, Teil nach der while Schleife wird nicht ausgeführt?!
-				while((inputLine = inReader.readLine()) != null) {
-				System.out.println(inputLine);
-					switch (st) {
-					case LOGIN:
-						st = checkAuth(st, inputLine);
-						break;
-					case DATA:
-						if(inputLine.startsWith("ProdName=")) {
-							prodName = inputLine.substring(9);
-						};
-						if(inputLine.startsWith("ProdQuantity=")) {
-							prodQuantity = Integer.parseInt(inputLine.substring(13));
-						};
-						if(inputLine.startsWith("ProdPrice=")) {
-							prodPrice = Double.parseDouble(inputLine.substring(10));
+				// Order
+				if(st == State.DATA) {
+					if(obj instanceof fpt.com.Order) {
+						Order order = ((Order) obj);
+						System.out.println("[TCPServer] Order eingegangen");
+						System.out.println("[TCPServer] +++++++++++++++++++++++++++++");
+
+						for(Product product : order) {
+							System.out.println(
+									"[TCPServer] " +
+									product.getName() + "\t" +
+									product.getQuantity() + "\t" +
+									product.getPrice() + " EUR"
+							);
 						}
-						if(prodName != null && prodQuantity != 0 && prodPrice != 0) {
-							addProd(prodName, prodPrice, prodQuantity);
-						}
-						break;
+						System.out.println("[TCPServer] +++++++++++++++++++++++++++++");
+
+
+						// TODO: Gesamtorder anzeigen...
 					}
 				}
-				getAllOrders();
+			}
+		} catch (ClassNotFoundException | IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				ois.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	/**
+	 * Checks if user is logged in
+	 *
+	 * @param  Pair with username, password
+	 * @param  current State
+	 * @return changed State
+	 */
+	private State checkAuth(Pair<String, String> obj, State st) {
+		System.out.println("[TCPServer] Prüfe Nutzername/Passwort");
+
+		if (obj.getKey().equals("admin") && obj.getValue().equals("admin")) {
+			System.out.println("[TCPServer] Login korrekt.");
+			st = State.DATA;
+		} else {
+			System.out.println("[TCPServer] Login fehlerhaft.");
+		}
+		return st;
 	}
 
 	/*
@@ -84,22 +114,6 @@ public class TCPInServerThread extends Thread {
 		}
 		System.out.println("Gesamtanzahl: " + prodQuantityAll);
 		System.out.println("Gesamtpreis: " + prodPriceAll);
-	}
-
-	/*
-	 * Check if user is logged in
-	 */
-	private State checkAuth(State st, String inputLine) throws IOException {
-		System.out.println("[TCPServer] Prüfe Nutzername/Passwort");
-		if(inputLine.startsWith("login=")) {
-			if(inputLine.equals("login=admin:admin")) {
-				System.out.println("[TCPServer] Login korrekt.");
-				st = State.DATA;
-			} else {
-				System.out.println("[TCPServer] Login fehlerhaft.");
-			}
-		}
-		return st;
 	}
 
 	/*
