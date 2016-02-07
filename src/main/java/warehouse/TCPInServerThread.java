@@ -16,19 +16,13 @@ public class TCPInServerThread extends Thread {
 		LOGIN,
 		DATA
 	};
-	private String prodName;
-	private int prodQuantity;
-	private double prodPrice;
-	private List orders;
-	private Product product;
-	private int prodQuantityAll;
-	private double prodPriceAll;
+	private Order orderList;
 	private ObjectInputStream ois;
 	private Order order;
 
-	public TCPInServerThread(InputStream inStream, List orders) {
+	public TCPInServerThread(InputStream inStream, Order orderList) {
 		this.inStream = inStream;
-		this.orders = orders;
+		this.orderList = orderList;
 	}
 
 	public void run() {
@@ -48,24 +42,12 @@ public class TCPInServerThread extends Thread {
 				// Order
 				if(st == State.DATA) {
 					if(obj instanceof fpt.com.Order) {
-						Order order = ((Order) obj);
-						System.out.println("[TCPServer] Order eingegangen");
-						System.out.println("[TCPServer] +++++++++++++++++++++++++++++");
+						getCurrentOrders(obj);
 
-						for(Product product : order) {
-							System.out.println(
-									"[TCPServer] " +
-									product.getName() + "\t" +
-									product.getQuantity() + "\t" +
-									product.getPrice() + " EUR"
-							);
-						}
-						System.out.println("[TCPServer] +++++++++++++++++++++++++++++");
-
-
-						// TODO: Gesamtorder anzeigen...
+						getAllOrders();
 					}
 				}
+
 			}
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
@@ -76,6 +58,30 @@ public class TCPInServerThread extends Thread {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	/**
+	 * Prints current Order and adds
+	 * products of Order to orderList
+	 * @param Order obj
+	 */
+	private void getCurrentOrders(Object obj) {
+		order = ((Order) obj);
+		System.out.println("[TCPServer] Order eingegangen:");
+		System.out.println("[TCPServer] +++++++++++++++++++++++++++++");
+
+		for(Product product : order) {
+			System.out.println(
+					"[TCPServer] " +
+					product.getName() + "\t" +
+					product.getQuantity() + "\t" +
+					product.getPrice() + " EUR"
+			);
+			synchronized(this.orderList) {
+				this.orderList.add(product);
+			}
+		}
+		System.out.println("[TCPServer] +++++++++++++++++++++++++++++");
 	}
 
 	/**
@@ -102,29 +108,13 @@ public class TCPInServerThread extends Thread {
 	 */
 	private void getAllOrders() {
 		System.out.println("[TCPServer] Alle Einkäufe:");
-		prodQuantityAll = 0;
-		prodPriceAll = 0;
-		synchronized(orders) {
-			for (int i = 0; i < orders.size(); i++) {
-				Product prod = (Product) orders.get(i);
+		synchronized(this.orderList) {
+			for(Product prod : this.orderList) {
 				System.out.println("[TCPServer] " + prod.getName() + "\t" + prod.getQuantity() + "\t" + prod.getPrice() + " EUR");
-				prodQuantityAll = prodQuantityAll + prod.getQuantity();
-				prodPriceAll = prodPriceAll + prod.getPrice();
 			}
+			System.out.println("[TCPServer] +++++++++++++++++++++++++++++");
+			System.out.println("[TCPServer] Gesamtanzahl: \t" + this.orderList.getQuantity());
+			System.out.println("[TCPServer] Gesamtpreis: \t" + this.orderList.getSum() + " EUR");
 		}
-		System.out.println("Gesamtanzahl: " + prodQuantityAll);
-		System.out.println("Gesamtpreis: " + prodPriceAll);
 	}
-
-	/*
-	 * Add product to orderlist
-	 */
-	private void addProd(String prodName, double prodPrice, int prodQuantity) {
-		synchronized(orders) {
-			orders.add(new Product(prodName, prodPrice, prodQuantity));
-		}
-		System.out.println("[TCPServer] Order eingegangen");
-		System.out.print("[TCPServer] " + prodName + "\t" + prodQuantity + "\t" + prodPrice + " EUR");
-	}
-
 }
