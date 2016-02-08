@@ -38,7 +38,7 @@ public class TCPClient {
 		if(clientSocket != null && outStream != null && inStream != null) {
 			System.out.println("[TCPClient] Verbindung zu " + clientSocket.getRemoteSocketAddress() + " hergestellt.");
 
-			TCPConnector connector = new TCPConnector(inStream, outStream, this.loginResult, this.order);
+			TCPClientConnector connector = new TCPClientConnector(inStream, outStream, this.loginResult, this.order);
 
 		}
 

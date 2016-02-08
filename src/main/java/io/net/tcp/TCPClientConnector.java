@@ -7,7 +7,7 @@ import java.io.OutputStream;
 import fpt.com.Order;
 import javafx.util.Pair;
 
-public class TCPConnector {
+public class TCPClientConnector {
 
 	private int id;
 	private InputStream inStream;
@@ -16,7 +16,7 @@ public class TCPConnector {
 	private Order order;
 	private Thread[] threads;
 
-	public TCPConnector(InputStream inStream, OutputStream outStream, Pair<String, String> loginResult, Order order) {
+	public TCPClientConnector(InputStream inStream, OutputStream outStream, Pair<String, String> loginResult, Order order) {
 		this.inStream = inStream;
 		this.outStream = outStream;
 		this.loginResult = loginResult;
