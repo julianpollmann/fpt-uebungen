@@ -1,13 +1,12 @@
 package warehouse;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 import fpt.com.Order;
-import problem4.Client;
-import problem4.WaitingQueue;
 
 public class TCPServerConnector {
 
@@ -16,14 +15,12 @@ public class TCPServerConnector {
 	private Order orderList;
 	private TCPInServerThread inThread;
 	private TCPOutServerThread outThread;
-	private int connectionId;
 	private BlockingQueue<Order> messages;
 
-	public TCPServerConnector(int connectionId, InputStream inStream, OutputStream outStream, Order orderList) {
+	public TCPServerConnector(InputStream inStream, OutputStream outStream, Order orderList) {
 		this.inStream = inStream;
 		this.outStream = outStream;
 		this.orderList = orderList;
-		this.connectionId = connectionId;
 		this.messages = new ArrayBlockingQueue<>(30);
 
 		bindStreams();
@@ -31,11 +28,27 @@ public class TCPServerConnector {
 
 	private void bindStreams() {
 		inThread = new TCPInServerThread(this.inStream, orderList, this.messages);
-		outThread = new TCPOutServerThread(this.outStream, orderList, this.messages);
+		outThread = new TCPOutServerThread(this.outStream, this.messages);
 
 		inThread.start();
 		outThread.start();
 
+		try {
+			inThread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		try {
+			outThread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 
+		try {
+			this.inStream.close();
+			this.outStream.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

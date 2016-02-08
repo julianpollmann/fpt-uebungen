@@ -1,27 +1,41 @@
 package warehouse;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
 import fpt.com.Order;
-import fpt.com.Product;
 
 public class TCPOutServerThread extends Thread {
 
 	private OutputStream outStream;
-	private Order order;
-	private Order orderList;
 	private BlockingQueue<Order> messages;
+	private ObjectOutputStream oos;
 
-	public TCPOutServerThread(OutputStream outStream, Order orderList, BlockingQueue<Order> messages) {
+	public TCPOutServerThread(OutputStream outStream, BlockingQueue<Order> messages) {
 		this.outStream = outStream;
-		this.orderList = orderList;
 		this.messages = messages;
 	}
 
 	public void run() {
-
+		try {
+			oos = new ObjectOutputStream(this.outStream);
+			try {
+				oos.writeObject(this.messages.take());
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			System.out.println("[TCPServer] Kopie der Order an Client gesendet.");
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				oos.flush();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

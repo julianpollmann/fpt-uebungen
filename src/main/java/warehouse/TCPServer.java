@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
 
 import fpt.com.Order;
 import fpt.com.Product;
-import io.net.tcp.TCPConnector;
+import io.net.tcp.TCPClientConnector;
 
 public class TCPServer {
 
@@ -24,12 +24,10 @@ public class TCPServer {
 	private InputStream inStream;
 	private OutputStream outStream;
 	private Order orderList;
-	private int connectionId;
 	private TCPServerConnector connector;
 
 	public TCPServer () {
 		threadPool = Executors.newCachedThreadPool();
-		connectionId = 0;
 
 		startServer();
 	}
@@ -56,7 +54,7 @@ public class TCPServer {
 //				threadPool.execute(new TCPOutServerThread(outStream, orderList));
 
 				if(clientSocket != null && outStream != null && inStream != null) {
-					connector = new TCPServerConnector(connectionId++, inStream, outStream, orderList);
+					connector = new TCPServerConnector(inStream, outStream, orderList);
 				}
 
 

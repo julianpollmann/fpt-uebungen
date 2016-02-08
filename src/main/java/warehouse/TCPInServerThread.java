@@ -3,12 +3,11 @@ package warehouse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
-import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
 import fpt.com.Order;
-import javafx.util.Pair;
 import fpt.com.Product;
+import javafx.util.Pair;
 
 public class TCPInServerThread extends Thread {
 
@@ -21,6 +20,7 @@ public class TCPInServerThread extends Thread {
 	private ObjectInputStream ois;
 	private Order order;
 	private BlockingQueue<Order> messages;
+	private Pair<String, String> login;
 
 	public TCPInServerThread(InputStream inStream, Order orderList, BlockingQueue<Order> messages) {
 		this.inStream = inStream;
@@ -32,34 +32,36 @@ public class TCPInServerThread extends Thread {
 		System.out.println("[TCPServer] Verbindung " + Thread.currentThread().getId() + " hergestellt");
 
 		State st = State.LOGIN;
-		Object obj;
 		try {
 			this.ois = new ObjectInputStream(this.inStream);
-			while((obj = ois.readObject()) != null) {
 
-				// Login
-				if(obj instanceof Pair<?, ?>) {
-					st = checkAuth((Pair<String, String>) obj, st);
+			// Login
+			login = (Pair<String, String>) this.ois.readObject();
+			st = checkAuth(login, st);
+
+			// Order
+			if(st == State.DATA) {
+				order = (Order) this.ois.readObject();
+				getCurrentOrders(order);
+
+				// Pass message to OutgoingThread
+				try {
+					this.messages.put(order);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
 
-				// Order
-				if(st == State.DATA) {
-					if(obj instanceof fpt.com.Order) {
-						getCurrentOrders(obj);
-
-						getAllOrders();
-					}
-				}
-
+				getAllOrders();
 			}
+
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
 		} finally {
-			try {
-				ois.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+//			try {
+//				ois.close();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
 		}
 	}
 
@@ -68,8 +70,7 @@ public class TCPInServerThread extends Thread {
 	 * products of Order to orderList
 	 * @param Order obj
 	 */
-	private void getCurrentOrders(Object obj) {
-		order = ((Order) obj);
+	private void getCurrentOrders(Order order) {
 		System.out.println("[TCPServer] Order eingegangen:");
 		System.out.println("[TCPServer] +++++++++++++++++++++++++++++");
 
