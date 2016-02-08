@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
 
 import fpt.com.Order;
 import javafx.util.Pair;
@@ -19,10 +20,12 @@ public class TCPInServerThread extends Thread {
 	private Order orderList;
 	private ObjectInputStream ois;
 	private Order order;
+	private BlockingQueue<Order> messages;
 
-	public TCPInServerThread(InputStream inStream, Order orderList) {
+	public TCPInServerThread(InputStream inStream, Order orderList, BlockingQueue<Order> messages) {
 		this.inStream = inStream;
 		this.orderList = orderList;
+		this.messages = messages;
 	}
 
 	public void run() {
