@@ -1,14 +1,12 @@
 package main;
+import controller.ControllerShop;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
 import model.ModelShop;
 import view.ViewCustomer;
 import view.ViewHistory;
 import view.ViewShop;
-import controller.ControllerShop;
-import controller.UDPClientController;
 
 public class Main extends Application {
 
@@ -55,9 +53,6 @@ public class Main extends Application {
 
 	public static void main(String[] args) {
 		Application.launch(args);
-
-		Thread t1 = new Thread(new UDPClientController());
-		t1.start();
 	}
 
 }
