@@ -1,5 +1,6 @@
 package controller;
 
+import fpt.com.Order;
 import fpt.com.Product;
 import io.net.tcp.TCPClient;
 import javafx.event.Event;
@@ -12,33 +13,43 @@ public class BuyController implements EventHandler {
 
 	private ModelShop model;
 	private ViewCustomer view;
-	private Product prod;
 	private Pair<String, String> loginResult;
+	private Order order;
+	private Order orderResult;
+	private TCPClient tcpclient;
 
-	public BuyController(ModelShop model, ViewCustomer view) {
+	public BuyController(ModelShop model, ViewCustomer view, Order order) {
 		this.model = model;
 		this.view = view;
+		this.order = order;
 	}
 
 	@Override
 	public void handle(Event event) {
-		prod = view.getProductTable().getSelectionModel().getSelectedItem();
 
 		/*
 		 * Check if product is selected
 		 */
-		if(prod == null) {
+		if(this.order == null) {
 			this.view.openAlert();
 		} else {
 			loginResult = this.view.openLoginDialog();
-			TCPClient tcpclient = new TCPClient(loginResult, prod);
+			tcpclient = new TCPClient(loginResult, order, this);
 			tcpclient.openConnection();
 		}
 	}
 
-//	private void startClient() {
-//		OutgoingThread ot = new OutgoingThread(loginResult, prod);
-//		ot.run();
-//	}
+	public void setResult(Order order) {
+		this.orderResult = order;
+		System.out.println(this.orderResult.getSum());
+		passDataModel();
+	}
 
+	private void passDataModel() {
+		for(Product remoteProd : this.orderResult) {
+			Product localProd = this.model.findProductByName(remoteProd.getName());
+			localProd.setQuantity(localProd.getQuantity() - remoteProd.getQuantity());
+		}
+
+	}
 }

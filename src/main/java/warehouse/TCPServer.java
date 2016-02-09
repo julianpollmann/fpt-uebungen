@@ -11,6 +11,10 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import fpt.com.Order;
+import fpt.com.Product;
+import io.net.tcp.TCPClientConnector;
+
 public class TCPServer {
 
 	private final static int port = 6666;
@@ -19,7 +23,8 @@ public class TCPServer {
 	private static Socket clientSocket;
 	private InputStream inStream;
 	private OutputStream outStream;
-	private List orders;
+	private Order orderList;
+	private TCPServerConnector connector;
 
 	public TCPServer () {
 		threadPool = Executors.newCachedThreadPool();
@@ -42,12 +47,13 @@ public class TCPServer {
 				inStream = clientSocket.getInputStream();
 				outStream = clientSocket.getOutputStream();
 
-				orders = Collections.synchronizedList(new Orders());
+				// List for all orders
+				orderList = new model.Order();
 
-				threadPool.execute(new TCPInServerThread(inStream, orders));
-				threadPool.execute(new TCPOutServerThread(outStream));
-
-
+				if(clientSocket != null && outStream != null && inStream != null) {
+					connector = new TCPServerConnector(inStream, outStream, orderList);
+					connector.bindStreams();
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

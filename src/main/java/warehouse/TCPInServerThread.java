@@ -1,10 +1,13 @@
 package warehouse;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.List;
+import java.io.ObjectInputStream;
+import java.util.concurrent.BlockingQueue;
+
+import fpt.com.Order;
+import fpt.com.Product;
+import javafx.util.Pair;
 
 public class TCPInServerThread extends Thread {
 
@@ -13,58 +16,95 @@ public class TCPInServerThread extends Thread {
 		LOGIN,
 		DATA
 	};
-	private String prodName;
-	private int prodQuantity;
-	private double prodPrice;
-	private List orders;
-	private Product product;
-	private int prodQuantityAll;
-	private double prodPriceAll;
+	private Order orderList;
+	private ObjectInputStream ois;
+	private Order order;
+	private BlockingQueue<Order> messages;
+	private Pair<String, String> login;
 
-	public TCPInServerThread(InputStream inStream, List orders) {
+	public TCPInServerThread(InputStream inStream, Order orderList, BlockingQueue<Order> messages) {
 		this.inStream = inStream;
-		this.orders = orders;
+		this.orderList = orderList;
+		this.messages = messages;
 	}
 
 	public void run() {
 		System.out.println("[TCPServer] Verbindung " + Thread.currentThread().getId() + " hergestellt");
-		BufferedReader inReader = null;
+
 		State st = State.LOGIN;
+		try {
+			this.ois = new ObjectInputStream(this.inStream);
 
-		// TODO: ist das hier richtig, um InStream zu synchronisieren?
-		synchronized(inStream) {
-			inReader = new BufferedReader(new InputStreamReader(inStream));
+			// Login
+			login = (Pair<String, String>) this.ois.readObject();
+			st = checkAuth(login, st);
 
-			String inputLine;
-			try {
-				// TODO: Bug, Teil nach der while Schleife wird nicht ausgeführt?!
-				while((inputLine = inReader.readLine()) != null) {
-				System.out.println(inputLine);
-					switch (st) {
-					case LOGIN:
-						st = checkAuth(st, inputLine);
-						break;
-					case DATA:
-						if(inputLine.startsWith("ProdName=")) {
-							prodName = inputLine.substring(9);
-						};
-						if(inputLine.startsWith("ProdQuantity=")) {
-							prodQuantity = Integer.parseInt(inputLine.substring(13));
-						};
-						if(inputLine.startsWith("ProdPrice=")) {
-							prodPrice = Double.parseDouble(inputLine.substring(10));
-						}
-						if(prodName != null && prodQuantity != 0 && prodPrice != 0) {
-							addProd(prodName, prodPrice, prodQuantity);
-						}
-						break;
-					}
+			// Order
+			if(st == State.DATA) {
+				order = (Order) this.ois.readObject();
+				getCurrentOrders(order);
+
+				// Pass message to OutgoingThread
+				try {
+					this.messages.put(order);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
+
 				getAllOrders();
-			} catch (IOException e) {
-				e.printStackTrace();
+			}
+
+		} catch (ClassNotFoundException | IOException e) {
+			e.printStackTrace();
+		} finally {
+//			try {
+//				ois.close();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+		}
+	}
+
+	/**
+	 * Prints current Order and adds
+	 * products of Order to orderList
+	 * @param Order obj
+	 */
+	private void getCurrentOrders(Order order) {
+		System.out.println("[TCPServer] Order eingegangen:");
+		System.out.println("[TCPServer] +++++++++++++++++++++++++++++");
+
+		for(Product product : order) {
+			System.out.println(
+					"[TCPServer] " +
+					product.getName() + "\t" +
+					product.getQuantity() + "\t" +
+					product.getPrice() + " EUR"
+			);
+			synchronized(this.orderList) {
+				this.orderList.add(product);
 			}
 		}
+		System.out.println("[TCPServer] +++++++++++++++++++++++++++++");
+	}
+
+	/**
+	 * Checks if user is logged in
+	 *
+	 * @param  Pair with username, password
+	 * @param  current State
+	 * @return changed State
+	 */
+	private State checkAuth(Pair<String, String> obj, State st) {
+		System.out.println("[TCPServer] Prüfe Nutzername/Passwort");
+
+		if (obj.getKey().equals("admin") && obj.getValue().equals("admin")) {
+			System.out.println("[TCPServer] Login korrekt.");
+			st = State.DATA;
+		} else {
+			System.out.println("[TCPServer] Login fehlerhaft.");
+		}
+		return st;
 	}
 
 	/*
@@ -72,45 +112,13 @@ public class TCPInServerThread extends Thread {
 	 */
 	private void getAllOrders() {
 		System.out.println("[TCPServer] Alle Einkäufe:");
-		prodQuantityAll = 0;
-		prodPriceAll = 0;
-		synchronized(orders) {
-			for (int i = 0; i < orders.size(); i++) {
-				Product prod = (Product) orders.get(i);
+		synchronized(this.orderList) {
+			for(Product prod : this.orderList) {
 				System.out.println("[TCPServer] " + prod.getName() + "\t" + prod.getQuantity() + "\t" + prod.getPrice() + " EUR");
-				prodQuantityAll = prodQuantityAll + prod.getQuantity();
-				prodPriceAll = prodPriceAll + prod.getPrice();
 			}
+			System.out.println("[TCPServer] +++++++++++++++++++++++++++++");
+			System.out.println("[TCPServer] Gesamtanzahl: \t" + this.orderList.getQuantity());
+			System.out.println("[TCPServer] Gesamtpreis: \t" + this.orderList.getSum() + " EUR");
 		}
-		System.out.println("Gesamtanzahl: " + prodQuantityAll);
-		System.out.println("Gesamtpreis: " + prodPriceAll);
 	}
-
-	/*
-	 * Check if user is logged in
-	 */
-	private State checkAuth(State st, String inputLine) throws IOException {
-		System.out.println("[TCPServer] Prüfe Nutzername/Passwort");
-		if(inputLine.startsWith("login=")) {
-			if(inputLine.equals("login=admin:admin")) {
-				System.out.println("[TCPServer] Login korrekt.");
-				st = State.DATA;
-			} else {
-				System.out.println("[TCPServer] Login fehlerhaft.");
-			}
-		}
-		return st;
-	}
-
-	/*
-	 * Add product to orderlist
-	 */
-	private void addProd(String prodName, double prodPrice, int prodQuantity) {
-		synchronized(orders) {
-			orders.add(new Product(prodName, prodPrice, prodQuantity));
-		}
-		System.out.println("[TCPServer] Order eingegangen");
-		System.out.print("[TCPServer] " + prodName + "\t" + prodQuantity + "\t" + prodPrice + " EUR");
-	}
-
 }

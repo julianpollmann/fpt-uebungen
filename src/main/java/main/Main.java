@@ -1,13 +1,12 @@
 package main;
+import controller.ControllerShop;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
 import model.ModelShop;
 import view.ViewCustomer;
 import view.ViewHistory;
 import view.ViewShop;
-import controller.ControllerShop;
 
 public class Main extends Application {
 

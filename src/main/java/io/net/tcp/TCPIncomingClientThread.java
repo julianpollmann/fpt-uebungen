@@ -1,28 +1,62 @@
 package io.net.tcp;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.ObjectInputStream;
+import java.util.concurrent.Callable;
 
-public class TCPIncomingClientThread extends Thread {
+import controller.BuyController;
+import fpt.com.Order;
+
+public class TCPIncomingClientThread extends Thread implements Callable<Order>{
 
 	private InputStream inStream;
+	private ObjectInputStream ois;
+	private Order order;
+	private BuyController controller;
 
-	public TCPIncomingClientThread(InputStream inStream) {
+	public TCPIncomingClientThread(InputStream inStream, BuyController controller) {
 		this.inStream = inStream;
+		this.controller = controller;
 	}
 
 	public void run() {
-		System.out.println("in ClientThread Incoming");
+		System.out.println("[TCPClient] Warte auf Serverantwort.");
 
-		BufferedReader buffRead = new BufferedReader(new InputStreamReader(this.inStream));
 		try {
-			buffRead.readLine();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			this.ois = new ObjectInputStream(this.inStream);
+
+			order = (Order) this.ois.readObject();
+			System.out.println("---------------------------------------------------------------");
+			System.out.println(order.getSum());
+			System.out.println("---------------------------------------------------------------");
+			this.controller.setResult(order);
+
+//			Object obj;
+//			while((obj = ois.readObject()) != null) {
+//
+//				if(obj instanceof Boolean) {
+//					if(obj.equals(true)) {
+//						System.out.println("[TCPCLient] Order erfolgreich auf Server eingegangen.");
+//					}
+//				}
+//
+//			}
+		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				ois.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
+
+	}
+
+	@Override
+	public Order call() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

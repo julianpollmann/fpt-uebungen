@@ -3,6 +3,7 @@ package view;
 import java.util.Optional;
 
 import fpt.com.Product;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -17,6 +18,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import java.io.IOException;
@@ -48,6 +50,7 @@ public class ViewCustomer extends BorderPane {
 	private ViewLogin login;
 	private Optional<Pair<String, String>> loginResult;
 	private Product prod;
+	private Text time;
 
 	// TODO: Rebuild UI using Threading:
 	// http://blog.axxg.de/javafx-ui-thread-update/
@@ -85,6 +88,7 @@ public class ViewCustomer extends BorderPane {
 			stage3.show();
 		});
 		buy = new Button("Kaufen");
+		time = new Text();
 //		buy.setOnAction(e -> {
 //			prod = prodTable.getSelectionModel().getSelectedItem();
 //			openLoginDialog();
@@ -106,7 +110,8 @@ public class ViewCustomer extends BorderPane {
 		vbox = new VBox(6);
 		vbox.setPrefWidth(200);
 		vbox.setPadding(new Insets(0, 10, 0, 10));
-		vbox.getChildren().addAll(nameLabel, nameInput, priceLabel, priceInput, quantityLabel, quantityInput, addProd, history, buy);
+		vbox.getChildren().addAll(nameLabel, nameInput, priceLabel, priceInput, quantityLabel, quantityInput, addProd, history, buy, time);
+
 	}
 
 	private void setTableView() {
@@ -166,59 +171,15 @@ public class ViewCustomer extends BorderPane {
 		return buy;
 	}
 
-
-
-	// UDP-Paket an Server schicken - wundert mich nur, dass das in die ViewCustomer rein soll...
-	public static void main(String[] args) {
-		// Eigene Adresse erstellen
-		InetAddress ia = null;
-		try {
-			ia = InetAddress.getByName("localhost");
-		} catch (UnknownHostException e2) {
-			e2.printStackTrace();
-		}
-		// Socket für den Klienten anlegen
-		try (DatagramSocket dSocket = new DatagramSocket(6668);) {
-
-			try {
-				int i = 0;
-				while (i < 10) {
-					String command = "time";
-
-					byte buffer[] = null;
-					buffer = command.getBytes();
-
-					// Paket mit der Anfrage vorbereiten
-					DatagramPacket packet = new DatagramPacket(buffer,
-							buffer.length, ia, 6667);
-					// Paket versenden
-					dSocket.send(packet);
-
-					byte answer[] = new byte[1024];
-					// Paket für die Antwort vorbereiten
-					packet = new DatagramPacket(answer, answer.length);
-					// Auf die Antwort warten
-					dSocket.receive(packet);
-
-					System.out.println(new String(packet.getData(), 0, packet
-							.getLength()));
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-
-					i++;
-				}
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-
-		} catch (SocketException e1) {
-			e1.printStackTrace();
-		}
-
+	public Button getAddToCart() {
+		return addProd;
 	}
+
+	public void setTime(String time) {
+		this.time.setText(time);
+	}
+
+
 
 
 	// Für Verwendung des ListViews

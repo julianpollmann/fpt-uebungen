@@ -1,5 +1,7 @@
 package controller;
 
+import fpt.com.Order;
+import io.net.udp.UDPClient;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -10,6 +12,8 @@ import view.ViewShop;
 public class ControllerShop {
 
 	public ViewCustomer view2;
+	private Order order;
+	private UDPClient udpclient;
 
 	public void link(ModelShop model, ViewShop view) {
 
@@ -30,7 +34,12 @@ public class ControllerShop {
 		stage2.show();
 		view2.getProductTable().setItems(model);
 
-		view2.getBuy().addEventHandler(ActionEvent.ACTION, new BuyController(model,view2));
+		order = new model.Order();
 
+		view2.getBuy().addEventHandler(ActionEvent.ACTION, new BuyController(model, view2, order));
+		view2.getAddToCart().addEventHandler(ActionEvent.ACTION, new ShoppingCartController(model, view2, order));
+
+		udpclient = new UDPClient(view2);
+		udpclient.start();
 	}
 }

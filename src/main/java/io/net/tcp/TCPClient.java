@@ -5,25 +5,26 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
+import controller.BuyController;
+import fpt.com.Order;
 import fpt.com.Product;
 import javafx.util.Pair;
 
 public class TCPClient {
 
-	private ExecutorService threadPool;
-	private Product prod;
 	private Pair<String, String> loginResult;
 	private static Socket clientSocket = null;
 	private static OutputStream outStream = null;
 	private static InputStream inStream = null;
+	private Order order;
+	private TCPClientConnector connector;
+	private BuyController controller;
 
-	public TCPClient(Pair<String, String> loginResult, Product prod) {
-		threadPool = Executors.newCachedThreadPool();
+	public TCPClient(Pair<String, String> loginResult, Order order, BuyController buyController) {
 		this.loginResult = loginResult;
-		this.prod = prod;
+		this.order = order;
+		this.controller = buyController;
 	}
 
 	public void openConnection() {
@@ -39,24 +40,9 @@ public class TCPClient {
 
 		if(clientSocket != null && outStream != null && inStream != null) {
 			System.out.println("[TCPClient] Verbindung zu " + clientSocket.getRemoteSocketAddress() + " hergestellt.");
-			threadPool.execute(new TCPIncomingClientThread(inStream));
-			threadPool.execute(new TCPOutgoingClientThread(outStream, this.loginResult, this.prod));
+
+			connector = new TCPClientConnector(inStream, outStream, this.loginResult, this.order, this.controller);
+			connector.bindStreams();
 		}
-
 	}
-
-//	public void openConnection() {
-//		try(Socket serverCon = new Socket("localhost", 6666);
-//				OutputStream outStream = serverCon.getOutputStream()) {
-//			threadPool.execute(new OutgoingThread(outStream, loginResult, prod));
-//			OutgoingThread outT1 = new OutgoingThread(outStream, loginResult, prod);
-//			outT1.start();
-//		} catch (UnknownHostException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//
-//	}
-
 }

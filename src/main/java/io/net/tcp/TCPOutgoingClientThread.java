@@ -5,27 +5,42 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
+import fpt.com.Order;
 import fpt.com.Product;
 import javafx.util.Pair;
 
 public class TCPOutgoingClientThread extends Thread {
 
 	private OutputStream outStream;
-	private PrintStream printStream;
 	private Pair<String, String> loginResult;
-	private Product order;
-	private String user;
-	private String pass;
+	private Order order;
+	private ObjectOutputStream oos;
 
-	public TCPOutgoingClientThread(OutputStream outStream, Pair<String, String> loginResult, Product order) {
+	public TCPOutgoingClientThread(OutputStream outStream, Pair<String, String> loginResult, Order order) {
 		this.outStream = outStream;
 		this.loginResult = loginResult;
 		this.order = order;
 	}
 
 	public void run() {
-		user = this.loginResult.getKey().toString();
-		pass = this.loginResult.getValue().toString();
+
+//		user = this.loginResult.getKey().toString();
+//		pass = this.loginResult.getValue().toString();
+
+		try {
+			oos = new ObjectOutputStream(this.outStream);
+			oos.writeObject(this.loginResult);
+			oos.writeObject(this.order);
+			System.out.println("[TCPClient] Order an Server versendet.");
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				oos.flush();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 
 //		printStream = new PrintStream(this.outStream);
 //		printStream.println("login=" + user + ":" + pass + "\r\n");
@@ -33,21 +48,7 @@ public class TCPOutgoingClientThread extends Thread {
 //		printStream.println("ProdName=" + this.order.getName());
 //		printStream.println("ProdQuantity=" + this.order.getQuantity());
 //		printStream.println("ProdPrice=" + this.order.getPrice());
-
-		try {
-			ObjectOutputStream oos = new ObjectOutputStream(this.outStream);
-			oos.writeObject(new String(user));
-			oos.writeObject(new String(pass));
-
-			oos.writeObject(this.order);
-
-			oos.flush();
-			oos.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+//
 //		printStream.flush();
 	}
 }
