@@ -1,5 +1,7 @@
 package main;
 import controller.ControllerShop;
+import io.net.rmi.ChatClient;
+import io.net.rmi.ClientService;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -34,6 +36,8 @@ public class Main extends Application {
 			primaryStage.setTitle("Hardwareshop");
 			primaryStage.setScene(scene);
 			primaryStage.show();
+
+			ClientService client = new ChatClient("Horst");
 
 			// Customerview in zweitem Fenster
 //			view2 = new ViewCustomer();

@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface ChatService extends Remote {
 
-	public void login(String string) throws RemoteException;
+	public void login(String user) throws RemoteException;
 
-	public void logout(String string) throws RemoteException;
+	public void logout(String user) throws RemoteException;
 
-	public void send(String string) throws RemoteException;
+	public void send(String message) throws RemoteException;
 
 	public List<String> getUserList() throws RemoteException;
 }
