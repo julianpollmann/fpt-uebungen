@@ -30,6 +30,7 @@ public class TCPIncomingClientThread extends Thread implements Callable<Order>{
 			System.out.println("---------------------------------------------------------------");
 			System.out.println(order.getSum());
 			System.out.println("---------------------------------------------------------------");
+			System.out.println("[TCPClient] Order von Server bestätigt.");
 			this.controller.setResult(order);
 
 //			Object obj;

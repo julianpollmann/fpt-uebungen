@@ -41,15 +41,10 @@ public class BuyController implements EventHandler {
 
 	public void setResult(Order order) {
 		this.orderResult = order;
-		System.out.println(this.orderResult.getSum());
-		passDataModel();
-	}
 
-	private void passDataModel() {
 		for(Product remoteProd : this.orderResult) {
 			Product localProd = this.model.findProductByName(remoteProd.getName());
 			localProd.setQuantity(localProd.getQuantity() - remoteProd.getQuantity());
 		}
-
 	}
 }
