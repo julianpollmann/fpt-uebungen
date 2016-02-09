@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import controller.BuyController;
 import fpt.com.Order;
 import fpt.com.Product;
 import javafx.util.Pair;
@@ -17,11 +18,13 @@ public class TCPClient {
 	private static OutputStream outStream = null;
 	private static InputStream inStream = null;
 	private Order order;
-	private Thread[] threads;
+	private TCPClientConnector connector;
+	private BuyController controller;
 
-	public TCPClient(Pair<String, String> loginResult, Order order) {
+	public TCPClient(Pair<String, String> loginResult, Order order, BuyController buyController) {
 		this.loginResult = loginResult;
 		this.order = order;
+		this.controller = buyController;
 	}
 
 	public void openConnection() {
@@ -38,9 +41,8 @@ public class TCPClient {
 		if(clientSocket != null && outStream != null && inStream != null) {
 			System.out.println("[TCPClient] Verbindung zu " + clientSocket.getRemoteSocketAddress() + " hergestellt.");
 
-			TCPClientConnector connector = new TCPClientConnector(inStream, outStream, this.loginResult, this.order);
-
+			connector = new TCPClientConnector(inStream, outStream, this.loginResult, this.order, this.controller);
+			connector.bindStreams();
 		}
-
 	}
 }

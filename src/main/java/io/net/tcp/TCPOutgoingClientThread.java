@@ -30,7 +30,7 @@ public class TCPOutgoingClientThread extends Thread {
 			oos = new ObjectOutputStream(this.outStream);
 			oos.writeObject(this.loginResult);
 			oos.writeObject(this.order);
-			System.out.println("[TCPCLient] Order an Server versendet.");
+			System.out.println("[TCPClient] Order an Server versendet.");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {

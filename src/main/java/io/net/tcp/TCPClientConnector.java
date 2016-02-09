@@ -4,52 +4,53 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import controller.BuyController;
 import fpt.com.Order;
 import javafx.util.Pair;
 
 public class TCPClientConnector {
 
-	private int id;
 	private InputStream inStream;
 	private OutputStream outStream;
 	private Pair<String, String> loginResult;
 	private Order order;
 	private Thread[] threads;
+	private BuyController controller;
+	private TCPIncomingClientThread inThread;
+	private TCPOutgoingClientThread outThread;
 
-	public TCPClientConnector(InputStream inStream, OutputStream outStream, Pair<String, String> loginResult, Order order) {
+	public TCPClientConnector(InputStream inStream, OutputStream outStream, Pair<String, String> loginResult, Order order, BuyController controller) {
 		this.inStream = inStream;
 		this.outStream = outStream;
 		this.loginResult = loginResult;
 		this.order = order;
-		this.threads = new Thread[2];
-
-		bindStreams();
-//		unbindStreams();
+		this.controller = controller;
 	}
 
-	private void bindStreams() {
+	public void bindStreams() {
 
-		this.threads[0] = new TCPIncomingClientThread(inStream);
-		this.threads[1] = new TCPOutgoingClientThread(outStream, this.loginResult, this.order);
+		inThread = new TCPIncomingClientThread(inStream, this.controller);
+		outThread = new TCPOutgoingClientThread(outStream, this.loginResult, this.order);
 
-		threads[0].start();
-		threads[1].start();
-	}
+		inThread.start();
+		outThread.start();
 
-	private void unbindStreams() {
 		try {
-			threads[0].join();
-			threads[1].join();
+			outThread.join();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-		} finally {
-			try {
-				outStream.close();
-				inStream.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		}
+		try {
+			inThread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 
+		try {
+			this.inStream.close();
+			this.outStream.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

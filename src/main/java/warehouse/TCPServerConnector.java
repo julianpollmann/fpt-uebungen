@@ -22,11 +22,9 @@ public class TCPServerConnector {
 		this.outStream = outStream;
 		this.orderList = orderList;
 		this.messages = new ArrayBlockingQueue<>(30);
-
-		bindStreams();
 	}
 
-	private void bindStreams() {
+	public void bindStreams() {
 		inThread = new TCPInServerThread(this.inStream, orderList, this.messages);
 		outThread = new TCPOutServerThread(this.outStream, this.messages);
 

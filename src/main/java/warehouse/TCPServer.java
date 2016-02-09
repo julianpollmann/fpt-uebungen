@@ -50,14 +50,10 @@ public class TCPServer {
 				// List for all orders
 				orderList = new model.Order();
 
-//				threadPool.execute(new TCPInServerThread(inStream, orderList));
-//				threadPool.execute(new TCPOutServerThread(outStream, orderList));
-
 				if(clientSocket != null && outStream != null && inStream != null) {
 					connector = new TCPServerConnector(inStream, outStream, orderList);
+					connector.bindStreams();
 				}
-
-
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
