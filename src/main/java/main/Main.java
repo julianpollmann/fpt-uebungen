@@ -8,6 +8,7 @@ import view.ViewCustomer;
 import view.ViewHistory;
 import view.ViewShop;
 import controller.ControllerShop;
+import controller.UDPClientController;
 
 public class Main extends Application {
 
@@ -54,6 +55,9 @@ public class Main extends Application {
 
 	public static void main(String[] args) {
 		Application.launch(args);
+
+		Thread t1 = new Thread(new UDPClientController());
+		t1.start();
 	}
 
 }

@@ -10,26 +10,25 @@ import java.net.UnknownHostException;
 import io.net.udp.UDPClient;
 import view.ViewCustomer;
 
-public class UDPClientController extends Thread {
+public class UDPClientController implements Runnable {
 
 	UDPClient currentClient;
 	ViewCustomer temp;
 
-	public UDPClientController(ViewCustomer temp){
-		
-		currentClient = new UDPClient(); 
-		this.temp = temp;
+	public UDPClientController(){
+
+		currentClient = new UDPClient();
+
 	}
 
 	public void run(){
 
 
 		System.out.println(currentClient.getTime());
-		
+
 
 
 			}
-
 
 
 }
