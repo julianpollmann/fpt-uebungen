@@ -1,12 +1,13 @@
 package warehouse.rmi;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
-public class ChatServer implements ChatService {
+public class ChatServer extends UnicastRemoteObject implements ChatService {
 
-	public ChatServer() {
-		// TODO Auto-generated constructor stub
+	public ChatServer() throws RemoteException {
+
 	}
 
 	@Override

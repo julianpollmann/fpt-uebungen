@@ -1,10 +1,11 @@
 package io.net.rmi;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
-public class ChatClient implements ClientService {
+public class ChatClient extends UnicastRemoteObject implements ClientService {
 
-	public ChatClient() {
+	public ChatClient() throws RemoteException {
 		// TODO Auto-generated constructor stub
 	}
 
