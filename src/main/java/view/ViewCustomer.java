@@ -3,6 +3,7 @@ package view;
 import java.util.Optional;
 
 import fpt.com.Product;
+import io.net.udp.UDPClient;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -52,6 +53,8 @@ public class ViewCustomer extends BorderPane {
 	private Product prod;
 	private Text time;
 
+	private UDPClient udpclient;
+
 	// TODO: Rebuild UI using Threading:
 	// http://blog.axxg.de/javafx-ui-thread-update/
 	public ViewCustomer() {
@@ -72,6 +75,10 @@ public class ViewCustomer extends BorderPane {
 		setCenter(prodTable);
 		setRight(vbox);
 //		setBottom(stackp);
+
+		udpclient = new UDPClient(this);
+		udpclient.start();
+
 	}
 
 	private void setProductDetails() {
