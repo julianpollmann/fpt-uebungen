@@ -41,5 +41,8 @@ public class ControllerShop {
 
 		udpclient = new UDPClient(view2);
 		udpclient.start();
+
+		ChatController chatController = new ChatController();
+		chatController.sendMessage("tolle Nachricht");
 	}
 }

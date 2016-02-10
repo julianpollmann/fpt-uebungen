@@ -9,4 +9,6 @@ public interface ClientService extends Remote {
 
 	public String getName() throws RemoteException;
 
+	public String setMessage(String message) throws RemoteException;
+
 }

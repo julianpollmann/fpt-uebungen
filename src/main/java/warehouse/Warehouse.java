@@ -19,7 +19,7 @@ public class Warehouse {
 
 		try {
 			registry = LocateRegistry.createRegistry(1099);
-			ChatService rmichat = new ChatServer();
+			ChatService rmichat = new ChatServer(registry);
 			registry.bind("chatserver", rmichat);
 			System.out.println("Chatserver gestartet.");
 		} catch (RemoteException e) {
