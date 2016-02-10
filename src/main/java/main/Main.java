@@ -6,7 +6,6 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.ModelShop;
-import view.ViewCustomer;
 import view.ViewHistory;
 import view.ViewShop;
 
@@ -14,7 +13,7 @@ public class Main extends Application {
 
 	public ModelShop model;
 	public ViewShop view;
-	public ViewCustomer view2;
+//	public ViewChat view2;
 	public ViewHistory view3;
 	public ControllerShop controller;
 
@@ -39,16 +38,6 @@ public class Main extends Application {
 
 			ClientService client = new ChatClient("Horst");
 
-			// Customerview in zweitem Fenster
-//			view2 = new ViewCustomer();
-//
-//			Stage stage2 = new Stage();
-//			Scene scene2 = new Scene(view2, 800, 500);
-//			stage2.setTitle("Ihre Bestellung");
-//			stage2.setScene(scene2);
-//			stage2.show();
-
-			// Historyview in drittem Fenster - soll sich nachher erst auf Buttondruck öffnen
 
 		} catch(Exception e) {
 			e.printStackTrace();

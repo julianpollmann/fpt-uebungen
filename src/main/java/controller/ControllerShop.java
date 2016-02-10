@@ -6,12 +6,14 @@ import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.ModelShop;
+import view.ViewChat;
 import view.ViewCustomer;
 import view.ViewShop;
 
 public class ControllerShop {
 
 	public ViewCustomer view2;
+	public ViewChat view3;
 	private Order order;
 	private UDPClient udpclient;
 
@@ -33,6 +35,15 @@ public class ControllerShop {
 		stage2.setScene(scene2);
 		stage2.show();
 		view2.getProductTable().setItems(model);
+
+		// Chatfenster
+		view3 = new ViewChat();
+
+		Stage stage3 = new Stage();
+		Scene scene3 = new Scene(view3, 500, 500);
+		stage3.setTitle("Chat");
+		stage3.setScene(scene3);
+		stage3.show();
 
 		order = new model.Order();
 
