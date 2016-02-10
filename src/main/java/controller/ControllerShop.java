@@ -15,7 +15,7 @@ public class ControllerShop {
 	public ViewCustomer view2;
 	public ViewChat view3;
 	private Order order;
-	private UDPClient udpclient;
+//	private UDPClient udpclient;
 
 	public void link(ModelShop model, ViewShop view) {
 
@@ -50,8 +50,8 @@ public class ControllerShop {
 		view2.getBuy().addEventHandler(ActionEvent.ACTION, new BuyController(model, view2, order));
 		view2.getAddToCart().addEventHandler(ActionEvent.ACTION, new ShoppingCartController(model, view2, order));
 
-		udpclient = new UDPClient(view2);
-		udpclient.start();
+//		udpclient = new UDPClient(view2);
+//		udpclient.start();
 
 		ChatController chatController = new ChatController();
 		chatController.sendMessage("tolle Nachricht");
