@@ -1,6 +1,7 @@
 package view;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -23,11 +24,15 @@ public class ViewChat extends BorderPane {
 	private Button loginButton = new Button("Login");
 	private Button logoutButton = new Button("Logout");
 	private VBox vbox2;
+	private VBox vbox;
+	private HBox hbox;
 
 
 	public ViewChat() {
 
-			HBox hbox = new HBox(chatName, inputChatName, loginButton, logoutButton);
+			hbox = new HBox(5);
+			hbox.setPadding(new Insets(0, 0, 0, 0));
+			hbox.getChildren().addAll(chatName, inputChatName, loginButton, logoutButton);
 			logoutButton.setDisable(true);
 
 			vbox2 = new VBox(6);
@@ -39,16 +44,20 @@ public class ViewChat extends BorderPane {
 	        heading.setFont(new Font("Arial", 20));
 	        heading.setPadding(new Insets(10, 0, 10, 10));
 
+	        vbox = new VBox(4);
+			vbox.getChildren().addAll(hbox, vbox2);
+
 			setTop(heading);
-			setCenter(vbox2);
+			setCenter(vbox);
 //			setRight(hbox);
-			setBottom(hbox);
+//			setBottom(hbox);
 
 
 
 	}
 
 //folgende Listenerverknüpfung der Zeit halber von anderer Lösung inspiriert - bitte anpassen! Errorhandling war aber glaub ich nicht unbedingt ein Muss!
+
 //	public void addLoginEvent(controller.LoginListener listener){
 //		loginButton.setOnAction(e->{
 //			if(!inputChatName.getText().trim().isEmpty()){
