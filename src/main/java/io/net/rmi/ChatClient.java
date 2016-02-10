@@ -43,4 +43,10 @@ public class ChatClient extends UnicastRemoteObject implements ClientService {
 		this.controller.setMessage(message);
 	}
 
+	@Override
+	public void logout(String user) throws RemoteException, NotBoundException {
+		this.registry.unbind(this.name);
+		this.cServer.logout(this.name);
+	}
+
 }
