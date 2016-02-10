@@ -40,7 +40,7 @@ public class ControllerShop {
 		view3 = new ViewChat();
 
 		Stage stage3 = new Stage();
-		Scene scene3 = new Scene(view3, 500, 500);
+		Scene scene3 = new Scene(view3, 500, 320);
 		stage3.setTitle("Chat");
 		stage3.setScene(scene3);
 		stage3.show();
