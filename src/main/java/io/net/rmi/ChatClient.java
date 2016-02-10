@@ -7,6 +7,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
+import controller.ChatController;
 import warehouse.rmi.ChatService;
 
 public class ChatClient extends UnicastRemoteObject implements ClientService {
@@ -14,11 +15,13 @@ public class ChatClient extends UnicastRemoteObject implements ClientService {
 	private Registry registry;
 	private ChatService cServer;
 	private String name;
+	private ChatController controller;
 
-	public ChatClient(String name) throws RemoteException, NotBoundException, AlreadyBoundException {
+	public ChatClient(ChatController controller, String name) throws RemoteException, NotBoundException, AlreadyBoundException {
 		this.registry = LocateRegistry.getRegistry();
 		this.cServer = (ChatService) registry.lookup("chatserver");
 
+		this.controller = controller;
 		this.name = name;
 
 		this.registry.bind(this.name, this);
@@ -33,6 +36,11 @@ public class ChatClient extends UnicastRemoteObject implements ClientService {
 	@Override
 	public String getName() throws RemoteException {
 		return this.name;
+	}
+
+	@Override
+	public void setMessage(String message) throws RemoteException {
+		this.controller.setMessage(message);
 	}
 
 }
