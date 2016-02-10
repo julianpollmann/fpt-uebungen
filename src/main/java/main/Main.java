@@ -36,12 +36,6 @@ public class Main extends Application {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 
-<<<<<<< HEAD
-			ClientService client = new ChatClient("Horst");
-
-
-=======
->>>>>>> origin/master
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
