@@ -38,6 +38,11 @@ public class ControllerShop {
 		stage2.show();
 		view2.getProductTable().setItems(model);
 
+		order = new model.Order();
+		view2.getBuy().addEventHandler(ActionEvent.ACTION, new BuyController(model, view2, order));
+		view2.getAddToCart().addEventHandler(ActionEvent.ACTION, new ShoppingCartController(model, view2, order));
+
+
 		// Chatfenster
 		view3 = new ViewChat();
 
@@ -47,16 +52,11 @@ public class ControllerShop {
 		stage3.setScene(scene3);
 		stage3.show();
 
-		order = new model.Order();
-
-		view2.getBuy().addEventHandler(ActionEvent.ACTION, new BuyController(model, view2, order));
-		view2.getAddToCart().addEventHandler(ActionEvent.ACTION, new ShoppingCartController(model, view2, order));
+		ChatController chatController = new ChatController(view3);
+		view3.getSendButton().addEventHandler(ActionEvent.ACTION, chatController);
 
 //		udpclient = new UDPClient(view2);
 //		udpclient.start();
 
-		ChatController chatController = new ChatController(view3);
-		view3.getSendButton().addEventHandler(ActionEvent.ACTION, chatController);
-//		chatController.sendMessage("tolle Nachricht");
 	}
 }

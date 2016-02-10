@@ -2,6 +2,7 @@ package view;
 
 import java.util.Optional;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -9,7 +10,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
@@ -54,6 +54,7 @@ public class ViewChat extends BorderPane {
 //			setRight(hbox);
 //			setBottom(hbox);
 
+			this.messages = FXCollections.observableArrayList();
 			this.chatView.setItems(messages);
 
 			loginView = new ViewChatLogin();
@@ -72,8 +73,8 @@ public class ViewChat extends BorderPane {
 		return logoutButton;
 	}
 
-	public TextField getInputChat() {
-		return inputChat;
+	public String getInputChat() {
+		return inputChat.getText();
 	}
 
 	public void addMessage(String message) {

@@ -30,7 +30,7 @@ public class ChatController implements EventHandler {
 	@Override
 	public void handle(Event event) {
 		try {
-			client.send(this.view.getInputChat().toString());
+			client.send(this.view.getInputChat());
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
