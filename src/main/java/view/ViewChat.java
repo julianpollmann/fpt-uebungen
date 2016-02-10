@@ -1,7 +1,9 @@
 package view;
 
+import java.util.Optional;
+
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -13,27 +15,27 @@ import javafx.scene.text.Font;
 
 public class ViewChat extends BorderPane {
 
-
 	private Label heading;
 	private Button sendButton = new Button("Nachricht senden");
 	private Label chatText = new Label("Nachricht:");
-	private Label chatName = new Label("Nickname:");
-	private ListView chatView = new ListView();
+//	private Label chatName = new Label("Nickname:");
+	private ListView<String> chatView = new ListView();
+	private ObservableList<String> messages;
 	private TextField inputChat = new TextField();
-	private TextField inputChatName = new TextField();
-	private Button loginButton = new Button("Login");
+//	private Button loginButton = new Button("Login");
 	private Button logoutButton = new Button("Logout");
 	private VBox vbox2;
 	private VBox vbox;
-	private HBox hbox;
-
+//	private HBox hbox;
+	private ViewChatLogin loginView;
+	private Optional<String> userName;
 
 	public ViewChat() {
 
-			hbox = new HBox(5);
-			hbox.setPadding(new Insets(0, 0, 0, 0));
-			hbox.getChildren().addAll(chatName, inputChatName, loginButton, logoutButton);
-			logoutButton.setDisable(true);
+//			hbox = new HBox(5);
+//			hbox.setPadding(new Insets(0, 0, 0, 0));
+//			hbox.getChildren().addAll(chatName, inputChatName, loginButton, logoutButton);
+//			logoutButton.setDisable(true);
 
 			vbox2 = new VBox(6);
 			vbox2.setPrefWidth(200);
@@ -45,91 +47,37 @@ public class ViewChat extends BorderPane {
 	        heading.setPadding(new Insets(10, 0, 10, 10));
 
 	        vbox = new VBox(4);
-			vbox.getChildren().addAll(hbox, vbox2);
+			vbox.getChildren().addAll(vbox2);
 
 			setTop(heading);
 			setCenter(vbox);
 //			setRight(hbox);
 //			setBottom(hbox);
 
+			this.chatView.setItems(messages);
 
-
+			loginView = new ViewChatLogin();
+			this.userName = loginView.showAndWait();
 	}
 
-//folgende Listenerverknüpfung der Zeit halber von anderer Lösung inspiriert - bitte anpassen! Errorhandling war aber glaub ich nicht unbedingt ein Muss!
-
-//	public void addLoginEvent(controller.LoginListener listener){
-//		loginButton.setOnAction(e->{
-//			if(!inputChatName.getText().trim().isEmpty()){
-//				listener.login(inputChatName.getText());
-//				loginButton.setDisable(true);
-//				logoutButton.setDisable(false);
-//			}else{
-//				ExceptionBox.display("Fehler!","Bitte geben Sie einen Chat-Namen ein!");
-//			}
-//		});
-//
-//
-//	}
-//
-//	public void addLogoutEvent(controller.LogoutListener listener){
-//		logoutButton.setOnAction(e->{
-//			listener.logout(inputChatName.getText());
-//			loginButton.setDisable(false);
-//			logoutButton.setDisable(true);
-//		});
-//		inputChatName.setEditable(true);
-//	}
-//
-//	public void displayMessage(String message) {
-//		chatView.appendText(message + "\n");
-//	}
+	public String getUserName() {
+		return this.userName.get();
+	}
 
 	public Button getSendButton() {
 		return sendButton;
-	}
-
-	public void setSendButton(Button sendButton) {
-		this.sendButton = sendButton;
-	}
-
-	public ListView getChatView() {
-		return chatView;
-	}
-
-	public void setChatView(ListView chatView) {
-		this.chatView = chatView;
-	}
-
-	public TextField getInputChat() {
-		return inputChat;
-	}
-
-	public void setInputChat(TextField inputChat) {
-		this.inputChat = inputChat;
-	}
-
-	public TextField getInputChatName() {
-		return inputChatName;
-	}
-
-	public void setInputChatName(TextField inputChatName) {
-		this.inputChatName = inputChatName;
-	}
-
-	public Button getLoginButton() {
-		return loginButton;
-	}
-
-	public void setLoginButton(Button loginButton) {
-		this.loginButton = loginButton;
 	}
 
 	public Button getLogoutButton() {
 		return logoutButton;
 	}
 
-	public void setLogoutButton(Button logoutButton) {
-		this.logoutButton = logoutButton;
+	public TextField getInputChat() {
+		return inputChat;
 	}
+
+	public void addMessage(String message) {
+		this.messages.add(message);
+	}
+
 }
