@@ -24,7 +24,7 @@ public class ChatClient extends UnicastRemoteObject implements ClientService {
 		this.controller = controller;
 		this.name = name;
 
-		this.registry.bind(this.name, this);
+		this.registry.rebind(this.name, this);
 		this.cServer.login(this.name);
 	}
 
