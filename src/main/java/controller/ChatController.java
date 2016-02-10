@@ -16,7 +16,7 @@ public class ChatController implements EventHandler {
 
 	public ChatController() {
 		try {
-			ClientService client = new ChatClient(this, "Horst");
+			client = new ChatClient(this, "Horst");
 		} catch (RemoteException | NotBoundException | AlreadyBoundException e) {
 			e.printStackTrace();
 		}
@@ -36,8 +36,9 @@ public class ChatController implements EventHandler {
 		}
 	}
 
-	public String getMessage(String message) {
-		return message;
+	public void setMessage(String message) {
+		System.out.println("ChatController Message: " + message);
+//		this.view.setMessage();
 	}
 
 }

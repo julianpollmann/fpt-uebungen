@@ -39,8 +39,8 @@ public class ChatClient extends UnicastRemoteObject implements ClientService {
 	}
 
 	@Override
-	public String setMessage(String message) throws RemoteException {
-		return this.controller.getMessage(message);
+	public void setMessage(String message) throws RemoteException {
+		this.controller.setMessage(message);
 	}
 
 }

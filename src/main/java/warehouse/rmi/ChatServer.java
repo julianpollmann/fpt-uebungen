@@ -19,6 +19,7 @@ public class ChatServer extends UnicastRemoteObject implements ChatService {
 
 	public ChatServer(Registry registry) throws RemoteException {
 		super();
+		this.registry = registry;
 		userList = new ArrayList<String>();
 	}
 
@@ -39,10 +40,10 @@ public class ChatServer extends UnicastRemoteObject implements ChatService {
 	@Override
 	public void send(String message) throws RemoteException {
 		this.message = message;
-		System.out.println("[RMIServer] " + this.user + " : " + this.message);
+		System.out.println("[RMIServer] " + this.user + ": " + this.message);
 		for(String user : getUserList()) {
 			try {
-				client = (ClientService) registry.lookup(this.user);
+				client = (ClientService) this.registry.lookup(this.user);
 				client.setMessage(this.message);
 			} catch (NotBoundException e) {
 				e.printStackTrace();
