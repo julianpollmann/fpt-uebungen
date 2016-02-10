@@ -3,7 +3,7 @@ package view;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -17,7 +17,7 @@ public class ViewChat extends BorderPane {
 	private Button sendButton = new Button("Nachricht senden");
 	private Label chatText = new Label("Nachricht:");
 	private Label chatName = new Label("Nickname:");
-	private TextArea chatView = new TextArea();
+	private ListView chatView = new ListView();
 	private TextField inputChat = new TextField();
 	private TextField inputChatName = new TextField();
 	private Button loginButton = new Button("Login");
@@ -43,7 +43,6 @@ public class ViewChat extends BorderPane {
 
 
 	}
-
 
 //folgende Listenerverknüpfung der Zeit halber von anderer Lösung inspiriert - bitte anpassen! Errorhandling war aber glaub ich nicht unbedingt ein Muss!
 //	public void addLoginEvent(controller.LoginListener listener){
@@ -73,5 +72,51 @@ public class ViewChat extends BorderPane {
 //		chatView.appendText(message + "\n");
 //	}
 
+	public Button getSendButton() {
+		return sendButton;
+	}
 
+	public void setSendButton(Button sendButton) {
+		this.sendButton = sendButton;
+	}
+
+	public ListView getChatView() {
+		return chatView;
+	}
+
+	public void setChatView(ListView chatView) {
+		this.chatView = chatView;
+	}
+
+	public TextField getInputChat() {
+		return inputChat;
+	}
+
+	public void setInputChat(TextField inputChat) {
+		this.inputChat = inputChat;
+	}
+
+	public TextField getInputChatName() {
+		return inputChatName;
+	}
+
+	public void setInputChatName(TextField inputChatName) {
+		this.inputChatName = inputChatName;
+	}
+
+	public Button getLoginButton() {
+		return loginButton;
+	}
+
+	public void setLoginButton(Button loginButton) {
+		this.loginButton = loginButton;
+	}
+
+	public Button getLogoutButton() {
+		return logoutButton;
+	}
+
+	public void setLogoutButton(Button logoutButton) {
+		this.logoutButton = logoutButton;
+	}
 }
