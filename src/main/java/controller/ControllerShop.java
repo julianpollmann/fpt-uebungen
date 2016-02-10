@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.ModelShop;
 import view.ViewChat;
+import view.ViewChatLogin;
 import view.ViewCustomer;
 import view.ViewShop;
 
@@ -14,6 +15,7 @@ public class ControllerShop {
 
 	public ViewCustomer view2;
 	public ViewChat view3;
+	private ViewChatLogin view4;
 	private Order order;
 	private UDPClient udpclient;
 
@@ -53,7 +55,8 @@ public class ControllerShop {
 		udpclient = new UDPClient(view2);
 		udpclient.start();
 
-		ChatController chatController = new ChatController();
-		chatController.sendMessage("tolle Nachricht");
+		ChatController chatController = new ChatController(view3);
+		view3.getSendButton().addEventHandler(ActionEvent.ACTION, chatController);
+//		chatController.sendMessage("tolle Nachricht");
 	}
 }
