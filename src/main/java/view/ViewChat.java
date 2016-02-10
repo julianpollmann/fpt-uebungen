@@ -22,14 +22,18 @@ public class ViewChat extends BorderPane {
 	private TextField inputChatName = new TextField();
 	private Button loginButton = new Button("Login");
 	private Button logoutButton = new Button("Logout");
-
+	private VBox vbox2;
 
 
 	public ViewChat() {
 
 			HBox hbox = new HBox(chatName, inputChatName, loginButton, logoutButton);
 			logoutButton.setDisable(true);
-			VBox vbox2 = new VBox(chatView, chatText, inputChat, sendButton);
+
+			vbox2 = new VBox(6);
+			vbox2.setPrefWidth(200);
+			vbox2.setPadding(new Insets(0, 10, 0, 10));
+			vbox2.getChildren().addAll(chatView, chatText, inputChat, sendButton);
 
 			heading = new Label("Chat");
 	        heading.setFont(new Font("Arial", 20));
