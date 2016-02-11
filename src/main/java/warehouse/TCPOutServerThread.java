@@ -23,6 +23,10 @@ public class TCPOutServerThread extends Thread {
 			oos = new ObjectOutputStream(this.outStream);
 			try {
 				oos.writeObject(this.messages.take());
+//				synchronized(this.messages) {
+//					wait();
+//					oos.writeObject(this.messages.take());
+//				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

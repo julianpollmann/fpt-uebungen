@@ -47,6 +47,10 @@ public class TCPInServerThread extends Thread {
 				// Pass message to OutgoingThread
 				try {
 					this.messages.put(order);
+//					synchronized(this.messages) {
+//						this.messages.put(order);
+//						notify();
+//					}
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -57,6 +61,7 @@ public class TCPInServerThread extends Thread {
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
 		} finally {
+			// Wenn wir das hier tun, ist der OutputStream des Clients kaputt :/
 //			try {
 //				ois.close();
 //			} catch (IOException e) {

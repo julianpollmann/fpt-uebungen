@@ -14,18 +14,18 @@ public class Warehouse {
 
 	public static void main(String[] args) {
 //		UDPServer udpserv = new UDPServer();
-//		TCPServer tcpserv = new TCPServer();
+		TCPServer tcpserv = new TCPServer();
 
 
-		try {
-			registry = LocateRegistry.createRegistry(1099);
-			ChatService rmichat = new ChatServer(registry);
-			registry.bind("chatserver", rmichat);
-			System.out.println("[Chatserver] gestartet.");
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		} catch (AlreadyBoundException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			registry = LocateRegistry.createRegistry(1099);
+//			ChatService rmichat = new ChatServer(registry);
+//			registry.bind("chatserver", rmichat);
+//			System.out.println("[Chatserver] gestartet.");
+//		} catch (RemoteException e) {
+//			e.printStackTrace();
+//		} catch (AlreadyBoundException e) {
+//			e.printStackTrace();
+//		}
 	}
 }

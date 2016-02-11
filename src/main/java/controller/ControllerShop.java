@@ -44,18 +44,18 @@ public class ControllerShop {
 
 
 		// Chatfenster
-		view3 = new ViewChat();
-
-		Stage stage3 = new Stage();
-		Scene scene3 = new Scene(view3, 500, 320);
-		stage3.setTitle("Chat");
-		stage3.setScene(scene3);
-		stage3.show();
-
-		ChatController chatController = new ChatController(view3);
-		ChatLogoutController logoutController = new ChatLogoutController(chatController);
-		view3.getSendButton().addEventHandler(ActionEvent.ACTION, chatController);
-		view3.getLogoutButton().addEventHandler(ActionEvent.ACTION, logoutController);
+//		view3 = new ViewChat();
+//
+//		Stage stage3 = new Stage();
+//		Scene scene3 = new Scene(view3, 500, 320);
+//		stage3.setTitle("Chat");
+//		stage3.setScene(scene3);
+//		stage3.show();
+//
+//		ChatController chatController = new ChatController(view3);
+//		ChatLogoutController logoutController = new ChatLogoutController(chatController);
+//		view3.getSendButton().addEventHandler(ActionEvent.ACTION, chatController);
+//		view3.getLogoutButton().addEventHandler(ActionEvent.ACTION, logoutController);
 
 //		udpclient = new UDPClient(view2);
 //		udpclient.start();
