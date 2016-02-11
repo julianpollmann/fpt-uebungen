@@ -23,6 +23,7 @@ public class ShoppingCartController implements EventHandler {
 	@Override
 	public void handle(Event event) {
 		product = view.getProductTable().getSelectionModel().getSelectedItem();
+		product.setQuantity(1);	// we want to add 1 product to the shoppingcart
 
 		this.order.add(product);
 
