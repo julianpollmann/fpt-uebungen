@@ -6,6 +6,7 @@ import java.rmi.RemoteException;
 
 import io.net.rmi.ChatClient;
 import io.net.rmi.ClientService;
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import view.ViewChat;
@@ -20,6 +21,7 @@ public class ChatController implements EventHandler {
 		this.view = view;
 		this.user = this.view.getUserName();
 
+		// Create new Chatclient with username here
 		try {
 			client = new ChatClient(this, this.user);
 		} catch (RemoteException | NotBoundException | AlreadyBoundException e) {
@@ -27,6 +29,9 @@ public class ChatController implements EventHandler {
 		}
 	}
 
+	/*
+	 * Eventhandler for Send Button
+	 */
 	@Override
 	public void handle(Event event) {
 		try {
@@ -36,18 +41,18 @@ public class ChatController implements EventHandler {
 		}
 	}
 
-	// temp, this goes in handle
-	public void sendMessage(String message) {
-		try {
-			client.send(message);
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
-	}
-
+	/*
+	 * Update message in view
+	 * we need to use runLater
+	 */
 	public void setMessage(String message) {
-		System.out.println("ChatController Message: " + message);
-		this.view.addMessage(message);
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				view.getMessages().add(message);
+			}
+
+		});
 	}
 
 }

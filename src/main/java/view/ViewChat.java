@@ -81,4 +81,8 @@ public class ViewChat extends BorderPane {
 		this.messages.add(message);
 	}
 
+	public ObservableList<String> getMessages() {
+		return this.messages;
+	}
+
 }
