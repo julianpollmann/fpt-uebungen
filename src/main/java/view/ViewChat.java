@@ -40,7 +40,7 @@ public class ViewChat extends BorderPane {
 			vbox2 = new VBox(6);
 			vbox2.setPrefWidth(200);
 			vbox2.setPadding(new Insets(0, 10, 0, 10));
-			vbox2.getChildren().addAll(chatView, chatText, inputChat, sendButton);
+			vbox2.getChildren().addAll(chatView, chatText, inputChat, sendButton, logoutButton);
 
 			heading = new Label("Chat");
 	        heading.setFont(new Font("Arial", 20));
@@ -75,10 +75,6 @@ public class ViewChat extends BorderPane {
 
 	public String getInputChat() {
 		return inputChat.getText();
-	}
-
-	public void addMessage(String message) {
-		this.messages.add(message);
 	}
 
 	public ObservableList<String> getMessages() {

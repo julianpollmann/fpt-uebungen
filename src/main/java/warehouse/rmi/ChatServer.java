@@ -23,28 +23,38 @@ public class ChatServer extends UnicastRemoteObject implements ChatService {
 		userList = new ArrayList<String>();
 	}
 
+	/*
+	 * Adds logged in user to userList
+	 */
 	@Override
 	public void login(String user) throws RemoteException {
 		this.user = user;
-		System.out.println("[RMIServer] " + this.user + " hat sich eingeloggt.");
+		System.out.println("[Chatserver] " + this.user + " hat sich eingeloggt.");
 		userList.add(this.user);
 	}
 
+	/*
+	 * Removes logged out user from userList
+	 */
 	@Override
 	public void logout(String user) throws RemoteException {
 		this.user = user;
-		System.out.println("[RMIServer] " + this.user + " hat sich ausgeloggt.");
+		System.out.println("[Chatserver] " + this.user + " hat sich ausgeloggt.");
 		userList.remove(this.user);
 	}
 
+	/*
+	 * Gets message as param from client and
+	 * sends it to every Client in userList
+	 */
 	@Override
 	public void send(String message) throws RemoteException {
 		this.message = message;
-		System.out.println("[RMIServer] " + this.user + ": " + this.message);
+		System.out.println("[Chatserver] " + this.user + ": " + this.message);
 		for(String user : getUserList()) {
 			try {
 				client = (ClientService) this.registry.lookup(this.user);
-				client.setMessage(this.message);
+				client.setMessage(this.user + ": " + this.message);
 			} catch (NotBoundException e) {
 				e.printStackTrace();
 			}

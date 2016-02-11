@@ -55,4 +55,8 @@ public class ChatController implements EventHandler {
 		});
 	}
 
+	public ClientService getChatClient() {
+		return this.client;
+	}
+
 }

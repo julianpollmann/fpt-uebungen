@@ -53,7 +53,9 @@ public class ControllerShop {
 		stage3.show();
 
 		ChatController chatController = new ChatController(view3);
+		ChatLogoutController logoutController = new ChatLogoutController(chatController);
 		view3.getSendButton().addEventHandler(ActionEvent.ACTION, chatController);
+		view3.getLogoutButton().addEventHandler(ActionEvent.ACTION, logoutController);
 
 //		udpclient = new UDPClient(view2);
 //		udpclient.start();

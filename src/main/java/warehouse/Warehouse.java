@@ -21,7 +21,7 @@ public class Warehouse {
 			registry = LocateRegistry.createRegistry(1099);
 			ChatService rmichat = new ChatServer(registry);
 			registry.bind("chatserver", rmichat);
-			System.out.println("Chatserver gestartet.");
+			System.out.println("[Chatserver] gestartet.");
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		} catch (AlreadyBoundException e) {
